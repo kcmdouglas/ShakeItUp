@@ -5,22 +5,28 @@ import android.util.Log;
 import com.epicodus.shakeitup.services.YelpService;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 
 /**
  * Created by Guest on 4/11/16.
  */
+@Parcel
 public class Business {
-    private String rating;
-    private String mobileUrl;
-    private String reviewCount;
-    private String name;
-    private String phone;
-    private String imageUrl;
-    private LatLng latlng;
-    private static ArrayList<Business> dinnerList = new ArrayList<>();
-    private static ArrayList<Business> drinkList = new ArrayList<>();
-    private static ArrayList<Business> funList = new ArrayList<>();
+    String rating;
+    String mobileUrl;
+    String reviewCount;
+    String name;
+    String phone;
+    String imageUrl;
+    LatLng latlng;
+    static ArrayList<Business> dinnerList = new ArrayList<>();
+    static ArrayList<Business> drinkList = new ArrayList<>();
+    static ArrayList<Business> funList = new ArrayList<>();
+
+    public Business() {
+    }
 
     public Business(String rating, String mobileUrl, String reviewCount, String name, String phone, String imageUrl, LatLng latlng) {
         this.rating = rating;
