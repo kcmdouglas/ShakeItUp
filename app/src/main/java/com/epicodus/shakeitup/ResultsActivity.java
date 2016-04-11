@@ -2,25 +2,33 @@ package com.epicodus.shakeitup;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.epicodus.shakeitup.models.Business;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,8 +45,8 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     private static final int MAP_PADDING = 50;
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 411;
 
-    private ArrayList<Double> mLatitudes = new ArrayList<>();
-    private ArrayList<Double> mLongitudes = new ArrayList<>();
+    private ArrayList<Business> mBusinesses = new ArrayList<>();
+    private Map<String, Business> mMarkersBusinessesHashMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +54,14 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         setContentView(R.layout.activity_results);
         ButterKnife.bind(this);
 
-        //TODO remove placeholder latlngs
-        mLatitudes.addAll(Arrays.asList(-12.1213214, -55.2334525, -22.242453));
-        mLongitudes.addAll(Arrays.asList(-23.2453, 20.2323, -44.24142));
+        mBusinesses = Parcels.unwrap(getIntent().getParcelableExtra("businesses"));
 
         //TODO remove placeholder images
         Picasso.with(this).load(R.drawable.tacos).fit().centerCrop().into(mFirstPlaceImageView);
         Picasso.with(this).load(R.drawable.tacos).fit().centerCrop().into(mSecondPlaceImageView);
         Picasso.with(this).load(R.drawable.tacos).fit().centerCrop().into(mThirdPlaceImageView);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         if (mapFragment.getView() != null) {
             mapFragment.getView().post(new Runnable() {
@@ -66,6 +72,34 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 }
             });
         }
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                final Business business = mMarkersBusinessesHashMap.get(marker.getId());
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        View view = getLayoutInflater().inflate(R.layout.custom_info_window_contents_for_map, null);
+
+                        ImageView badge = (ImageView) view.findViewById(R.id.badge);
+                        TextView title = (TextView) view.findViewById(R.id.title);
+                        TextView snippet = (TextView) view.findViewById(R.id.snippet);
+
+                        Picasso.with(ResultsActivity.this).load(business.getImageUrl()).fit().centerCrop().into(badge);
+                        title.setText(business.getName());
+                        snippet.setText(business.getPhone());
+
+                        return view;
+                    }
+                });
+                return true;
+            }
+        });
     }
 
     @Override
@@ -84,17 +118,19 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
     public void initializeMapMarkers() {
         //TODO remove placeholder data, replace with real model data
-        ArrayList<LatLng> latLngArrayList = new ArrayList<>();
-        for (int i = 0; i < mLatitudes.size(); i++) {
-            LatLng tacos = new LatLng(mLatitudes.get(i), mLongitudes.get(i));
-            latLngArrayList.add(tacos);
-            mMap.addMarker(new MarkerOptions()
-                    .position(tacos)
-                    .title("Tacos " + i));
+        ArrayList<LatLng> latLngsForBounds = new ArrayList<>();
+        for (int i = 0; i < mBusinesses.size(); i++) {
+            Business business = mBusinesses.get(i);
+            LatLng latLng = business.getLatlng();
+            latLngsForBounds.add(latLng);
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(business.getName()));
+            mMarkersBusinessesHashMap.put(marker.getId(), business);
         }
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (int i = 0; i < latLngArrayList.size(); i++) {
-            builder.include(latLngArrayList.get(i));
+        for (int i = 0; i < latLngsForBounds.size(); i++) {
+            builder.include(latLngsForBounds.get(i));
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), MAP_PADDING));
     }
@@ -105,7 +141,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             case ACCESS_FINE_LOCATION_PERMISSION_REQUEST: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay!
+                    // permission was granted
                     mMap.getUiSettings().setMyLocationButtonEnabled(true);
                     try {
                         mMap.setMyLocationEnabled(true);
@@ -113,7 +149,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                         se.printStackTrace();
                     }
                 } else {
-                    // permission denied, boo!
+                    // permission denied
                     Toast.makeText(this, "Directions functionality disabled", Toast.LENGTH_LONG).show();
                 }
             }
