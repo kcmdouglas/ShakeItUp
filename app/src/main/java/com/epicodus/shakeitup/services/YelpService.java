@@ -45,7 +45,7 @@ public class YelpService {
                 .addInterceptor(new SigningInterceptor(consumer))
                 .build();
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.yelp.com/v2/search?limit=50&term=" + category).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.yelp.com/v2/search?&term=" + category).newBuilder();
         urlBuilder.addQueryParameter("location", location);
         String url = urlBuilder.build().toString();
 
