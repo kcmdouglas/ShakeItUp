@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ShakeItUp</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyDG9zyzNAHXKxKzrFu3GItH5DTihG38ARU
+    </string>
 </resources>
