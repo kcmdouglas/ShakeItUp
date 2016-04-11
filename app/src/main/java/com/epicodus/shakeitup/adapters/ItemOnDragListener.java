@@ -62,8 +62,8 @@ class ItemOnDragListener implements View.OnDragListener {
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
                 }
-
                 v.setBackgroundColor(resumeColor);
+
 
                 break;
             case DragEvent.ACTION_DRAG_ENDED:
