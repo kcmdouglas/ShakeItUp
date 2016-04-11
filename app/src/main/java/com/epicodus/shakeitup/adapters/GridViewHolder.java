@@ -1,4 +1,4 @@
-package com.epicodus.shakeitup.models;
+package com.epicodus.shakeitup.adapters;
 
 import android.widget.ImageView;
 

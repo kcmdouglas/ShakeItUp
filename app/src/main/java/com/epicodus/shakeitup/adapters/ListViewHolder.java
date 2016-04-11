@@ -1,4 +1,4 @@
-package com.epicodus.shakeitup.models;
+package com.epicodus.shakeitup.adapters;
 
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -6,7 +6,7 @@ import android.widget.TextView;
 /**
  * Created by Guest on 4/11/16.
  */
-public class ViewHolder {
+public class ListViewHolder {
     ImageView icon;
     TextView text;
 

@@ -1,6 +1,7 @@
 package com.epicodus.shakeitup.ui;
 
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -16,8 +17,6 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.epicodus.shakeitup.ChooserActivity;
-import com.epicodus.shakeitup.MainActivity;
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.adapters.ItemBaseAdapter;
 import com.epicodus.shakeitup.adapters.ItemGridAdapter;
@@ -38,7 +37,10 @@ public class RestaurantChooserFragment extends Fragment {
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
+    private OnFirstItemDroppedInDropZoneListener mListener;
 
+    public RestaurantChooserFragment() {
+    }
 
     public static RestaurantChooserFragment newInstance() {
         return new RestaurantChooserFragment();
@@ -134,9 +136,9 @@ public class RestaurantChooserFragment extends Fragment {
 
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
-
-                    //smooth scroll to bottom
-                    newParent.absListView.smoothScrollToPosition(destAdapter.getCount()-1);
+                    if (mListener != null) {
+                        mListener.onFirstItemDroppedInDropZone(passedItem);
+                    }
 
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
@@ -148,6 +150,22 @@ public class RestaurantChooserFragment extends Fragment {
         }
 
     };
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFirstItemDroppedInDropZoneListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnItemDroppedInZoneListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
 
     AdapterView.OnItemClickListener listOnItemClickListener = new AdapterView.OnItemClickListener(){
@@ -165,6 +183,8 @@ public class RestaurantChooserFragment extends Fragment {
     private void initItems(){
         items1 = new ArrayList<Item>();
         items3 = new ArrayList<Item>();
+
+        //TODO: Change these arrays into API results as list items
 
         TypedArray arrayDrawable = getResources().obtainTypedArray(R.array.resicon);
         TypedArray arrayText = getResources().obtainTypedArray(R.array.restext);
@@ -189,4 +209,7 @@ public class RestaurantChooserFragment extends Fragment {
     }
 
 
+    public interface OnFirstItemDroppedInDropZoneListener {
+        void onFirstItemDroppedInDropZone(Item item);
+    }
 }
