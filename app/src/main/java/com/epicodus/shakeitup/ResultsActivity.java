@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -74,10 +75,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
+                    // permission was granted, yay!
                     mMap.getUiSettings().setMyLocationButtonEnabled(true);
                     try {
                         mMap.setMyLocationEnabled(true);
@@ -85,13 +83,10 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                         se.printStackTrace();
                     }
 
-
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    // permission denied, boo!
+                    Toast.makeText(this, "Directions functionality disabled", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
 
             // other 'case' lines to check for other
