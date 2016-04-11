@@ -10,7 +10,8 @@ tools:context="com.epicodus.shakeitup.ui.RestaurantChooserFragment" >
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+      >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -37,15 +38,20 @@ tools:context="com.epicodus.shakeitup.ui.RestaurantChooserFragment" >
                 android:id="@+id/pane1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
                 android:layout_below="@+id/pane3"
                 android:background="@android:color/background_light"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin" >
 
                 <ListView
                     android:id="@+id/listview1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    />
 
             </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
         </RelativeLayout>

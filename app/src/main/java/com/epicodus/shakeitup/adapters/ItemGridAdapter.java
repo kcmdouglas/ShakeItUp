@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.epicodus.shakeitup.R;
-import com.epicodus.shakeitup.models.GridViewHolder;
 import com.epicodus.shakeitup.models.Item;
 
 import java.util.List;

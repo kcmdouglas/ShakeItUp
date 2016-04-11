@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Item;
-import com.epicodus.shakeitup.models.ViewHolder;
 
 import java.util.List;
 
@@ -32,13 +31,13 @@ public class ItemListAdapter extends ItemBaseAdapter {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             rowView = inflater.inflate(R.layout.row, null);
 
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.setIcon((ImageView) rowView.findViewById(R.id.rowImageView));
-            viewHolder.setText((TextView) rowView.findViewById(R.id.rowTextView));
-            rowView.setTag(viewHolder);
+            ListViewHolder listViewHolder = new ListViewHolder();
+            listViewHolder.setIcon((ImageView) rowView.findViewById(R.id.rowImageView));
+            listViewHolder.setText((TextView) rowView.findViewById(R.id.rowTextView));
+            rowView.setTag(listViewHolder);
         }
 
-        ViewHolder holder = (ViewHolder) rowView.getTag();
+        ListViewHolder holder = (ListViewHolder) rowView.getTag();
         holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
         holder.getText().setText(list.get(position).getItemString());
 
