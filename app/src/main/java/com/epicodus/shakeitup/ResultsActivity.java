@@ -76,6 +76,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             @Override
             public boolean onMarkerClick(Marker marker) {
                 final Business business = mMarkersBusinessesHashMap.get(marker.getId());
+                //TODO verify that other info windows close and that same adapter is not applied to all info windows
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                     @Override
                     public View getInfoWindow(Marker marker) {
