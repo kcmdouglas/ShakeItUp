@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ShakeItUp</string>
+    <string name="consumer_key">s5HPEtEzcXAopt3qEA8uyg</string>
+    <string name="consumer_secret">BLtzvHCPEIe9pHqIh9OPId8jqf4</string>
+    <string name="token">kVXVaCW2aHjC_nb4LHs1xdBfrJd7fzKH</string>
+    <string name="token_secret">M9P4ZXaLGLPAC8sekCYIetzQdaQ</string>
 </resources>
