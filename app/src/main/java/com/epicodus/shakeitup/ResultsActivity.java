@@ -61,7 +61,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
         mDrink = Parcels.unwrap(getIntent().getParcelableExtra("drink"));
         // TODO: fix this. Chris.
-        mDinner = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
+        mDinner = Parcels.unwrap(getIntent().getParcelableExtra("dinner"));
         mFun = Parcels.unwrap(getIntent().getParcelableExtra("fun"));
         mBusinesses.add(mDrink);
         mBusinesses.add(mDinner);

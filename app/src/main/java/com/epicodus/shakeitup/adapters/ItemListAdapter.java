@@ -32,7 +32,7 @@ public class ItemListAdapter extends ItemBaseAdapter {
             rowView = inflater.inflate(R.layout.row, null);
 
             ListViewHolder listViewHolder = new ListViewHolder();
-//            listViewHolder.setIcon((ImageView) rowView.findViewById(R.id.rowImageView));
+        //    listViewHolder.setIcon((ImageView) rowView.findViewById(R.id.rowImageView));
             listViewHolder.setText((TextView) rowView.findViewById(R.id.rowTextView));
             rowView.setTag(listViewHolder);
         }
