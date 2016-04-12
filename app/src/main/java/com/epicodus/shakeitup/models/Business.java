@@ -21,6 +21,7 @@ public class Business {
     String phone;
     String imageUrl;
     LatLng latlng;
+    String address;
     static ArrayList<Business> dinnerList = new ArrayList<>();
     static ArrayList<Business> drinkList = new ArrayList<>();
     static ArrayList<Business> funList = new ArrayList<>();
@@ -28,7 +29,7 @@ public class Business {
     public Business() {
     }
 
-    public Business(String rating, String mobileUrl, String reviewCount, String name, String phone, String imageUrl, LatLng latlng) {
+    public Business(String rating, String mobileUrl, String reviewCount, String name, String phone, String imageUrl, LatLng latlng, String address) {
         this.rating = rating;
         this.mobileUrl = mobileUrl;
         this.reviewCount = reviewCount;
@@ -36,6 +37,7 @@ public class Business {
         this.phone = phone;
         this.imageUrl = imageUrl;
         this.latlng = latlng;
+        this.address = address;
     }
 
     public String getRating() {
@@ -64,6 +66,10 @@ public class Business {
 
     public LatLng getLatlng() {
         return latlng;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public static ArrayList<Business> getDinnerList() {
