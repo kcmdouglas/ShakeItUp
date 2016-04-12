@@ -14,7 +14,6 @@ import com.epicodus.shakeitup.services.YelpService;
 import com.epicodus.shakeitup.ui.DrinkChooserFragment;
 import com.epicodus.shakeitup.ui.FunChooserFragment;
 import com.epicodus.shakeitup.ui.RestaurantChooserFragment;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.parceler.Parcels;
 import java.io.IOException;
@@ -69,19 +68,20 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         restaurantChooserFragment.setArguments(args);
         //TODO: add transition animation, here or in the fragment onCreateView?
         loadingDialog.show();  //show progress dialog before make Dinner API request
-        getDinnerPlaces(Business.getDrinkList().get(0), restaurantChooserFragment);
+        getPlaces(item, YelpService.DINNER, restaurantChooserFragment);
     }
 
     @Override
-    public void onSecondItemDroppedInDropZone(Business firstItem, Business secondItem) {
+    public void onSecondItemDroppedInDropZone(Business drinkItem, Business dinnerItem) {
         FunChooserFragment funChooserFragment = FunChooserFragment.newInstance();
         Bundle args = new Bundle();
-        args.putParcelable("drink", Parcels.wrap(firstItem));
-        args.putParcelable("restaurant", Parcels.wrap(secondItem));
+        args.putParcelable("drink", Parcels.wrap(drinkItem));
+        args.putParcelable("restaurant", Parcels.wrap(dinnerItem));
         args.putParcelable("funArray", Parcels.wrap(mFunArray));
         funChooserFragment.setArguments(args);
         //TODO: add transition animation
-        getSupportFragmentManager().beginTransaction().replace(R.id.chooser_content_layout, funChooserFragment).commit();
+        loadingDialog.show(); //show progress dialog before make Dinner API request
+        getPlaces(dinnerItem, YelpService.FUN, funChooserFragment);
     }
 
     @Override
@@ -96,9 +96,9 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
     }
 
-    private void getDinnerPlaces(Business business, final Fragment chooserFragment) {
+    private void getPlaces(Business business, final String category, final Fragment chooserFragment) {
         final YelpService yelpService = new YelpService(this);
-        yelpService.getYelpData("fake address", YelpService.DINNER, new Callback() {
+        yelpService.getYelpData(business.getAddress(), category, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -107,12 +107,12 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if ((chooserFragment instanceof RestaurantChooserFragment) || (chooserFragment instanceof FunChooserFragment)) {
-                    yelpService.processResults(response, YelpService.DINNER);
+                    yelpService.processResults(response, category);
                     getSupportFragmentManager().beginTransaction().replace(R.id.chooser_content_layout, chooserFragment).commit();
-                    loadingDialog.hide();
                 } else {
                     Log.e(TAG, "Called fragment not instance of RestaurantChooserFragment or FunChooserFragment");
                 }
+                loadingDialog.hide();
             }
         });
     }
