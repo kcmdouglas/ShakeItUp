@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.epicodus.shakeitup.R;
-import com.epicodus.shakeitup.models.Item;
+import com.epicodus.shakeitup.models.Business;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ItemGridAdapter extends ItemBaseAdapter {
 
-    public ItemGridAdapter(Context c, List<Item> l) {
+    public ItemGridAdapter(Context c, List<Business> l) {
         super(c, l);
     }
 

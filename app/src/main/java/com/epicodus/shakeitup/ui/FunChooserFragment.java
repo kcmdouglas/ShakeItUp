@@ -2,8 +2,6 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.DragEvent;
@@ -20,7 +18,7 @@ import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.adapters.ItemBaseAdapter;
 import com.epicodus.shakeitup.adapters.ItemGridAdapter;
 import com.epicodus.shakeitup.adapters.ItemListAdapter;
-import com.epicodus.shakeitup.models.Item;
+import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
 
 import org.parceler.Parcels;
@@ -30,15 +28,15 @@ import java.util.List;
 
 
 public class FunChooserFragment extends Fragment {
-    List<Item> items1, items3;
+    List<Business> items1, items3;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
     private OnThirdItemDroppedInDropZone mListener;
-    Item mDrinkPassed;
-    Item mRestaurantPassed;
+    Business mDrinkPassed;
+    Business mRestaurantPassed;
 
     public FunChooserFragment() {
     }
@@ -81,10 +79,10 @@ public class FunChooserFragment extends Fragment {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view,
                                        int position, long id) {
-            Item selectedItem = (Item)(parent.getItemAtPosition(position));
+            Business selectedItem = (Business) (parent.getItemAtPosition(position));
 
             ItemBaseAdapter associatedAdapter = (ItemBaseAdapter)(parent.getAdapter());
-            List<Item> associatedList = associatedAdapter.getList();
+            List<Business> associatedList = associatedAdapter.getList();
 
             PassObject passObj = new PassObject(view, selectedItem, associatedList);
 
@@ -121,14 +119,14 @@ public class FunChooserFragment extends Fragment {
 
                     PassObject passObj = (PassObject)event.getLocalState();
                     View view = passObj.getView();
-                    Item passedItem = passObj.getItem();
-                    List<Item> srcList = passObj.getSrcList();
+                    Business passedItem = passObj.getItem();
+                    List<Business> srcList = passObj.getSrcList();
                     AbsListView parent = (AbsListView)view.getParent();
                     ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(parent.getAdapter());
 
                     LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)v;
                     ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.absListView.getAdapter());
-                    List<Item> destList = destAdapter.getList();
+                    List<Business> destList = destAdapter.getList();
 
                     addItemToList(destList, mDrinkPassed);
                     addItemToList(destList, mRestaurantPassed);
@@ -177,45 +175,31 @@ public class FunChooserFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             Toast.makeText(getContext(),
-                    ((Item)(parent.getItemAtPosition(position))).getItemString(),
+                    ((Business)(parent.getItemAtPosition(position))).getName(),
                     Toast.LENGTH_SHORT).show();
         }
 
     };
 
     private void initItems(){
-        items1 = new ArrayList<Item>();
-        items3 = new ArrayList<Item>();
 
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
         mRestaurantPassed = Parcels.unwrap(bundle.getParcelable("restaurant"));
 
-        //TODO: Change these arrays into API results as list items
-
-        TypedArray arrayDrawable = getResources().obtainTypedArray(R.array.resicon);
-        TypedArray arrayText = getResources().obtainTypedArray(R.array.restext);
-        for(int i = 0; i < arrayDrawable.length(); i++){
-            Drawable drawable = arrayDrawable.getDrawable(i);
-            String string = arrayText.getString(i);
-            Item item = new Item(string);
-            items1.add(item);
-        }
-
-        arrayDrawable.recycle();
-        arrayText.recycle();
+        items1 = Business.getRandomFun();
     }
 
-    private boolean removeItemToList(List<Item> items, Item item){
+    private boolean removeItemToList(List<Business> items, Business item){
         return items.remove(item);
     }
 
-    private boolean addItemToList(List<Item> items, Item item){
+    private boolean addItemToList(List<Business> items, Business item){
         return items.add(item);
     }
 
 
     public interface OnThirdItemDroppedInDropZone {
-        void onThirdItemDroppedInDropZone(Item firstItem, Item secondItem, Item thirdItem);
+        void onThirdItemDroppedInDropZone(Business firstItem, Business secondItem, Business thirdItem);
     }
 }
