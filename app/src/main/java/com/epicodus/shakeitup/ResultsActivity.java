@@ -36,12 +36,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    @Bind(R.id.firstPlaceImageView) ImageView mFirstPlaceImageView;
-    @Bind(R.id.secondPlaceImageView) ImageView mSecondPlaceImageView;
-    @Bind(R.id.thirdPlaceImageView) ImageView mThirdPlaceImageView;
-    @Bind(R.id.firstPlaceNameTextView) TextView mFirstPlaceNameTextView;
-    @Bind(R.id.secondPlaceNameTextView) TextView mSecondPlaceNameTextView;
-    @Bind(R.id.thirdPlaceNameTextView) TextView mThirdPlaceNameTextView;
+    @Bind(R.id.drinkImageView) ImageView mDrinkImageView;
+    @Bind(R.id.dinnerImageView) ImageView mDinnerImageView;
+    @Bind(R.id.funImageView) ImageView mFunImageView;
+    @Bind(R.id.drinkNameTextView) TextView mDrinkNameTextView;
+    @Bind(R.id.dinnerNameTextView) TextView mDinnerNameTextView;
+    @Bind(R.id.funNameTextView) TextView mFunNameTextView;
 
     private GoogleMap mMap;
     private static final int MAP_PADDING = 50;
@@ -60,7 +60,8 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         ButterKnife.bind(this);
 
         mDrink = Parcels.unwrap(getIntent().getParcelableExtra("drink"));
-        mDinner = Parcels.unwrap(getIntent().getParcelableExtra("dinner"));
+        // TODO: fix this. Chris.
+        mDinner = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
         mFun = Parcels.unwrap(getIntent().getParcelableExtra("fun"));
         mBusinesses.add(mDrink);
         mBusinesses.add(mDinner);
@@ -102,26 +103,45 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             Business business = mBusinesses.get(i);
             LatLng latLng = business.getLatlng();
             builder.include(latLng);
-            Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .icon(BitmapDescriptorFactory.defaultMarker(187))
-                    .title(business.getName()));
-            mMarkersBusinessesHashMap.put(marker.getId(), business);
+            switch (i) {
+                case 0:
+                    Marker drinksMarker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .icon(BitmapDescriptorFactory.defaultMarker(180))
+                            .title(business.getName()));
+                    mMarkersBusinessesHashMap.put(drinksMarker.getId(), business);
+                    break;
+                case 1:
+                    Marker dinnerMarker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .icon(BitmapDescriptorFactory.defaultMarker(262))
+                            .title(business.getName()));
+                    mMarkersBusinessesHashMap.put(dinnerMarker.getId(), business);
+                    break;
+                case 2:
+                    Marker funMarker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .icon(BitmapDescriptorFactory.defaultMarker(47))
+                            .title(business.getName()));
+                    mMarkersBusinessesHashMap.put(funMarker.getId(), business);
+                    break;
+            }
+
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), MAP_PADDING));
         setMarkerClickListener();
     }
 
     public void initializeCardImages() {
-        Picasso.with(this).load(mDrink.getImageUrl()).fit().centerCrop().into(mFirstPlaceImageView);
-        Picasso.with(this).load(mDinner.getImageUrl()).fit().centerCrop().into(mSecondPlaceImageView);
-        Picasso.with(this).load(mFun.getImageUrl()).fit().centerCrop().into(mThirdPlaceImageView);
+        Picasso.with(this).load(mDrink.getImageUrl()).fit().centerCrop().into(mDrinkImageView);
+        Picasso.with(this).load(mDinner.getImageUrl()).fit().centerCrop().into(mDinnerImageView);
+        Picasso.with(this).load(mFun.getImageUrl()).fit().centerCrop().into(mFunImageView);
     }
 
     public void initializeCardText() {
-        mFirstPlaceNameTextView.setText(mDrink.getName());
-        mSecondPlaceNameTextView.setText(mDinner.getName());
-        mThirdPlaceNameTextView.setText(mFun.getName());
+        mDrinkNameTextView.setText(mDrink.getName());
+        mDinnerNameTextView.setText(mDinner.getName());
+        mFunNameTextView.setText(mFun.getName());
     }
 
     @Override

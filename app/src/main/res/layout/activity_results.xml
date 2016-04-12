@@ -21,9 +21,9 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/firstPlaceCardView"
+            android:layout_width="@dimen/results_cardview_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/drinkCardView"
             >
 
             <RelativeLayout
@@ -31,29 +31,30 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/firstPlaceImageView"
+                    android:id="@+id/drinkImageView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:alpha="0.2"
-                    android:src="@drawable/tacos"
+                    android:layout_height="@dimen/results_cardview_imageview_height"
                     android:layout_centerHorizontal="true"/>
 
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textAlignment="center"
-                    android:id="@+id/firstPlaceNameTextView"
+                    android:layout_height="@dimen/results_cardview_textview_height"
+                    android:layout_below="@id/drinkImageView"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/colorAccent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="2dp"
+                    android:paddingStart="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingEnd="2dp"
+                    android:id="@+id/drinkNameTextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryText"
+                    android:background="@color/colorDrinkAccent"
                     android:text="Moonlight Mediterranean Food" />
 
             </RelativeLayout>
 
-
-
         </android.support.v7.widget.CardView>
 
         <Space
@@ -64,29 +65,36 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/results_cardview_width"
             android:layout_height="wrap_content"
-            android:id="@+id/secondPlaceCardView"
-            card_view:contentPadding="5dp">
+            android:id="@+id/dinnerCardView"
+            >
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/secondPlaceImageView"
-                    android:layout_width="90dp"
-                    android:layout_height="75dp"
+                    android:id="@+id/dinnerImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/results_cardview_imageview_height"
                     android:layout_centerHorizontal="true"/>
 
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/secondPlaceNameTextView"
-                    android:layout_below="@id/secondPlaceImageView"
-                    android:textColor="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/results_cardview_textview_height"
+                    android:layout_below="@id/dinnerImageView"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="2dp"
+                    android:paddingStart="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingEnd="2dp"
+                    android:id="@+id/dinnerNameTextView"
+                    android:background="@color/colorDinnerAccent"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textAlignment="center"
                     android:text="Tacos" />
 
             </RelativeLayout>
@@ -101,30 +109,37 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/results_cardview_width"
             android:layout_height="wrap_content"
-            android:id="@+id/thirdPlaceCardView"
-            card_view:contentPadding="5dp">
+            android:id="@+id/funCardView"
+            >
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/thirdPlaceImageView"
-                    android:layout_width="90dp"
-                    android:layout_height="75dp"
+                    android:id="@+id/funImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/results_cardview_imageview_height"
                     android:layout_centerHorizontal="true"/>
 
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/thirdPlaceNameTextView"
-                    android:layout_below="@id/thirdPlaceImageView"
-                    android:textColor="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/results_cardview_textview_height"
+                    android:layout_below="@id/funImageView"
                     android:layout_centerHorizontal="true"
-                    android:text="Tacos" />
+                    android:gravity="center_vertical"
+                    android:paddingLeft="2dp"
+                    android:paddingStart="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingEnd="2dp"
+                    android:id="@+id/funNameTextView"
+                    android:textColor="@color/colorPrimaryText"
+                    android:background="@color/colorFunAccent"
+                    android:textAlignment="center"
+                    android:text="Shut Up And Eat" />
 
             </RelativeLayout>
 
