@@ -137,4 +137,15 @@ public class Business {
             return this.getName().equals(otherObject.getName()) && this.getPhone().equals(otherObject.getPhone()) && this.getImageUrl().equals(otherObject.getImageUrl());
         }
     }
+
+    public static void clearData (String category) {
+        switch (category) {
+            case YelpService.DINNER: dinnerList.clear();
+                break;
+            case YelpService.DRINK: drinkList.clear();
+                break;
+            case YelpService.FUN: funList.clear();
+                break;
+        }
+    }
 }
