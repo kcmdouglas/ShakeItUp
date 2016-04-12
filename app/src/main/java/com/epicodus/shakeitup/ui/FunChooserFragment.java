@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.epicodus.shakeitup.ChooserActivity;
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.adapters.ItemBaseAdapter;
 import com.epicodus.shakeitup.adapters.ItemGridAdapter;
@@ -49,6 +50,7 @@ public class FunChooserFragment extends Fragment {
                              Bundle savedInstanceState) {
         //this line reuses fragment layout from before
         View view = inflater.inflate(R.layout.fragment_chooser, container, false);
+        ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
         gridView3 = (GridView) view.findViewById(R.id.gridview3);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
