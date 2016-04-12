@@ -5,7 +5,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
 
-import com.epicodus.shakeitup.models.Item;
+import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
 
 import java.util.List;
@@ -17,9 +17,9 @@ class ItemOnDragListener implements View.OnDragListener {
 
     int resumeColor;
 
-    Item me;
+    Business me;
 
-    ItemOnDragListener(Context context, Item i){
+    ItemOnDragListener(Context context, Business i){
         me = i;
         resumeColor = context.getResources().getColor(android.R.color.background_light);
     }
@@ -39,14 +39,14 @@ class ItemOnDragListener implements View.OnDragListener {
 
                 PassObject passObj = (PassObject)event.getLocalState();
                 View view = passObj.getView();
-                Item passedItem = passObj.getItem();
-                List<Item> srcList = passObj.getSrcList();
+                Business passedItem = passObj.getItem();
+                List<Business> srcList = passObj.getSrcList();
                 AbsListView oldParent = (AbsListView)view.getParent();
                 ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(oldParent.getAdapter());
 
                 AbsListView newParent = (AbsListView)v.getParent();
                 ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.getAdapter());
-                List<Item> destList = destAdapter.getList();
+                List<Business> destList = destAdapter.getList();
 
                 int removeLocation = srcList.indexOf(passedItem);
                 int insertLocation = destList.indexOf(me);
@@ -75,7 +75,7 @@ class ItemOnDragListener implements View.OnDragListener {
         return true;
     }
 
-    private boolean removeItemToList(List<Item> l, Item it){
+    private boolean removeItemToList(List<Business> l, Business it){
         boolean result = l.remove(it);
         return result;
     }
