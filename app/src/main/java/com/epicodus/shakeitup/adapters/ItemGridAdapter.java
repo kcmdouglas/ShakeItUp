@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Business;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,12 +33,13 @@ public class ItemGridAdapter extends ItemBaseAdapter {
             gridrowView = inflater.inflate(R.layout.gridrow, null);
 
             GridViewHolder gridviewHolder = new GridViewHolder();
-            gridviewHolder.setIcon((ImageView) gridrowView.findViewById(R.id.gridrowImageView));
+            Picasso.with(context).load(list.get(position).getImageUrl()).fit().centerCrop().into((ImageView) gridrowView.findViewById(R.id.gridrowImageView));
+
             gridrowView.setTag(gridviewHolder);
         }
 
         GridViewHolder holder = (GridViewHolder) gridrowView.getTag();
-        //holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
+        Picasso.with(context).load(list.get(position).getImageUrl()).fit().centerCrop().into((ImageView) gridrowView.findViewById(R.id.gridrowImageView));
 
         gridrowView.setOnDragListener(new ItemOnDragListener(this.context, list.get(position)));
 
