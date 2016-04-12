@@ -7,7 +7,7 @@ import android.widget.TextView;
  * Created by Guest on 4/11/16.
  */
 public class ListViewHolder {
-//    String icon;
+    String icon;
     TextView text;
 
 //    public String getIcon() {

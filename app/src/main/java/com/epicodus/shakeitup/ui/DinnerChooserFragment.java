@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RestaurantChooserFragment extends Fragment {
+public class DinnerChooserFragment extends Fragment {
     List<Business> mDinnersArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView gridView3;
@@ -38,11 +38,11 @@ public class RestaurantChooserFragment extends Fragment {
     private OnSecondItemDroppedInDropZone mListener;
     Business mDrinkPassed;
 
-    public RestaurantChooserFragment() {
+    public DinnerChooserFragment() {
     }
 
-    public static RestaurantChooserFragment newInstance() {
-        return new RestaurantChooserFragment();
+    public static DinnerChooserFragment newInstance() {
+        return new DinnerChooserFragment();
     }
 
     @Override

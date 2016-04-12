@@ -8,8 +8,7 @@
         android:layout_width="130dp"
         android:layout_height="100dp"
         android:id="@+id/rowImageView"
-        android:background="@color/colorAccent"
-        android:scaleType="centerCrop"/>
+        android:background="@color/colorAccent" />
 
     <LinearLayout
         android:orientation="vertical"
