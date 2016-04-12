@@ -118,7 +118,7 @@ public class FunChooserFragment extends Fragment {
                 case DragEvent.ACTION_DRAG_EXITED:
                     break;
                 case DragEvent.ACTION_DROP:
-
+                    mSelectedBusinessesArray.clear();
                     PassObject passObj = (PassObject)event.getLocalState();
                     View view = passObj.getView();
                     Business passedItem = passObj.getItem();
