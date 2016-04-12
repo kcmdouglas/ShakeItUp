@@ -2,8 +2,10 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,30 +31,30 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Guest on 4/12/16.
- */
-public class RestaurantChooserFragment extends Fragment {
+
+public class FunChooserFragment extends Fragment {
     List<Item> items1, items3;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
-    private OnSecondItemDroppedInDropZone mListener;
+    private OnThirdItemDroppedInDropZone mListener;
     Item mDrinkPassed;
+    Item mRestaurantPassed;
 
-    public RestaurantChooserFragment() {
+    public FunChooserFragment() {
     }
 
-    public static RestaurantChooserFragment newInstance() {
-        return new RestaurantChooserFragment();
+    public static FunChooserFragment newInstance() {
+        return new FunChooserFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_restaurant_chooser, container, false);
+        //this line reuses fragment layout from before
+        View view = inflater.inflate(R.layout.fragment_drink_chooser, container, false);
         listView1 = (ListView) view.findViewById(R.id.listview1);
         gridView3 = (GridView) view.findViewById(R.id.gridview3);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
@@ -68,7 +70,10 @@ public class RestaurantChooserFragment extends Fragment {
         gridView3.setAdapter(myItemGridAdapter3);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
+        gridView3.setOnItemClickListener(listOnItemClickListener);
+
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
+        gridView3.setOnItemLongClickListener(myOnItemLongClickListener);
 
         return view;
 
@@ -129,6 +134,7 @@ public class RestaurantChooserFragment extends Fragment {
                     List<Item> destList = destAdapter.getList();
 
                     addItemToList(destList, mDrinkPassed);
+                    addItemToList(destList, mRestaurantPassed);
 
                     if(removeItemToList(srcList, passedItem)){
                         addItemToList(destList, passedItem);
@@ -137,7 +143,7 @@ public class RestaurantChooserFragment extends Fragment {
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
                     if (mListener != null) {
-                        mListener.onSecondItemDroppedInDropZone(mDrinkPassed, passedItem);
+                        mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mRestaurantPassed, passedItem);
                     }
 
                     break;
@@ -155,7 +161,7 @@ public class RestaurantChooserFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnSecondItemDroppedInDropZone) activity;
+            mListener = (OnThirdItemDroppedInDropZone) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnItemDroppedInZoneListener");
         }
@@ -186,8 +192,7 @@ public class RestaurantChooserFragment extends Fragment {
 
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-        Log.d("mDrinkPassed: ", mDrinkPassed + "");
-        items3.add(mDrinkPassed);
+        mRestaurantPassed = Parcels.unwrap(bundle.getParcelable("restaurant"));
 
         //TODO: Change these arrays into API results as list items
 
@@ -213,7 +218,7 @@ public class RestaurantChooserFragment extends Fragment {
     }
 
 
-    public interface OnSecondItemDroppedInDropZone {
-        void onSecondItemDroppedInDropZone(Item firstItem, Item secondItem);
+    public interface OnThirdItemDroppedInDropZone {
+        void onThirdItemDroppedInDropZone(Item firstItem, Item secondItem, Item thirdItem);
     }
 }

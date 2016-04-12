@@ -3,9 +3,6 @@ package com.epicodus.shakeitup;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-
-import com.epicodus.shakeitup.ui.RestaurantChooserFragment;
 
 public class MainActivity extends AppCompatActivity {
 

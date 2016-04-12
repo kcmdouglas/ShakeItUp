@@ -1,12 +1,12 @@
 package com.epicodus.shakeitup.ui;
 
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,43 +24,42 @@ import com.epicodus.shakeitup.adapters.ItemListAdapter;
 import com.epicodus.shakeitup.models.Item;
 import com.epicodus.shakeitup.models.PassObject;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Guest on 4/12/16.
+ * A simple {@link Fragment} subclass.
  */
-public class RestaurantChooserFragment extends Fragment {
+public class DrinkChooserFragment extends Fragment {
     List<Item> items1, items3;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
-    private OnSecondItemDroppedInDropZone mListener;
-    Item mDrinkPassed;
+    private OnFirstItemDroppedInDropZoneListener mListener;
 
-    public RestaurantChooserFragment() {
+    public DrinkChooserFragment() {
     }
 
-    public static RestaurantChooserFragment newInstance() {
-        return new RestaurantChooserFragment();
+    public static DrinkChooserFragment newInstance() {
+        return new DrinkChooserFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_restaurant_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_drink_chooser, container, false);
         listView1 = (ListView) view.findViewById(R.id.listview1);
         gridView3 = (GridView) view.findViewById(R.id.gridview3);
+
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
         area1.setAbsListView(listView1);
         area3.setAbsListView(gridView3);
+
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), items1);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), items3);
@@ -68,6 +67,7 @@ public class RestaurantChooserFragment extends Fragment {
         gridView3.setAdapter(myItemGridAdapter3);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
+
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
 
         return view;
@@ -121,14 +121,12 @@ public class RestaurantChooserFragment extends Fragment {
                     View view = passObj.getView();
                     Item passedItem = passObj.getItem();
                     List<Item> srcList = passObj.getSrcList();
-                    AbsListView parent = (AbsListView)view.getParent();
-                    ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(parent.getAdapter());
+                    AbsListView oldParent = (AbsListView)view.getParent();
+                    ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(oldParent.getAdapter());
 
                     LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)v;
                     ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.absListView.getAdapter());
                     List<Item> destList = destAdapter.getList();
-
-                    addItemToList(destList, mDrinkPassed);
 
                     if(removeItemToList(srcList, passedItem)){
                         addItemToList(destList, passedItem);
@@ -137,7 +135,7 @@ public class RestaurantChooserFragment extends Fragment {
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
                     if (mListener != null) {
-                        mListener.onSecondItemDroppedInDropZone(mDrinkPassed, passedItem);
+                        mListener.onFirstItemDroppedInDropZone(passedItem);
                     }
 
                     break;
@@ -155,7 +153,7 @@ public class RestaurantChooserFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnSecondItemDroppedInDropZone) activity;
+            mListener = (OnFirstItemDroppedInDropZoneListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnItemDroppedInZoneListener");
         }
@@ -184,17 +182,12 @@ public class RestaurantChooserFragment extends Fragment {
         items1 = new ArrayList<Item>();
         items3 = new ArrayList<Item>();
 
-        Bundle bundle = getArguments();
-        mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-        Log.d("mDrinkPassed: ", mDrinkPassed + "");
-        items3.add(mDrinkPassed);
-
         //TODO: Change these arrays into API results as list items
 
         TypedArray arrayDrawable = getResources().obtainTypedArray(R.array.resicon);
         TypedArray arrayText = getResources().obtainTypedArray(R.array.restext);
-        for(int i = 0; i < arrayDrawable.length(); i++){
-            Drawable drawable = arrayDrawable.getDrawable(i);
+
+        for(int i = 0; i < arrayText.length(); i++){
             String string = arrayText.getString(i);
             Item item = new Item(string);
             items1.add(item);
@@ -213,7 +206,7 @@ public class RestaurantChooserFragment extends Fragment {
     }
 
 
-    public interface OnSecondItemDroppedInDropZone {
-        void onSecondItemDroppedInDropZone(Item firstItem, Item secondItem);
+    public interface OnFirstItemDroppedInDropZoneListener {
+        void onFirstItemDroppedInDropZone(Item item);
     }
 }

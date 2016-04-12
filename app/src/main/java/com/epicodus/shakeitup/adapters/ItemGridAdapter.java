@@ -37,7 +37,7 @@ public class ItemGridAdapter extends ItemBaseAdapter {
         }
 
         GridViewHolder holder = (GridViewHolder) gridrowView.getTag();
-        holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
+        //holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
 
         gridrowView.setOnDragListener(new ItemOnDragListener(this.context, list.get(position)));
 
