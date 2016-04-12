@@ -3,7 +3,6 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.DragEvent;
@@ -23,14 +22,15 @@ import com.epicodus.shakeitup.adapters.ItemListAdapter;
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
 
+import org.parceler.Parcels;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class DrinkChooserFragment extends Fragment {
-    List<Business> items1, items3;
+    List<Business> mDrinksArray, items3;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
@@ -60,8 +60,9 @@ public class DrinkChooserFragment extends Fragment {
         area3.setAbsListView(gridView3);
 
         initItems();
-        myItemListAdapter1 = new ItemListAdapter(getContext(), items1);
+        myItemListAdapter1 = new ItemListAdapter(getContext(), mDrinksArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), items3);
+
         listView1.setAdapter(myItemListAdapter1);
         gridView3.setAdapter(myItemGridAdapter3);
 
@@ -178,7 +179,9 @@ public class DrinkChooserFragment extends Fragment {
     };
 
     private void initItems(){
-        items1 = Business.getRandomDrink();
+
+        Bundle bundle = getArguments();
+        mDrinksArray = Parcels.unwrap(bundle.getParcelable("drinksArray"));
     }
 
     private boolean removeItemToList(List<Business> items, Business item){
@@ -188,7 +191,6 @@ public class DrinkChooserFragment extends Fragment {
     private boolean addItemToList(List<Business> items, Business item){
         return items.add(item);
     }
-
 
     public interface OnFirstItemDroppedInDropZoneListener {
         void onFirstItemDroppedInDropZone(Business item);
