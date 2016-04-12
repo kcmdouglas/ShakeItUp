@@ -24,11 +24,12 @@ import com.epicodus.shakeitup.models.PassObject;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class RestaurantChooserFragment extends Fragment {
-    List<Business> mRestaurantsArray, items3;
+    List<Business> mRestaurantsArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
@@ -59,7 +60,7 @@ public class RestaurantChooserFragment extends Fragment {
         area3.setAbsListView(gridView3);
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), mRestaurantsArray);
-        myItemGridAdapter3 = new ItemGridAdapter(getContext(), items3);
+        myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
         listView1.setAdapter(myItemListAdapter1);
         gridView3.setAdapter(myItemGridAdapter3);
 
@@ -177,6 +178,7 @@ public class RestaurantChooserFragment extends Fragment {
     };
 
     private void initItems(){
+        mSelectedBusinessesArray = new ArrayList<>();
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
 //        mRestaurantsArray = Parcels.unwrap(bundle.getParcelable("restaurantsArray"));
