@@ -2,13 +2,10 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +51,7 @@ public class FunChooserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line reuses fragment layout from before
-        View view = inflater.inflate(R.layout.fragment_drink_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
         listView1 = (ListView) view.findViewById(R.id.listview1);
         gridView3 = (GridView) view.findViewById(R.id.gridview3);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
