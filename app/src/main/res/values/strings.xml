@@ -11,4 +11,6 @@
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
         AIzaSyDG9zyzNAHXKxKzrFu3GItH5DTihG38ARU
     </string>
+    <string name="restart">Restart</string>
+    <string name="share">Share</string>
 </resources>
