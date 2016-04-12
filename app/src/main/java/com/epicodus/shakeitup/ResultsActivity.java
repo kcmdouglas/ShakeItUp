@@ -49,6 +49,9 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     private static final int MAP_PADDING = 50;
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 411;
 
+    private Business mDrink;
+    private Business mDinner;
+    private Business mFun;
     private ArrayList<Business> mBusinesses = new ArrayList<>();
     private Map<String, Business> mMarkersBusinessesHashMap = new HashMap<>();
 
@@ -59,24 +62,30 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         ButterKnife.bind(this);
 
         //TODO REMOVE PLACEHOLDER BUSINESSES
-
-        Business first = new Business("4.5/5", "http://www.tacocabana.com/", "101", "Taco Cabana",
-                 "555-1212", "http://bizbeatblog.dallasnews.com/files/2013/11/taco-cabana-0348-exterior1.jpg",
-                new LatLng(45.4922394, -122.6205656358805));
-
-        Business second = new Business("4.5/5", "http://www.tacotime.com/", "101", "Taco Time",
-                "555-1234", "http://www.mywallingford.com/images/restaurants/taco_time.jpg",
-                new LatLng(45.4972916, -122.6191483));
-
-        Business third = new Business("4.5/5", "https://www.chipotle.com/", "101", "Chipotle",
-                "555-1234", "http://thesource.com/wp-content/uploads/2016/03/chipotle26.jpg",
-                new LatLng(45.4972877502441, -122.612350463867));
-
-        mBusinesses.add(first);
-        mBusinesses.add(second);
-        mBusinesses.add(third);
+//
+//        Business first = new Business("4.5/5", "http://www.tacocabana.com/", "101", "Taco Cabana",
+//                 "555-1212", "http://bizbeatblog.dallasnews.com/files/2013/11/taco-cabana-0348-exterior1.jpg",
+//                new LatLng(45.4922394, -122.6205656358805));
+//
+//        Business second = new Business("4.5/5", "http://www.tacotime.com/", "101", "Taco Time",
+//                "555-1234", "http://www.mywallingford.com/images/restaurants/taco_time.jpg",
+//                new LatLng(45.4972916, -122.6191483));
+//
+//        Business third = new Business("4.5/5", "https://www.chipotle.com/", "101", "Chipotle",
+//                "555-1234", "http://thesource.com/wp-content/uploads/2016/03/chipotle26.jpg",
+//                new LatLng(45.4972877502441, -122.612350463867));
+//
+//        mBusinesses.add(first);
+//        mBusinesses.add(second);
+//        mBusinesses.add(third);
 
 //        mBusinesses = Parcels.unwrap(getIntent().getParcelableExtra("businesses"));
+        mDrink = Parcels.unwrap(getIntent().getParcelableExtra("drink"));
+        mDinner = Parcels.unwrap(getIntent().getParcelableExtra("dinner"));
+        mFun = Parcels.unwrap(getIntent().getParcelableExtra("fun"));
+        mBusinesses.add(mDrink);
+        mBusinesses.add(mDinner);
+        mBusinesses.add(mFun);
 
         initializeImages();
 
@@ -130,9 +139,9 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
     public void initializeImages() {
 
-        Picasso.with(this).load(mBusinesses.get(0).getImageUrl()).fit().centerCrop().into(mFirstPlaceImageView);
-        Picasso.with(this).load(mBusinesses.get(1).getImageUrl()).fit().centerCrop().into(mSecondPlaceImageView);
-        Picasso.with(this).load(mBusinesses.get(2).getImageUrl()).fit().centerCrop().into(mThirdPlaceImageView);
+        Picasso.with(this).load(mDrink.getImageUrl()).fit().centerCrop().into(mFirstPlaceImageView);
+        Picasso.with(this).load(mDinner.getImageUrl()).fit().centerCrop().into(mSecondPlaceImageView);
+        Picasso.with(this).load(mFun.getImageUrl()).fit().centerCrop().into(mThirdPlaceImageView);
 
     }
 
