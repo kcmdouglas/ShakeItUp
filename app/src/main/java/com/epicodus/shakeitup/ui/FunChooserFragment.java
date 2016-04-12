@@ -2,8 +2,6 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.DragEvent;
@@ -184,26 +182,12 @@ public class FunChooserFragment extends Fragment {
     };
 
     private void initItems(){
-        items1 = new ArrayList<Business>();
-        items3 = new ArrayList<Business>();
 
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
         mRestaurantPassed = Parcels.unwrap(bundle.getParcelable("restaurant"));
 
-        //TODO: Change these arrays into API results as list items
-
-        TypedArray arrayDrawable = getResources().obtainTypedArray(R.array.resicon);
-        TypedArray arrayText = getResources().obtainTypedArray(R.array.restext);
-        for(int i = 0; i < arrayDrawable.length(); i++){
-            Drawable drawable = arrayDrawable.getDrawable(i);
-            String string = arrayText.getString(i);
-            Business item = new Business(string);
-            items1.add(item);
-        }
-
-        arrayDrawable.recycle();
-        arrayText.recycle();
+        items1 = Business.getRandomFun();
     }
 
     private boolean removeItemToList(List<Business> items, Business item){

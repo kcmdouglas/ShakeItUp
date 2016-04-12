@@ -179,27 +179,11 @@ public class RestaurantChooserFragment extends Fragment {
     };
 
     private void initItems(){
-        items1 = new ArrayList<Business>();
-        items3 = new ArrayList<Business>();
-
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-        Log.d("mDrinkPassed: ", mDrinkPassed + "");
-        items3.add(mDrinkPassed);
 
-        //TODO: Change these arrays into API results as list items
+        items1 = Business.getRandomDinner();
 
-        TypedArray arrayDrawable = getResources().obtainTypedArray(R.array.resicon);
-        TypedArray arrayText = getResources().obtainTypedArray(R.array.restext);
-        for(int i = 0; i < arrayDrawable.length(); i++){
-            Drawable drawable = arrayDrawable.getDrawable(i);
-            String string = arrayText.getString(i);
-            Business item = new Business(string);
-            items1.add(item);
-        }
-
-        arrayDrawable.recycle();
-        arrayText.recycle();
     }
 
     private boolean removeItemToList(List<Business> items, Business item){

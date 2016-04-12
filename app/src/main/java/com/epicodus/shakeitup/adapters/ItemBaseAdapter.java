@@ -48,7 +48,6 @@ public class ItemBaseAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         return null;
     }
 

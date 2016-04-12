@@ -178,22 +178,7 @@ public class DrinkChooserFragment extends Fragment {
     };
 
     private void initItems(){
-        items1 = new ArrayList<Business>();
-        items3 = new ArrayList<Business>();
-
-        //TODO: Change these arrays into API results as list items
-
-        TypedArray arrayDrawable = getResources().obtainTypedArray(R.array.resicon);
-        TypedArray arrayText = getResources().obtainTypedArray(R.array.restext);
-
-        for(int i = 0; i < arrayText.length(); i++){
-            String string = arrayText.getString(i);
-            Business item = new Business(string); //TODO: find what we need to construct a Business
-            items1.add(item);
-        }
-
-        arrayDrawable.recycle();
-        arrayText.recycle();
+        items1 = Business.getRandomDrink();
     }
 
     private boolean removeItemToList(List<Business> items, Business item){
