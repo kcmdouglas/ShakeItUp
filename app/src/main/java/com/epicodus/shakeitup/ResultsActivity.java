@@ -2,14 +2,11 @@ package com.epicodus.shakeitup;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,10 +29,8 @@ import com.squareup.picasso.Picasso;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -102,23 +97,18 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     public void initializeMapMarkers() {
-        ArrayList<LatLng> latLngsForBounds = new ArrayList<>();
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (int i = 0; i < mBusinesses.size(); i++) {
             Business business = mBusinesses.get(i);
             LatLng latLng = business.getLatlng();
-            latLngsForBounds.add(latLng);
+            builder.include(latLng);
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(latLng)
                     .icon(BitmapDescriptorFactory.defaultMarker(187))
                     .title(business.getName()));
             mMarkersBusinessesHashMap.put(marker.getId(), business);
         }
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (int i = 0; i < latLngsForBounds.size(); i++) {
-            builder.include(latLngsForBounds.get(i));
-        }
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), MAP_PADDING));
-
         setMarkerClickListener();
     }
 

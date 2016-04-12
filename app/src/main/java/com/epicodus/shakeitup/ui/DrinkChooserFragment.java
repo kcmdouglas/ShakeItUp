@@ -162,7 +162,7 @@ public class DrinkChooserFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
+}
 
 
     AdapterView.OnItemClickListener listOnItemClickListener = new AdapterView.OnItemClickListener(){
