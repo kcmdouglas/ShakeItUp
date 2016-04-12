@@ -23,12 +23,11 @@ import com.epicodus.shakeitup.models.PassObject;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class FunChooserFragment extends Fragment {
-    List<Business> items1, items3;
+    List<Business> mFunArray, items3;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
@@ -59,7 +58,7 @@ public class FunChooserFragment extends Fragment {
         area1.setAbsListView(listView1);
         area3.setAbsListView(gridView3);
         initItems();
-        myItemListAdapter1 = new ItemListAdapter(getContext(), items1);
+        myItemListAdapter1 = new ItemListAdapter(getContext(), mFunArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), items3);
         listView1.setAdapter(myItemListAdapter1);
         gridView3.setAdapter(myItemGridAdapter3);
@@ -182,12 +181,10 @@ public class FunChooserFragment extends Fragment {
     };
 
     private void initItems(){
-
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
         mRestaurantPassed = Parcels.unwrap(bundle.getParcelable("restaurant"));
-
-        items1 = Business.getRandomFun();
+        mFunArray = Parcels.unwrap(bundle.getParcelable("funArray"));
     }
 
     private boolean removeItemToList(List<Business> items, Business item){

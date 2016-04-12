@@ -29,7 +29,11 @@ public class ItemBaseAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return list.size();
+        try {
+            return list.size();
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
     @Override

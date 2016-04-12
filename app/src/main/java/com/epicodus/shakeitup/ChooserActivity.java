@@ -14,9 +14,13 @@ import com.epicodus.shakeitup.ui.RestaurantChooserFragment;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 public class ChooserActivity extends AppCompatActivity implements DrinkChooserFragment.OnFirstItemDroppedInDropZoneListener, RestaurantChooserFragment.OnSecondItemDroppedInDropZone, FunChooserFragment.OnThirdItemDroppedInDropZone {
 
-    private DrinkChooserFragment drinkChooserFragment;
+    ArrayList<Business> mDrinksArray = new ArrayList<>();
+    ArrayList<Business> mRestaurantsArray = new ArrayList<>();
+    ArrayList<Business> mFunArray = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +28,12 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         setContentView(R.layout.activity_chooser);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.chooser_content_layout, new DrinkChooserFragment()).commit();
+            DrinkChooserFragment drinkChooserFragment = DrinkChooserFragment.newInstance();
+            mDrinksArray = Business.getRandomDrink();
+            Bundle args = new Bundle();
+            args.putParcelable("drinksArray", Parcels.wrap(mDrinksArray));
+            drinkChooserFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction().add(R.id.chooser_content_layout, drinkChooserFragment).commit();
         }
 
     }
@@ -32,8 +41,10 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     @Override
     public void onFirstItemDroppedInDropZone(Business item) {
         RestaurantChooserFragment restaurantChooserFragment = RestaurantChooserFragment.newInstance();
+        mRestaurantsArray = Business.getRandomDinner();
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(item));
+        args.putParcelable("restaurantsArray", Parcels.wrap(mRestaurantsArray));
         restaurantChooserFragment.setArguments(args);
         //TODO: add transition animation, here or in the fragment onCreateView?
         getSupportFragmentManager().beginTransaction().replace(R.id.chooser_content_layout, restaurantChooserFragment).commit();
@@ -46,6 +57,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(firstItem));
         args.putParcelable("restaurant", Parcels.wrap(secondItem));
+        args.putParcelable("funArray", Parcels.wrap(mFunArray));
         funChooserFragment.setArguments(args);
         //TODO: add transition animation
         getSupportFragmentManager().beginTransaction().replace(R.id.chooser_content_layout, funChooserFragment).commit();
