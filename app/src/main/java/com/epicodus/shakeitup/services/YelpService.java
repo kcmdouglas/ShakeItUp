@@ -51,7 +51,6 @@ public class YelpService {
                 radius = "10000";
                 break;
         }
-
         OkHttpOAuthConsumer consumer = new OkHttpOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
         consumer.setTokenWithSecret(TOKEN, TOKEN_SECRET);
 
@@ -72,10 +71,12 @@ public class YelpService {
         call.enqueue(callback);
     }
 
+    //TODO: make it more awesome!
     public void processResults (Response response, String category) {
         try {
             String jsonData = response.body().string();
             if (response.isSuccessful()) {
+                Business.clearData(category);
                 JSONObject yelpJSON = new JSONObject(jsonData);
                 JSONArray businessesJSON = yelpJSON.getJSONArray("businesses");
                 for (int i=0; i<businessesJSON.length(); i++) {
