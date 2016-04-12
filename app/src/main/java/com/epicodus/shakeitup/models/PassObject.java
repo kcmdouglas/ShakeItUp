@@ -10,10 +10,10 @@ import java.util.List;
 //objects passed in Drag and Drop operation
 public class PassObject{
     View view;
-    Item item;
-    List<Item> srcList;
+    Business item;
+    List<Business> srcList;
 
-    public PassObject(View v, Item i, List<Item> s){
+    public PassObject(View v, Business i, List<Business> s){
         view = v;
         item = i;
         srcList = s;
@@ -27,19 +27,19 @@ public class PassObject{
         this.view = view;
     }
 
-    public Item getItem() {
+    public Business getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public void setItem(Business item) {
         this.item = item;
     }
 
-    public List<Item> getSrcList() {
+    public List<Business> getSrcList() {
         return srcList;
     }
 
-    public void setSrcList(List<Item> srcList) {
+    public void setSrcList(List<Business> srcList) {
         this.srcList = srcList;
     }
 }

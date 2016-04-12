@@ -115,7 +115,7 @@ public class Business {
             boolean notRepeated = true;
             while (notRepeated) {
                 notRepeated = false;
-                randomIndex = (int)((Math.random() * (getDinnerList().size() - 1)) + 1);
+                randomIndex = (int)((Math.random() * (arrayList.size() - 1)) + 1);
                 for(int y = 0; y < randomBusinesses.size(); y++) {
                     if (arrayList.get(randomIndex).equals(randomBusinesses.get(y))) {
                         notRepeated = true;

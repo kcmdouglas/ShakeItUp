@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.epicodus.shakeitup.models.Item;
+
+import com.epicodus.shakeitup.models.Business;
 
 import java.util.List;
 
@@ -19,16 +20,20 @@ import java.util.List;
 public class ItemBaseAdapter extends BaseAdapter {
 
     public Context context;
-    public List<Item> list;
+    public List<Business> list;
 
-    public ItemBaseAdapter(Context c, List<Item> l){
+    public ItemBaseAdapter(Context c, List<Business> l){
         context = c;
         list = l;
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        try {
+            return list.size();
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
     @Override
@@ -41,13 +46,12 @@ public class ItemBaseAdapter extends BaseAdapter {
         return position;
     }
 
-    public List<Item> getList(){
+    public List<Business> getList(){
         return list;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         return null;
     }
 

@@ -2,11 +2,15 @@ package com.epicodus.shakeitup;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,10 +21,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -29,22 +35,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    @Bind(R.id.firstPlaceImageView)
-    ImageView mFirstPlaceImageView;
-    @Bind(R.id.secondPlaceImageView)
-    ImageView mSecondPlaceImageView;
-    @Bind(R.id.thirdPlaceImageView)
-    ImageView mThirdPlaceImageView;
+    @Bind(R.id.firstPlaceImageView) ImageView mFirstPlaceImageView;
+    @Bind(R.id.secondPlaceImageView) ImageView mSecondPlaceImageView;
+    @Bind(R.id.thirdPlaceImageView) ImageView mThirdPlaceImageView;
+    @Bind(R.id.firstPlaceNameTextView) TextView mFirstPlaceNameTextView;
+    @Bind(R.id.secondPlaceNameTextView) TextView mSecondPlaceNameTextView;
+    @Bind(R.id.thirdPlaceNameTextView) TextView mThirdPlaceNameTextView;
 
     private GoogleMap mMap;
     private static final int MAP_PADDING = 50;
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 411;
 
+    private Business mDrink;
+    private Business mDinner;
+    private Business mFun;
     private ArrayList<Business> mBusinesses = new ArrayList<>();
     private Map<String, Business> mMarkersBusinessesHashMap = new HashMap<>();
 
@@ -54,59 +64,33 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         setContentView(R.layout.activity_results);
         ButterKnife.bind(this);
 
-        mBusinesses = Parcels.unwrap(getIntent().getParcelableExtra("businesses"));
+        mDrink = Parcels.unwrap(getIntent().getParcelableExtra("drink"));
+        mDinner = Parcels.unwrap(getIntent().getParcelableExtra("dinner"));
+        mFun = Parcels.unwrap(getIntent().getParcelableExtra("fun"));
+        mBusinesses.add(mDrink);
+        mBusinesses.add(mDinner);
+        mBusinesses.add(mFun);
 
-        //TODO remove placeholder images
-        Picasso.with(this).load(R.drawable.tacos).fit().centerCrop().into(mFirstPlaceImageView);
-        Picasso.with(this).load(R.drawable.tacos).fit().centerCrop().into(mSecondPlaceImageView);
-        Picasso.with(this).load(R.drawable.tacos).fit().centerCrop().into(mThirdPlaceImageView);
+        initializeCardImages();
+        initializeCardText();
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        //position the markers and camera separately from getting the map, to avoid the map flashing at 0,0 before moving camera
         if (mapFragment.getView() != null) {
             mapFragment.getView().post(new Runnable() {
                 @Override
                 public void run() {
-                    //position the markers and camera separately from getting the map, to avoid the map flashing at 0,0 before moving camera
                     initializeMapMarkers();
                 }
             });
         }
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                final Business business = mMarkersBusinessesHashMap.get(marker.getId());
-                //TODO verify that other info windows close and that same adapter is not applied to all info windows
-                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                    @Override
-                    public View getInfoWindow(Marker marker) {
-                        return null;
-                    }
 
-                    @Override
-                    public View getInfoContents(Marker marker) {
-                        View view = getLayoutInflater().inflate(R.layout.custom_info_window_contents_for_map, null);
-
-                        ImageView badge = (ImageView) view.findViewById(R.id.badge);
-                        TextView title = (TextView) view.findViewById(R.id.title);
-                        TextView snippet = (TextView) view.findViewById(R.id.snippet);
-
-                        Picasso.with(ResultsActivity.this).load(business.getImageUrl()).fit().centerCrop().into(badge);
-                        title.setText(business.getName());
-                        snippet.setText(business.getPhone());
-
-                        return view;
-                    }
-                });
-                return true;
-            }
-        });
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -118,7 +102,6 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     public void initializeMapMarkers() {
-        //TODO remove placeholder data, replace with real model data
         ArrayList<LatLng> latLngsForBounds = new ArrayList<>();
         for (int i = 0; i < mBusinesses.size(); i++) {
             Business business = mBusinesses.get(i);
@@ -126,6 +109,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             latLngsForBounds.add(latLng);
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(latLng)
+                    .icon(BitmapDescriptorFactory.defaultMarker(187))
                     .title(business.getName()));
             mMarkersBusinessesHashMap.put(marker.getId(), business);
         }
@@ -134,6 +118,20 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             builder.include(latLngsForBounds.get(i));
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), MAP_PADDING));
+
+        setMarkerClickListener();
+    }
+
+    public void initializeCardImages() {
+        Picasso.with(this).load(mDrink.getImageUrl()).fit().centerCrop().into(mFirstPlaceImageView);
+        Picasso.with(this).load(mDinner.getImageUrl()).fit().centerCrop().into(mSecondPlaceImageView);
+        Picasso.with(this).load(mFun.getImageUrl()).fit().centerCrop().into(mThirdPlaceImageView);
+    }
+
+    public void initializeCardText() {
+        mFirstPlaceNameTextView.setText(mDrink.getName());
+        mSecondPlaceNameTextView.setText(mDinner.getName());
+        mThirdPlaceNameTextView.setText(mFun.getName());
     }
 
     @Override
@@ -156,4 +154,62 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             }
         }
     }
+
+    public void setMarkerClickListener() {
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                final Business business = mMarkersBusinessesHashMap.get(marker.getId());
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        // don't want custom borders so return null
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        View view = getLayoutInflater().inflate(R.layout.custom_info_window_contents_for_map, null);
+                        ImageView badge = (ImageView) view.findViewById(R.id.badge);
+                        TextView title = (TextView) view.findViewById(R.id.title);
+                        TextView snippet = (TextView) view.findViewById(R.id.snippet);
+
+                        Picasso.with(getApplicationContext())
+                                .load(business.getImageUrl())
+                                .resize(100, 100)
+                                .into(badge, new MarkerImageCallback(marker));
+                        title.setText(business.getName());
+                        snippet.setText(business.getPhone());
+
+                        return view;
+                    }
+                });
+                marker.showInfoWindow();
+                return false;
+            }
+        });
+    }
+
+    //need this callback to refresh the custom info window after Picasso has completed getting and loading the image
+    public class MarkerImageCallback implements Callback {
+        Marker marker = null;
+
+        MarkerImageCallback(Marker marker) {
+            this.marker = marker;
+        }
+
+        @Override
+        public void onSuccess() {
+            if (marker != null && marker.isInfoWindowShown()) {
+                marker.hideInfoWindow();
+                marker.showInfoWindow();
+            }
+        }
+
+        @Override
+        public void onError() {
+            Log.e(getClass().getSimpleName(), "Error loading info window image!");
+        }
+    }
+
 }
