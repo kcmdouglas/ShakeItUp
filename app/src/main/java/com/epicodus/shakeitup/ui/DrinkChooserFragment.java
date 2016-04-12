@@ -178,7 +178,7 @@ public class DrinkChooserFragment extends Fragment {
     };
 
     private void initItems(){
-        mSelectedBusinessesArray = new ArrayList<Business>();
+        mSelectedBusinessesArray = new ArrayList<>();
         Bundle bundle = getArguments();
         mDrinksArray = Parcels.unwrap(bundle.getParcelable("drinksArray"));
     }
