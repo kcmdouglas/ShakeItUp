@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -33,17 +35,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    @Bind(R.id.firstPlaceImageView)
-    ImageView mFirstPlaceImageView;
-    @Bind(R.id.secondPlaceImageView)
-    ImageView mSecondPlaceImageView;
-    @Bind(R.id.thirdPlaceImageView)
-    ImageView mThirdPlaceImageView;
+    @Bind(R.id.firstPlaceImageView) ImageView mFirstPlaceImageView;
+    @Bind(R.id.secondPlaceImageView) ImageView mSecondPlaceImageView;
+    @Bind(R.id.thirdPlaceImageView) ImageView mThirdPlaceImageView;
+    @Bind(R.id.firstPlaceNameTextView) TextView mFirstPlaceNameTextView;
+    @Bind(R.id.secondPlaceNameTextView) TextView mSecondPlaceNameTextView;
+    @Bind(R.id.thirdPlaceNameTextView) TextView mThirdPlaceNameTextView;
 
     private GoogleMap mMap;
     private static final int MAP_PADDING = 50;
@@ -68,7 +71,8 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         mBusinesses.add(mDinner);
         mBusinesses.add(mFun);
 
-        initializeImages();
+        initializeCardImages();
+        initializeCardText();
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -105,6 +109,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             latLngsForBounds.add(latLng);
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(latLng)
+                    .icon(BitmapDescriptorFactory.defaultMarker(187))
                     .title(business.getName()));
             mMarkersBusinessesHashMap.put(marker.getId(), business);
         }
@@ -117,10 +122,16 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         setMarkerClickListener();
     }
 
-    public void initializeImages() {
+    public void initializeCardImages() {
         Picasso.with(this).load(mDrink.getImageUrl()).fit().centerCrop().into(mFirstPlaceImageView);
         Picasso.with(this).load(mDinner.getImageUrl()).fit().centerCrop().into(mSecondPlaceImageView);
         Picasso.with(this).load(mFun.getImageUrl()).fit().centerCrop().into(mThirdPlaceImageView);
+    }
+
+    public void initializeCardText() {
+        mFirstPlaceNameTextView.setText(mDrink.getName());
+        mSecondPlaceNameTextView.setText(mDinner.getName());
+        mThirdPlaceNameTextView.setText(mFun.getName());
     }
 
     @Override
@@ -145,7 +156,6 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     public void setMarkerClickListener() {
-        //TODO verify that other info windows close and that same adapter is not applied to all info windows
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -153,13 +163,13 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                     @Override
                     public View getInfoWindow(Marker marker) {
+                        // don't want custom borders so return null
                         return null;
                     }
 
                     @Override
                     public View getInfoContents(Marker marker) {
                         View view = getLayoutInflater().inflate(R.layout.custom_info_window_contents_for_map, null);
-
                         ImageView badge = (ImageView) view.findViewById(R.id.badge);
                         TextView title = (TextView) view.findViewById(R.id.title);
                         TextView snippet = (TextView) view.findViewById(R.id.snippet);
@@ -180,6 +190,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         });
     }
 
+    //need this callback to refresh the custom info window after Picasso has completed getting and loading the image
     public class MarkerImageCallback implements Callback {
         Marker marker = null;
 
