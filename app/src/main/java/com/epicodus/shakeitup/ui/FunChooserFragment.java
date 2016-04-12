@@ -188,6 +188,8 @@ public class FunChooserFragment extends Fragment {
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
         mDinnerPassed = Parcels.unwrap(bundle.getParcelable("dinner"));
+        mSelectedBusinessesArray.add(mDrinkPassed);
+        mSelectedBusinessesArray.add(mDinnerPassed);
         mFunArray = Business.getRandomFun();
     }
 

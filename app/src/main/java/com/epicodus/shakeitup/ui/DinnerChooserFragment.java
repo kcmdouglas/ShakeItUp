@@ -61,7 +61,9 @@ public class DinnerChooserFragment extends Fragment {
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), mDinnersArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
+
         listView1.setAdapter(myItemListAdapter1);
+
         gridView3.setAdapter(myItemGridAdapter3);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
@@ -179,9 +181,10 @@ public class DinnerChooserFragment extends Fragment {
 
     private void initItems(){
         mSelectedBusinessesArray = new ArrayList<>();
+
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-//        mDinnersArray = Parcels.unwrap(bundle.getParcelable("DinnersArray"));
+        mSelectedBusinessesArray.add(mDrinkPassed);
         mDinnersArray = Business.getRandomDinner();
 
     }
