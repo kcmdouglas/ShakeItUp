@@ -38,7 +38,7 @@ public class ItemListAdapter extends ItemBaseAdapter {
         }
 
         ListViewHolder holder = (ListViewHolder) rowView.getTag();
-        holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
+        //holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
         holder.getText().setText(list.get(position).getItemString());
 
         rowView.setOnDragListener(new ItemOnDragListener(this.context, list.get(position)));
