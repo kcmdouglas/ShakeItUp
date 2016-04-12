@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.Item;
 import com.epicodus.shakeitup.ui.DrinkChooserFragment;
 import com.epicodus.shakeitup.ui.FunChooserFragment;

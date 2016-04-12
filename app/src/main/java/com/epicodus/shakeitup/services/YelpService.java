@@ -2,6 +2,7 @@ package com.epicodus.shakeitup.services;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Switch;
 
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Business;
@@ -38,6 +39,18 @@ public class YelpService {
         final String CONSUMER_SECRET = mContext.getString(R.string.consumer_secret);
         final String TOKEN = mContext.getString(R.string.token);
         final String TOKEN_SECRET = mContext.getString(R.string.token_secret);
+        String radius = "";
+        switch (category) {
+            case DINNER:
+                radius = "1600";
+                break;
+            case DRINK:
+                radius = "15000";
+                break;
+            case FUN:
+                radius = "10000";
+                break;
+        }
         OkHttpOAuthConsumer consumer = new OkHttpOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
         consumer.setTokenWithSecret(TOKEN, TOKEN_SECRET);
 
@@ -47,6 +60,7 @@ public class YelpService {
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.yelp.com/v2/search?&term=" + category).newBuilder();
         urlBuilder.addQueryParameter("location", location);
+        urlBuilder.addQueryParameter("radius_filter", radius);
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
@@ -57,10 +71,12 @@ public class YelpService {
         call.enqueue(callback);
     }
 
+    //TODO: make it more awesome!
     public void processResults (Response response, String category) {
         try {
             String jsonData = response.body().string();
             if (response.isSuccessful()) {
+                Business.clearData(category);
                 JSONObject yelpJSON = new JSONObject(jsonData);
                 JSONArray businessesJSON = yelpJSON.getJSONArray("businesses");
                 for (int i=0; i<businessesJSON.length(); i++) {
@@ -78,20 +94,19 @@ public class YelpService {
                     }
                     String imageUrl = businessJSON.getString("image_url");
                     JSONObject locationJSON = businessJSON.getJSONObject("location");
+                    JSONArray addressArray = locationJSON.getJSONArray("display_address");
+                    String address = "";
+                    for (int y = 0; y < addressArray.length(); y++) {
+                        address += addressArray.getString(y) + " ";
+                    }
                     JSONObject coordinateJSON = locationJSON.getJSONObject("coordinate");
                     Double latitude = coordinateJSON.getDouble("latitude");
                     Double longitude = coordinateJSON.getDouble("longitude");
                     LatLng latLng = new LatLng(latitude, longitude);
 
-                    Business.addBusiness(new Business(rating, mobileUrl, reviewCount, name, phone, imageUrl, latLng), category);
+                    Business.addBusiness(new Business(rating, mobileUrl, reviewCount, name, phone, imageUrl, latLng, address), category);
 
-//                    Log.d(TAG, rating);
-//                    Log.d(TAG, mobileUrl);
-//                    Log.d(TAG, reviewCount);
-//                    Log.d(TAG, name);
-//                    Log.d(TAG, imageUrl);
-//                    Log.d(TAG, latitude.toString());
-//                    Log.d(TAG, longitude.toString());
+//
                 }
             }
         } catch (IOException ioe) {

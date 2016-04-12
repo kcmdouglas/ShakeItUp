@@ -29,9 +29,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Guest on 4/12/16.
- */
+
 public class RestaurantChooserFragment extends Fragment {
     List<Item> items1, items3;
     ListView listView1;
