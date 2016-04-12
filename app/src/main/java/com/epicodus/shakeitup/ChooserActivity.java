@@ -14,6 +14,7 @@ import com.epicodus.shakeitup.services.YelpService;
 import com.epicodus.shakeitup.ui.DrinkChooserFragment;
 import com.epicodus.shakeitup.ui.FunChooserFragment;
 import com.epicodus.shakeitup.ui.RestaurantChooserFragment;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     public static ProgressDialog loadingDialog;
 
     ArrayList<Business> mDrinksArray = new ArrayList<>();
-    ArrayList<Business> mRestaurantsArray = new ArrayList<>();
+    ArrayList<Business> mDinnersArray = new ArrayList<>();
     ArrayList<Business> mFunArray = new ArrayList<>();
 
     @Override
@@ -61,10 +62,8 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     @Override
     public void onFirstItemDroppedInDropZone(Business item) {
         RestaurantChooserFragment restaurantChooserFragment = RestaurantChooserFragment.newInstance();
-//        mRestaurantsArray = Business.getRandomDinner();
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(item));
-//        args.putParcelable("restaurantsArray", Parcels.wrap(mRestaurantsArray));
         restaurantChooserFragment.setArguments(args);
         loadingDialog.show(); //show progress dialog before make Dinner API request
         //TODO: add transition animation, here or in the fragment onCreateView?
@@ -76,8 +75,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         FunChooserFragment funChooserFragment = FunChooserFragment.newInstance();
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(drinkItem));
-        args.putParcelable("restaurant", Parcels.wrap(dinnerItem));
-        args.putParcelable("funArray", Parcels.wrap(mFunArray));
+        args.putParcelable("dinner", Parcels.wrap(dinnerItem));
         funChooserFragment.setArguments(args);
         //TODO: add transition animation
         loadingDialog.show(); //show progress dialog before make Dinner API request
@@ -89,9 +87,8 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         //TODO: add transition animation
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("drink", Parcels.wrap(firstItem));
-        intent.putExtra("restaurant", Parcels.wrap(secondItem));
+        intent.putExtra("dinner", Parcels.wrap(secondItem));
         intent.putExtra("fun", Parcels.wrap(thirdItem));
-        Toast.makeText(this, "Hurray!", Toast.LENGTH_LONG).show();
         startActivity(intent);
 
     }

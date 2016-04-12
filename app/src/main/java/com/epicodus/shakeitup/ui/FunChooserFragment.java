@@ -37,7 +37,7 @@ public class FunChooserFragment extends Fragment {
     LinearLayoutAbsListView area1, area3;
     private OnThirdItemDroppedInDropZone mListener;
     Business mDrinkPassed;
-    Business mRestaurantPassed;
+    Business mDinnerPassed;
 
     public FunChooserFragment() {
     }
@@ -131,7 +131,7 @@ public class FunChooserFragment extends Fragment {
                     List<Business> destList = destAdapter.getList();
 
                     addItemToList(destList, mDrinkPassed);
-                    addItemToList(destList, mRestaurantPassed);
+                    addItemToList(destList, mDinnerPassed);
 
                     if(removeItemToList(srcList, passedItem)){
                         addItemToList(destList, passedItem);
@@ -140,7 +140,7 @@ public class FunChooserFragment extends Fragment {
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
                     if (mListener != null) {
-                        mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mRestaurantPassed, passedItem);
+                        mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mDinnerPassed, passedItem);
                     }
 
                     break;
@@ -187,8 +187,8 @@ public class FunChooserFragment extends Fragment {
         mSelectedBusinessesArray = new ArrayList<>();
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-        mRestaurantPassed = Parcels.unwrap(bundle.getParcelable("restaurant"));
-        mFunArray = Parcels.unwrap(bundle.getParcelable("funArray"));
+        mDinnerPassed = Parcels.unwrap(bundle.getParcelable("dinner"));
+        mFunArray = Business.getRandomFun();
     }
 
     private boolean removeItemToList(List<Business> items, Business item){
