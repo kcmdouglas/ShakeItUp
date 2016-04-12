@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.epicodus.shakeitup.ChooserActivity;
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.adapters.ItemBaseAdapter;
 import com.epicodus.shakeitup.adapters.ItemGridAdapter;
@@ -23,11 +24,12 @@ import com.epicodus.shakeitup.models.PassObject;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class FunChooserFragment extends Fragment {
-    List<Business> mFunArray, items3;
+    List<Business> mFunArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
@@ -49,6 +51,7 @@ public class FunChooserFragment extends Fragment {
                              Bundle savedInstanceState) {
         //this line reuses fragment layout from before
         View view = inflater.inflate(R.layout.fragment_chooser, container, false);
+        ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
         gridView3 = (GridView) view.findViewById(R.id.gridview3);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
@@ -59,7 +62,7 @@ public class FunChooserFragment extends Fragment {
         area3.setAbsListView(gridView3);
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), mFunArray);
-        myItemGridAdapter3 = new ItemGridAdapter(getContext(), items3);
+        myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
         listView1.setAdapter(myItemListAdapter1);
         gridView3.setAdapter(myItemGridAdapter3);
 
@@ -181,6 +184,7 @@ public class FunChooserFragment extends Fragment {
     };
 
     private void initItems(){
+        mSelectedBusinessesArray = new ArrayList<>();
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
         mRestaurantPassed = Parcels.unwrap(bundle.getParcelable("restaurant"));

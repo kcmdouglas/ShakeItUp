@@ -24,13 +24,12 @@ import com.epicodus.shakeitup.models.PassObject;
 
 import org.parceler.Parcels;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class DrinkChooserFragment extends Fragment {
-    List<Business> mDrinksArray, items3;
+    List<Business> mDrinksArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
@@ -61,7 +60,7 @@ public class DrinkChooserFragment extends Fragment {
 
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), mDrinksArray);
-        myItemGridAdapter3 = new ItemGridAdapter(getContext(), items3);
+        myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
 
         listView1.setAdapter(myItemListAdapter1);
         gridView3.setAdapter(myItemGridAdapter3);
@@ -132,11 +131,11 @@ public class DrinkChooserFragment extends Fragment {
                         addItemToList(destList, passedItem);
                     }
 
-                    srcAdapter.notifyDataSetChanged();
-                    destAdapter.notifyDataSetChanged();
                     if (mListener != null) {
                         mListener.onFirstItemDroppedInDropZone(passedItem);
                     }
+                    srcAdapter.notifyDataSetChanged();
+                    destAdapter.notifyDataSetChanged();
 
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
@@ -163,7 +162,7 @@ public class DrinkChooserFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
+}
 
 
     AdapterView.OnItemClickListener listOnItemClickListener = new AdapterView.OnItemClickListener(){
@@ -179,7 +178,7 @@ public class DrinkChooserFragment extends Fragment {
     };
 
     private void initItems(){
-
+        mSelectedBusinessesArray = new ArrayList<>();
         Bundle bundle = getArguments();
         mDrinksArray = Parcels.unwrap(bundle.getParcelable("drinksArray"));
     }
