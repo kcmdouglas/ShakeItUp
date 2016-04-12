@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <array name="resicon">
-        <item>@drawable/tacos</item>
-        <item>@drawable/tacos</item>
-        <item>@drawable/tacos</item>
-    </array>
-    <array name="restext">
-        <item>"tacos?"</item>
-        <item>"Tacos!"</item>
-        <item>"MOARRRR TAAAACOSSSS!!!!!!"</item>
-    </array>
-
 </resources>

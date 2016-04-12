@@ -59,7 +59,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(item));
         restaurantChooserFragment.setArguments(args);
-        MainActivity.loadingDialog.show(); //show progress dialog before make Dinner API request
+        loadingDialog.show(); //show progress dialog before make Dinner API request
         //TODO: add transition animation, here or in the fragment onCreateView?
         getPlaces(item, YelpService.DINNER, restaurantChooserFragment);
     }
@@ -72,7 +72,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         args.putParcelable("dinner", Parcels.wrap(dinnerItem));
         funChooserFragment.setArguments(args);
         //TODO: add transition animation
-        MainActivity.loadingDialog.show(); //show progress dialog before make Dinner API request
+        loadingDialog.show(); //show progress dialog before make Dinner API request
         getPlaces(dinnerItem, YelpService.FUN, funChooserFragment);
     }
 
