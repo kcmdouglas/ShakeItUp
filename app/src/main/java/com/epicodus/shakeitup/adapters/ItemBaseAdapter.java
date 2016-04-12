@@ -22,18 +22,15 @@ public class ItemBaseAdapter extends BaseAdapter {
     public Context context;
     public List<Business> list;
 
-    public ItemBaseAdapter(Context c, List<Business> l){
-        context = c;
-        list = l;
+    public ItemBaseAdapter(Context context, List<Business> list){
+        this.context = context;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
-        try {
-            return list.size();
-        } catch (NullPointerException e) {
-            return 0;
-        }
+        return list.size();
+
     }
 
     @Override

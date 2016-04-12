@@ -24,11 +24,12 @@ import com.epicodus.shakeitup.models.PassObject;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class RestaurantChooserFragment extends Fragment {
-    List<Business> mRestaurantsArray, items3;
+    List<Business> mDinnersArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
@@ -58,8 +59,8 @@ public class RestaurantChooserFragment extends Fragment {
         area1.setAbsListView(listView1);
         area3.setAbsListView(gridView3);
         initItems();
-        myItemListAdapter1 = new ItemListAdapter(getContext(), mRestaurantsArray);
-        myItemGridAdapter3 = new ItemGridAdapter(getContext(), items3);
+        myItemListAdapter1 = new ItemListAdapter(getContext(), mDinnersArray);
+        myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
         listView1.setAdapter(myItemListAdapter1);
         gridView3.setAdapter(myItemGridAdapter3);
 
@@ -177,10 +178,11 @@ public class RestaurantChooserFragment extends Fragment {
     };
 
     private void initItems(){
+        mSelectedBusinessesArray = new ArrayList<>();
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-//        mRestaurantsArray = Parcels.unwrap(bundle.getParcelable("restaurantsArray"));
-        mRestaurantsArray = Business.getRandomDinner();
+//        mDinnersArray = Parcels.unwrap(bundle.getParcelable("DinnersArray"));
+        mDinnersArray = Business.getRandomDinner();
 
     }
 

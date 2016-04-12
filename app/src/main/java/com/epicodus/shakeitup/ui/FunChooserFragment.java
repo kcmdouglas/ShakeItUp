@@ -24,11 +24,12 @@ import com.epicodus.shakeitup.models.PassObject;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class FunChooserFragment extends Fragment {
-    List<Business> mFunArray, items3;
+    List<Business> mFunArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
@@ -36,7 +37,7 @@ public class FunChooserFragment extends Fragment {
     LinearLayoutAbsListView area1, area3;
     private OnThirdItemDroppedInDropZone mListener;
     Business mDrinkPassed;
-    Business mRestaurantPassed;
+    Business mDinnerPassed;
 
     public FunChooserFragment() {
     }
@@ -61,7 +62,7 @@ public class FunChooserFragment extends Fragment {
         area3.setAbsListView(gridView3);
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), mFunArray);
-        myItemGridAdapter3 = new ItemGridAdapter(getContext(), items3);
+        myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
         listView1.setAdapter(myItemListAdapter1);
         gridView3.setAdapter(myItemGridAdapter3);
 
@@ -130,7 +131,7 @@ public class FunChooserFragment extends Fragment {
                     List<Business> destList = destAdapter.getList();
 
                     addItemToList(destList, mDrinkPassed);
-                    addItemToList(destList, mRestaurantPassed);
+                    addItemToList(destList, mDinnerPassed);
 
                     if(removeItemToList(srcList, passedItem)){
                         addItemToList(destList, passedItem);
@@ -139,7 +140,7 @@ public class FunChooserFragment extends Fragment {
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
                     if (mListener != null) {
-                        mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mRestaurantPassed, passedItem);
+                        mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mDinnerPassed, passedItem);
                     }
 
                     break;
@@ -183,10 +184,11 @@ public class FunChooserFragment extends Fragment {
     };
 
     private void initItems(){
+        mSelectedBusinessesArray = new ArrayList<>();
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-        mRestaurantPassed = Parcels.unwrap(bundle.getParcelable("restaurant"));
-        mFunArray = Parcels.unwrap(bundle.getParcelable("funArray"));
+        mDinnerPassed = Parcels.unwrap(bundle.getParcelable("dinner"));
+        mFunArray = Business.getRandomFun();
     }
 
     private boolean removeItemToList(List<Business> items, Business item){
