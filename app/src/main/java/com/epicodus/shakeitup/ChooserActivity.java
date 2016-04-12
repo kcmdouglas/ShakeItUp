@@ -37,6 +37,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
+        MainActivity.loadingDialog.hide();
         initializeProgressDialog();
 
         if (savedInstanceState == null) {
@@ -48,13 +49,6 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
             getSupportFragmentManager().beginTransaction().add(R.id.chooser_content_layout, drinkChooserFragment).commit();
         }
 
-    }
-
-    private void initializeProgressDialog() {
-        loadingDialog = new ProgressDialog(this);
-        loadingDialog.setTitle("loading...");
-        loadingDialog.setMessage("Preparing data...");
-        loadingDialog.setCancelable(false);
     }
 
     @Override
@@ -111,5 +105,12 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
             }
         });
+    }
+
+    private void initializeProgressDialog() {
+        loadingDialog = new ProgressDialog(this);
+        loadingDialog.setTitle("loading...");
+        loadingDialog.setMessage("Preparing data...");
+        loadingDialog.setCancelable(false);
     }
 }
