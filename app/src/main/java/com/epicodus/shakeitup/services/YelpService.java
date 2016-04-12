@@ -45,7 +45,7 @@ public class YelpService {
                 radius = "1600";
                 break;
             case DRINK:
-                radius = "15000";
+                radius = "8000";
                 break;
             case FUN:
                 radius = "10000";
