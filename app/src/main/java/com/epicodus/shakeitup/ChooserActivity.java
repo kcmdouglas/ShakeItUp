@@ -38,6 +38,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
+        MainActivity.loadingDialog.hide();
         initializeProgressDialog();
 
         if (savedInstanceState == null) {
@@ -51,13 +52,6 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
     }
 
-    private void initializeProgressDialog() {
-        loadingDialog = new ProgressDialog(this);
-        loadingDialog.setTitle("loading...");
-        loadingDialog.setMessage("Preparing data...");
-        loadingDialog.setCancelable(false);
-    }
-
     @Override
     public void onFirstItemDroppedInDropZone(Business item) {
         RestaurantChooserFragment restaurantChooserFragment = RestaurantChooserFragment.newInstance();
@@ -66,7 +60,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         args.putParcelable("drink", Parcels.wrap(item));
 //        args.putParcelable("restaurantsArray", Parcels.wrap(mRestaurantsArray));
         restaurantChooserFragment.setArguments(args);
-        loadingDialog.show(); //show progress dialog before make Dinner API request
+        MainActivity.loadingDialog.show(); //show progress dialog before make Dinner API request
         //TODO: add transition animation, here or in the fragment onCreateView?
         getPlaces(item, YelpService.DINNER, restaurantChooserFragment);
     }
@@ -80,7 +74,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         args.putParcelable("funArray", Parcels.wrap(mFunArray));
         funChooserFragment.setArguments(args);
         //TODO: add transition animation
-        loadingDialog.show(); //show progress dialog before make Dinner API request
+        MainActivity.loadingDialog.show(); //show progress dialog before make Dinner API request
         getPlaces(dinnerItem, YelpService.FUN, funChooserFragment);
     }
 
@@ -116,5 +110,12 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
             }
         });
+    }
+
+    private void initializeProgressDialog() {
+        loadingDialog = new ProgressDialog(this);
+        loadingDialog.setTitle("loading...");
+        loadingDialog.setMessage("Preparing data...");
+        loadingDialog.setCancelable(false);
     }
 }
