@@ -21,7 +21,7 @@ import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.adapters.ItemBaseAdapter;
 import com.epicodus.shakeitup.adapters.ItemGridAdapter;
 import com.epicodus.shakeitup.adapters.ItemListAdapter;
-import com.epicodus.shakeitup.models.Item;
+import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
 
 import org.parceler.Parcels;
@@ -31,14 +31,14 @@ import java.util.List;
 
 
 public class RestaurantChooserFragment extends Fragment {
-    List<Item> items1, items3;
+    List<Business> items1, items3;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
     private OnSecondItemDroppedInDropZone mListener;
-    Item mDrinkPassed;
+    Business mDrinkPassed;
 
     public RestaurantChooserFragment() {
     }
@@ -77,10 +77,10 @@ public class RestaurantChooserFragment extends Fragment {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view,
                                        int position, long id) {
-            Item selectedItem = (Item)(parent.getItemAtPosition(position));
+            Business selectedItem = (Business) (parent.getItemAtPosition(position));
 
             ItemBaseAdapter associatedAdapter = (ItemBaseAdapter)(parent.getAdapter());
-            List<Item> associatedList = associatedAdapter.getList();
+            List<Business> associatedList = associatedAdapter.getList();
 
             PassObject passObj = new PassObject(view, selectedItem, associatedList);
 
@@ -117,14 +117,14 @@ public class RestaurantChooserFragment extends Fragment {
 
                     PassObject passObj = (PassObject)event.getLocalState();
                     View view = passObj.getView();
-                    Item passedItem = passObj.getItem();
-                    List<Item> srcList = passObj.getSrcList();
+                    Business passedItem = passObj.getItem();
+                    List<Business> srcList = passObj.getSrcList();
                     AbsListView parent = (AbsListView)view.getParent();
                     ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(parent.getAdapter());
 
                     LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)v;
                     ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.absListView.getAdapter());
-                    List<Item> destList = destAdapter.getList();
+                    List<Business> destList = destAdapter.getList();
 
                     addItemToList(destList, mDrinkPassed);
 
@@ -172,15 +172,15 @@ public class RestaurantChooserFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             Toast.makeText(getContext(),
-                    ((Item)(parent.getItemAtPosition(position))).getItemString(),
+                    ((Business)(parent.getItemAtPosition(position))).getName(),
                     Toast.LENGTH_SHORT).show();
         }
 
     };
 
     private void initItems(){
-        items1 = new ArrayList<Item>();
-        items3 = new ArrayList<Item>();
+        items1 = new ArrayList<Business>();
+        items3 = new ArrayList<Business>();
 
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
@@ -194,7 +194,7 @@ public class RestaurantChooserFragment extends Fragment {
         for(int i = 0; i < arrayDrawable.length(); i++){
             Drawable drawable = arrayDrawable.getDrawable(i);
             String string = arrayText.getString(i);
-            Item item = new Item(string);
+            Business item = new Business(string);
             items1.add(item);
         }
 
@@ -202,16 +202,16 @@ public class RestaurantChooserFragment extends Fragment {
         arrayText.recycle();
     }
 
-    private boolean removeItemToList(List<Item> items, Item item){
+    private boolean removeItemToList(List<Business> items, Business item){
         return items.remove(item);
     }
 
-    private boolean addItemToList(List<Item> items, Item item){
+    private boolean addItemToList(List<Business> items, Business item){
         return items.add(item);
     }
 
 
     public interface OnSecondItemDroppedInDropZone {
-        void onSecondItemDroppedInDropZone(Item firstItem, Item secondItem);
+        void onSecondItemDroppedInDropZone(Business firstItem, Business secondItem);
     }
 }

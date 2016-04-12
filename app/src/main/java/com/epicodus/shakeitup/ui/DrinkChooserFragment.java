@@ -20,7 +20,7 @@ import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.adapters.ItemBaseAdapter;
 import com.epicodus.shakeitup.adapters.ItemGridAdapter;
 import com.epicodus.shakeitup.adapters.ItemListAdapter;
-import com.epicodus.shakeitup.models.Item;
+import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class DrinkChooserFragment extends Fragment {
-    List<Item> items1, items3;
+    List<Business> items1, items3;
     ListView listView1;
     GridView gridView3;
     ItemListAdapter myItemListAdapter1;
@@ -78,10 +78,10 @@ public class DrinkChooserFragment extends Fragment {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view,
                                        int position, long id) {
-            Item selectedItem = (Item)(parent.getItemAtPosition(position));
+            Business selectedItem = (Business)(parent.getItemAtPosition(position));
 
             ItemBaseAdapter associatedAdapter = (ItemBaseAdapter)(parent.getAdapter());
-            List<Item> associatedList = associatedAdapter.getList();
+            List<Business> associatedList = associatedAdapter.getList();
 
             PassObject passObj = new PassObject(view, selectedItem, associatedList);
 
@@ -118,14 +118,14 @@ public class DrinkChooserFragment extends Fragment {
 
                     PassObject passObj = (PassObject)event.getLocalState();
                     View view = passObj.getView();
-                    Item passedItem = passObj.getItem();
-                    List<Item> srcList = passObj.getSrcList();
+                    Business passedItem = passObj.getItem();
+                    List<Business> srcList = passObj.getSrcList();
                     AbsListView oldParent = (AbsListView)view.getParent();
                     ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(oldParent.getAdapter());
 
                     LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)v;
                     ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.absListView.getAdapter());
-                    List<Item> destList = destAdapter.getList();
+                    List<Business> destList = destAdapter.getList();
 
                     if(removeItemToList(srcList, passedItem)){
                         addItemToList(destList, passedItem);
@@ -171,15 +171,15 @@ public class DrinkChooserFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             Toast.makeText(getContext(),
-                    ((Item)(parent.getItemAtPosition(position))).getItemString(),
+                    ((Business)(parent.getItemAtPosition(position))).getName(),
                     Toast.LENGTH_SHORT).show();
         }
 
     };
 
     private void initItems(){
-        items1 = new ArrayList<Item>();
-        items3 = new ArrayList<Item>();
+        items1 = new ArrayList<Business>();
+        items3 = new ArrayList<Business>();
 
         //TODO: Change these arrays into API results as list items
 
@@ -188,7 +188,7 @@ public class DrinkChooserFragment extends Fragment {
 
         for(int i = 0; i < arrayText.length(); i++){
             String string = arrayText.getString(i);
-            Item item = new Item(string);
+            Business item = new Business(string); //TODO: find what we need to construct a Business
             items1.add(item);
         }
 
@@ -196,16 +196,16 @@ public class DrinkChooserFragment extends Fragment {
         arrayText.recycle();
     }
 
-    private boolean removeItemToList(List<Item> items, Item item){
+    private boolean removeItemToList(List<Business> items, Business item){
         return items.remove(item);
     }
 
-    private boolean addItemToList(List<Item> items, Item item){
+    private boolean addItemToList(List<Business> items, Business item){
         return items.add(item);
     }
 
 
     public interface OnFirstItemDroppedInDropZoneListener {
-        void onFirstItemDroppedInDropZone(Item item);
+        void onFirstItemDroppedInDropZone(Business item);
     }
 }

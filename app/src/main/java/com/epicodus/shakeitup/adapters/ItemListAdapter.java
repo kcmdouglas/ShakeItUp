@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.epicodus.shakeitup.R;
-import com.epicodus.shakeitup.models.Item;
+import com.epicodus.shakeitup.models.Business;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ItemListAdapter extends ItemBaseAdapter {
 
-    public ItemListAdapter(Context c, List<Item> l) {
+    public ItemListAdapter(Context c, List<Business> l) {
         super(c, l);
     }
 
@@ -38,8 +38,8 @@ public class ItemListAdapter extends ItemBaseAdapter {
         }
 
         ListViewHolder holder = (ListViewHolder) rowView.getTag();
-        //holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
-        holder.getText().setText(list.get(position).getItemString());
+//        holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
+        holder.getText().setText(list.get(position).getName());
 
         rowView.setOnDragListener(new ItemOnDragListener(this.context, list.get(position)));
 

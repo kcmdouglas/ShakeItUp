@@ -8,7 +8,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.models.Business;
-import com.epicodus.shakeitup.models.Item;
 import com.epicodus.shakeitup.ui.DrinkChooserFragment;
 import com.epicodus.shakeitup.ui.FunChooserFragment;
 import com.epicodus.shakeitup.ui.RestaurantChooserFragment;
@@ -31,7 +30,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     }
 
     @Override
-    public void onFirstItemDroppedInDropZone(Item item) {
+    public void onFirstItemDroppedInDropZone(Business item) {
         RestaurantChooserFragment restaurantChooserFragment = RestaurantChooserFragment.newInstance();
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(item));
@@ -42,7 +41,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     }
 
     @Override
-    public void onSecondItemDroppedInDropZone(Item firstItem, Item secondItem) {
+    public void onSecondItemDroppedInDropZone(Business firstItem, Business secondItem) {
         FunChooserFragment funChooserFragment = FunChooserFragment.newInstance();
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(firstItem));
@@ -53,7 +52,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     }
 
     @Override
-    public void onThirdItemDroppedInDropZone(Item firstItem, Item secondItem, Item thirdItem) {
+    public void onThirdItemDroppedInDropZone(Business firstItem, Business secondItem, Business thirdItem) {
         //TODO: add transition animation
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("drink", Parcels.wrap(firstItem));
