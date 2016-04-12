@@ -28,7 +28,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
     private static final String TAG = ChooserActivity.class.getSimpleName();
     private DrinkChooserFragment drinkChooserFragment;
-    private static ProgressDialog loadingDialog;
+    public static ProgressDialog loadingDialog;
 
     ArrayList<Business> mDrinksArray = new ArrayList<>();
     ArrayList<Business> mRestaurantsArray = new ArrayList<>();
@@ -61,13 +61,13 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     @Override
     public void onFirstItemDroppedInDropZone(Business item) {
         RestaurantChooserFragment restaurantChooserFragment = RestaurantChooserFragment.newInstance();
-        mRestaurantsArray = Business.getRandomDinner();
+//        mRestaurantsArray = Business.getRandomDinner();
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(item));
-        args.putParcelable("restaurantsArray", Parcels.wrap(mRestaurantsArray));
+//        args.putParcelable("restaurantsArray", Parcels.wrap(mRestaurantsArray));
         restaurantChooserFragment.setArguments(args);
+        loadingDialog.show(); //show progress dialog before make Dinner API request
         //TODO: add transition animation, here or in the fragment onCreateView?
-        loadingDialog.show();  //show progress dialog before make Dinner API request
         getPlaces(item, YelpService.DINNER, restaurantChooserFragment);
     }
 
@@ -99,6 +99,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     private void getPlaces(Business business, final String category, final Fragment chooserFragment) {
         final YelpService yelpService = new YelpService(this);
         yelpService.getYelpData(business.getAddress(), category, new Callback() {
+
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -112,7 +113,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
                 } else {
                     Log.e(TAG, "Called fragment not instance of RestaurantChooserFragment or FunChooserFragment");
                 }
-                loadingDialog.hide();
+
             }
         });
     }

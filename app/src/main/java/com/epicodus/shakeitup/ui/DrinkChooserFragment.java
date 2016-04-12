@@ -179,7 +179,7 @@ public class DrinkChooserFragment extends Fragment {
     };
 
     private void initItems(){
-
+        items3 = new ArrayList<>();
         Bundle bundle = getArguments();
         mDrinksArray = Parcels.unwrap(bundle.getParcelable("drinksArray"));
     }

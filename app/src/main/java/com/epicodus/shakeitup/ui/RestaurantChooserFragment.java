@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.epicodus.shakeitup.ChooserActivity;
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.adapters.ItemBaseAdapter;
 import com.epicodus.shakeitup.adapters.ItemGridAdapter;
@@ -47,6 +48,7 @@ public class RestaurantChooserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chooser, container, false);
+        ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
         gridView3 = (GridView) view.findViewById(R.id.gridview3);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
@@ -177,7 +179,8 @@ public class RestaurantChooserFragment extends Fragment {
     private void initItems(){
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-        mRestaurantsArray = Parcels.unwrap(bundle.getParcelable("restaurantsArray"));
+//        mRestaurantsArray = Parcels.unwrap(bundle.getParcelable("restaurantsArray"));
+        mRestaurantsArray = Business.getRandomDinner();
 
     }
 
