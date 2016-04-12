@@ -3,14 +3,11 @@ package com.epicodus.shakeitup;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.services.YelpService;
-import com.epicodus.shakeitup.ui.RestaurantChooserFragment;
 
 import java.io.IOException;
 
