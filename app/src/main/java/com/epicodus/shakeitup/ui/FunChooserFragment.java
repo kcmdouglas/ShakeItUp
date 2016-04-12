@@ -118,7 +118,7 @@ public class FunChooserFragment extends Fragment {
                 case DragEvent.ACTION_DRAG_EXITED:
                     break;
                 case DragEvent.ACTION_DROP:
-
+                    mSelectedBusinessesArray.clear();
                     PassObject passObj = (PassObject)event.getLocalState();
                     View view = passObj.getView();
                     Business passedItem = passObj.getItem();
@@ -188,6 +188,8 @@ public class FunChooserFragment extends Fragment {
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
         mDinnerPassed = Parcels.unwrap(bundle.getParcelable("dinner"));
+        mSelectedBusinessesArray.add(mDrinkPassed);
+        mSelectedBusinessesArray.add(mDinnerPassed);
         mFunArray = Business.getRandomFun();
     }
 

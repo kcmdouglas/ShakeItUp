@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.services.YelpService;
+import com.epicodus.shakeitup.ui.DinnerChooserFragment;
 import com.epicodus.shakeitup.ui.DrinkChooserFragment;
 import com.epicodus.shakeitup.ui.FunChooserFragment;
-import com.epicodus.shakeitup.ui.RestaurantChooserFragment;
-import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 import java.io.IOException;
@@ -25,7 +23,7 @@ import okhttp3.Response;
 
 import java.util.ArrayList;
 
-public class ChooserActivity extends AppCompatActivity implements DrinkChooserFragment.OnFirstItemDroppedInDropZoneListener, RestaurantChooserFragment.OnSecondItemDroppedInDropZone, FunChooserFragment.OnThirdItemDroppedInDropZone {
+public class ChooserActivity extends AppCompatActivity implements DrinkChooserFragment.OnFirstItemDroppedInDropZoneListener, DinnerChooserFragment.OnSecondItemDroppedInDropZone, FunChooserFragment.OnThirdItemDroppedInDropZone {
 
     private static final String TAG = ChooserActivity.class.getSimpleName();
     private DrinkChooserFragment drinkChooserFragment;
@@ -39,6 +37,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
+        MainActivity.loadingDialog.hide();
         initializeProgressDialog();
 
         if (savedInstanceState == null) {
@@ -52,22 +51,15 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
     }
 
-    private void initializeProgressDialog() {
-        loadingDialog = new ProgressDialog(this);
-        loadingDialog.setTitle("loading...");
-        loadingDialog.setMessage("Preparing data...");
-        loadingDialog.setCancelable(false);
-    }
-
     @Override
     public void onFirstItemDroppedInDropZone(Business item) {
-        RestaurantChooserFragment restaurantChooserFragment = RestaurantChooserFragment.newInstance();
+        DinnerChooserFragment dinnerChooserFragment = DinnerChooserFragment.newInstance();
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(item));
-        restaurantChooserFragment.setArguments(args);
+        dinnerChooserFragment.setArguments(args);
         loadingDialog.show(); //show progress dialog before make Dinner API request
         //TODO: add transition animation, here or in the fragment onCreateView?
-        getPlaces(item, YelpService.DINNER, restaurantChooserFragment);
+        getPlaces(item, YelpService.DINNER, dinnerChooserFragment);
     }
 
     @Override
@@ -104,14 +96,21 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if ((chooserFragment instanceof RestaurantChooserFragment) || (chooserFragment instanceof FunChooserFragment)) {
+                if ((chooserFragment instanceof DinnerChooserFragment) || (chooserFragment instanceof FunChooserFragment)) {
                     yelpService.processResults(response, category);
                     getSupportFragmentManager().beginTransaction().replace(R.id.chooser_content_layout, chooserFragment).commit();
                 } else {
-                    Log.e(TAG, "Called fragment not instance of RestaurantChooserFragment or FunChooserFragment");
+                    Log.e(TAG, "Called fragment not instance of DinnerChooserFragment or FunChooserFragment");
                 }
 
             }
         });
+    }
+
+    private void initializeProgressDialog() {
+        loadingDialog = new ProgressDialog(this);
+        loadingDialog.setTitle("loading...");
+        loadingDialog.setMessage("Preparing data...");
+        loadingDialog.setCancelable(false);
     }
 }
