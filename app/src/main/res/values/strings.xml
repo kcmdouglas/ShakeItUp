@@ -2,8 +2,8 @@
     <string name="app_name">ShakeItUp</string>
     <string name="consumer_key">s5HPEtEzcXAopt3qEA8uyg</string>
     <string name="consumer_secret">BLtzvHCPEIe9pHqIh9OPId8jqf4</string>
-    <string name="token">kVXVaCW2aHjC_nb4LHs1xdBfrJd7fzKH</string>
-    <string name="token_secret">M9P4ZXaLGLPAC8sekCYIetzQdaQ</string>
+    <string name="token">-uF4v28Ge_ZODOD0f8gUsz3WPM0vhFf2</string>
+    <string name="token_secret">RULkBF0QhisS6jO1FLAuPMYW-bM</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="permission_request">"To see where you are on the map, allow ShakeItUp to use your location."</string>
