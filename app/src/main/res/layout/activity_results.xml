@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context="com.epicodus.shakeitup.ResultsActivity">
 
     <LinearLayout
@@ -56,7 +57,8 @@
                     android:padding="2dp"
                     android:id="@+id/drinkNameTextView"
                     android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="@color/colorIcons"
+                    android:textStyle="bold"
                     android:text="Moonlight Mediterranean Food" />
 
             </RelativeLayout>
@@ -105,7 +107,8 @@
                     android:gravity="center_vertical"
                     android:padding="2dp"
                     android:id="@+id/dinnerNameTextView"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="@color/colorIcons"
+                    android:textStyle="bold"
                     android:textAlignment="center"
                     android:text="Tacos" />
 
@@ -156,7 +159,8 @@
                     android:gravity="center_vertical"
                     android:padding="2dp"
                     android:id="@+id/funNameTextView"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="@color/colorIcons"
+                    android:textStyle="bold"
                     android:background="@color/colorFunAccent"
                     android:textAlignment="center"
                     android:text="Shut Up And Eat" />
