@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.ChooserActivity;
@@ -21,22 +24,30 @@ import com.epicodus.shakeitup.adapters.ItemGridAdapter;
 import com.epicodus.shakeitup.adapters.ItemListAdapter;
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class DinnerChooserFragment extends Fragment {
     List<Business> mDinnersArray, mSelectedBusinessesArray;
     ListView listView1;
-    GridView gridView3;
+    GridView dinnerGridView;
+    CardView dinnerCardView;
+    CardView drinkCardView;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
     private OnSecondItemDroppedInDropZone mListener;
     Business mDrinkPassed;
+    @Bind(R.id.fragmentDinnerImageView) ImageView mFragmentDinnerImageView;
+    @Bind(R.id.fragmentDinnerNameTextView) TextView mFragmentDinnerNameTextView;
 
     public DinnerChooserFragment() {
     }
@@ -48,26 +59,32 @@ public class DinnerChooserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
+        ButterKnife.bind(this, view);
         ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
-        gridView3 = (GridView) view.findViewById(R.id.gridview3);
+
+        dinnerGridView = (GridView) view.findViewById(R.id.dinnerGridView);
+        dinnerCardView = (CardView) view.findViewById(R.id.dinnerCardView);
+        drinkCardView = (CardView) view.findViewById(R.id.drinkCardView);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
         area1.setAbsListView(listView1);
-        area3.setAbsListView(gridView3);
+        area3.setAbsListView(dinnerGridView);
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), mDinnersArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
 
         listView1.setAdapter(myItemListAdapter1);
 
-        gridView3.setAdapter(myItemGridAdapter3);
+        dinnerGridView.setAdapter(myItemGridAdapter3);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
+
+        dinnerGridView.setVisibility(View.VISIBLE);
 
         return view;
 
@@ -133,6 +150,11 @@ public class DinnerChooserFragment extends Fragment {
                         addItemToList(destList, passedItem);
                     }
 
+                    Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.dinnerImageView));
+
+                    dinnerCardView.setVisibility(View.VISIBLE);
+                    dinnerGridView.setVisibility(View.GONE);
+
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
                     if (mListener != null) {
@@ -184,7 +206,9 @@ public class DinnerChooserFragment extends Fragment {
 
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-        mSelectedBusinessesArray.add(mDrinkPassed);
+        Picasso.with(getContext()).load(mDrinkPassed.getImageUrl()).into(mFragmentDinnerImageView);
+        mFragmentDinnerNameTextView.setText(mDrinkPassed.getName());
+        //mSelectedBusinessesArray.add(mDrinkPassed);
         mDinnersArray = Business.getRandomDinner();
 
     }

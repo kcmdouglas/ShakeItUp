@@ -1,5 +1,6 @@
 package com.epicodus.shakeitup.ui;
 
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.os.Bundle;
@@ -27,8 +28,11 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class FunChooserFragment extends Fragment {
+
     List<Business> mFunArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView gridView3;
@@ -50,7 +54,7 @@ public class FunChooserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line reuses fragment layout from before
-        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
         ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
         gridView3 = (GridView) view.findViewById(R.id.gridview3);
@@ -139,9 +143,9 @@ public class FunChooserFragment extends Fragment {
 
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
-                    if (mListener != null) {
-                        mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mDinnerPassed, passedItem);
-                    }
+
+                    mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mDinnerPassed, passedItem);
+
 
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
@@ -188,8 +192,8 @@ public class FunChooserFragment extends Fragment {
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
         mDinnerPassed = Parcels.unwrap(bundle.getParcelable("dinner"));
-        mSelectedBusinessesArray.add(mDrinkPassed);
-        mSelectedBusinessesArray.add(mDinnerPassed);
+//        mSelectedBusinessesArray.add(mDrinkPassed);
+//        mSelectedBusinessesArray.add(mDinnerPassed);
         mFunArray = Business.getRandomFun();
     }
 
