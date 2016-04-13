@@ -105,10 +105,10 @@ public class YelpService {
                     LatLng latLng = new LatLng(latitude, longitude);
 
                     Business.addBusiness(new Business(rating, mobileUrl, reviewCount, name, phone, imageUrl, latLng, address), category);
-
-                  return true;
                 }
+                return true;
             } else {
+                Log.d(TAG, response.toString());
                 return false;
             }
         } catch (IOException ioe) {

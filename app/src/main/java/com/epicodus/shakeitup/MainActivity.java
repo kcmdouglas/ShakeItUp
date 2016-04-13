@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             loadingDialog.hide();
-                            Toast.makeText(MainActivity.this, "Wrong address!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "You fud!", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
