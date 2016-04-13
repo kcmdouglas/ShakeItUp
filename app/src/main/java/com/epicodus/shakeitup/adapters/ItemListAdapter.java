@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Business;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,13 +33,14 @@ public class ItemListAdapter extends ItemBaseAdapter {
             rowView = inflater.inflate(R.layout.row, null);
 
             ListViewHolder listViewHolder = new ListViewHolder();
-        //    listViewHolder.setIcon((ImageView) rowView.findViewById(R.id.rowImageView));
+            Picasso.with(context).load(list.get(position).getImageUrl()).fit().centerCrop().into((ImageView) rowView.findViewById(R.id.rowImageView));
             listViewHolder.setText((TextView) rowView.findViewById(R.id.rowTextView));
+
             rowView.setTag(listViewHolder);
         }
 
         ListViewHolder holder = (ListViewHolder) rowView.getTag();
-//        holder.getIcon().setImageDrawable(list.get(position).getItemDrawable());
+        Picasso.with(context).load(list.get(position).getImageUrl()).fit().centerCrop().into((ImageView) rowView.findViewById(R.id.rowImageView));
         holder.getText().setText(list.get(position).getName());
 
         rowView.setOnDragListener(new ItemOnDragListener(this.context, list.get(position)));

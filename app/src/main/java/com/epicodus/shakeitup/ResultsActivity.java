@@ -1,6 +1,7 @@
 package com.epicodus.shakeitup;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +37,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     @Bind(R.id.drinkImageView) ImageView mDrinkImageView;
     @Bind(R.id.dinnerImageView) ImageView mDinnerImageView;
     @Bind(R.id.funImageView) ImageView mFunImageView;
@@ -43,8 +45,11 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     @Bind(R.id.dinnerNameTextView) TextView mDinnerNameTextView;
     @Bind(R.id.funNameTextView) TextView mFunNameTextView;
 
+    @Bind(R.id.restartButton) Button mRestartButton;
+    @Bind(R.id.shareButton) Button mShareButton;
+
     private GoogleMap mMap;
-    private static final int MAP_PADDING = 50;
+    private static final int MAP_PADDING = 85;
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 411;
 
     private Business mDrink;
@@ -60,7 +65,6 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         ButterKnife.bind(this);
 
         mDrink = Parcels.unwrap(getIntent().getParcelableExtra("drink"));
-        // TODO: fix this. Chris.
         mDinner = Parcels.unwrap(getIntent().getParcelableExtra("dinner"));
         mFun = Parcels.unwrap(getIntent().getParcelableExtra("fun"));
         mBusinesses.add(mDrink);
@@ -69,6 +73,9 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
         initializeCardImages();
         initializeCardText();
+
+        mRestartButton.setOnClickListener(this);
+        mShareButton.setOnClickListener(this);
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -198,6 +205,24 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.restartButton:
+                Intent restartIntent = new Intent(ResultsActivity.this, MainActivity.class);
+                startActivity(restartIntent);
+                break;
+            case R.id.shareButton:
+                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Let's go on a date to: \n" + mDrink.getName() + "\n" + mDinner.getName() + "\n" + mFun.getName());
+                shareIntent.setType("text/plain");
+
+                startActivity(Intent.createChooser(shareIntent, "How do you want to share?"));
+                break;
+        }
     }
 
     //need this callback to refresh the custom info window after Picasso has completed getting and loading the image
