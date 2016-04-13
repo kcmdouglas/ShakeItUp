@@ -78,15 +78,20 @@ public class YelpService {
             Business.clearData(category);
             if (response.isSuccessful()) {
                 JSONObject yelpJSON = new JSONObject(jsonData);
-                JSONArray businessesJSON = yelpJSON.getJSONArray("businesses");
-                for (int i=0; i<businessesJSON.length(); i++) {
-                    JSONObject businessJSON = businessesJSON.getJSONObject(i);
+                JSONArray businessesListJSON = yelpJSON.getJSONArray("businesses");
+                for (int i=0; i<businessesListJSON.length(); i++) {
+                    JSONObject businessJSON = businessesListJSON.getJSONObject(i);
                     String rating = businessJSON.getString("rating");
                     String mobileUrl = businessJSON.getString("mobile_url");
                     String reviewCount = businessJSON.getString("review_count");
                     String name = businessJSON.getString("name");
-                    JSONArray
-                    for (int z = 0; z < )
+                    JSONArray arrayOfCategories = businessJSON.getJSONArray("categories");
+                    String yelpCategory = "";
+                    for (int z = 0; z < arrayOfCategories.length(); z++) {
+                        JSONArray categoriesArray = arrayOfCategories.getJSONArray(z);
+                        yelpCategory += categoriesArray.getString(0);
+                        Log.d(TAG, yelpCategory);
+                    }
                     String phone = "";
                     try {
                         phone = businessJSON.getString("display_phone");
@@ -94,6 +99,7 @@ public class YelpService {
                         jsone.printStackTrace();
                         Log.e(TAG, category);
                     }
+                    String snippetText = businessJSON.getString("snippet_text");
                     String imageUrl = businessJSON.getString("image_url");
                     JSONObject locationJSON = businessJSON.getJSONObject("location");
                     JSONArray addressArray = locationJSON.getJSONArray("display_address");
@@ -106,7 +112,7 @@ public class YelpService {
                     Double longitude = coordinateJSON.getDouble("longitude");
                     LatLng latLng = new LatLng(latitude, longitude);
 
-                    Business.addBusiness(new Business(rating, mobileUrl, reviewCount, name, phone, imageUrl, latLng, address), category);
+                    Business.addBusiness(new Business(rating, mobileUrl, reviewCount, name, phone, imageUrl, latLng, address, yelpCategory, snippetText), category);
                 }
                 return true;
             } else {

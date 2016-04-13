@@ -11,8 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/backgroundImageView"
-        android:scaleType="centerCrop"
-        android:background="@color/accent_material_dark" />
+        android:scaleType="centerCrop" />
 
     <EditText
         android:layout_width="match_parent"
