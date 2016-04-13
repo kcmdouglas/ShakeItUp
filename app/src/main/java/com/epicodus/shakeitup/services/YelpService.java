@@ -25,9 +25,9 @@ import se.akerfeldt.okhttp.signpost.SigningInterceptor;
 
 public class YelpService {
     private static final String TAG = YelpService.class.getSimpleName();
-    public static final String DINNER = "dinner+restaurant";
-    public static final String DRINK = "Cocktail+Bars";
-    public static final String FUN = "Arts+Entertainment";
+    public static final String DINNER = "restaurant";
+    public static final String DRINK = "drinks";
+    public static final String FUN = "entertainment";
     private Context mContext;
 
     public YelpService(Context context) {
@@ -72,11 +72,11 @@ public class YelpService {
     }
 
     //TODO: make it more awesome!
-    public void processResults (Response response, String category) {
+    public boolean processResults (Response response, String category) {
         try {
             String jsonData = response.body().string();
+            Business.clearData(category);
             if (response.isSuccessful()) {
-                Business.clearData(category);
                 JSONObject yelpJSON = new JSONObject(jsonData);
                 JSONArray businessesJSON = yelpJSON.getJSONArray("businesses");
                 for (int i=0; i<businessesJSON.length(); i++) {
@@ -105,15 +105,18 @@ public class YelpService {
                     LatLng latLng = new LatLng(latitude, longitude);
 
                     Business.addBusiness(new Business(rating, mobileUrl, reviewCount, name, phone, imageUrl, latLng, address), category);
-
-//
                 }
+                return true;
+            } else {
+                Log.d(TAG, response.toString());
+                return false;
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } catch (JSONException jsone) {
             jsone.printStackTrace();
         }
+        return false;
     }
 
 }
