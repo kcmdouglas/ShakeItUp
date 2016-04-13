@@ -72,11 +72,11 @@ public class YelpService {
     }
 
     //TODO: make it more awesome!
-    public void processResults (Response response, String category) {
+    public boolean processResults (Response response, String category) {
         try {
             String jsonData = response.body().string();
+            Business.clearData(category);
             if (response.isSuccessful()) {
-                Business.clearData(category);
                 JSONObject yelpJSON = new JSONObject(jsonData);
                 JSONArray businessesJSON = yelpJSON.getJSONArray("businesses");
                 for (int i=0; i<businessesJSON.length(); i++) {
@@ -106,14 +106,17 @@ public class YelpService {
 
                     Business.addBusiness(new Business(rating, mobileUrl, reviewCount, name, phone, imageUrl, latLng, address), category);
 
-//
+                  return true;
                 }
+            } else {
+                return false;
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } catch (JSONException jsone) {
             jsone.printStackTrace();
         }
+        return false;
     }
 
 }

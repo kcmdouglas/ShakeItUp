@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,9 +78,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                yelpService.processResults(response, YelpService.DRINK);
-                Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
-                startActivity(intent);
+                if (yelpService.processResults(response, YelpService.DRINK)) {
+                    Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
+                    startActivity(intent);
+                } else {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.hide();
+                            Toast.makeText(MainActivity.this, "Wrong address!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
         });
     }
@@ -98,6 +108,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+//        Hiding keyboard
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
         loadingDialog.show();
         Log.d(TAG, locationLabel.getText().length() + "");
         if (locationLabel.getText().length() == 0) {
