@@ -9,7 +9,7 @@
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#B6B6B6</color>
 
-    <color name="colorDrinkAccent">#18FFFF</color>
-    <color name="colorDinnerAccent">#B388FF</color>
-    <color name="colorFunAccent">#FFD740</color>
+    <color name="colorDrinkAccent">#26C6DA</color>
+    <color name="colorDinnerAccent">#7E57C2</color>
+    <color name="colorFunAccent">#E64A19</color>
 </resources>

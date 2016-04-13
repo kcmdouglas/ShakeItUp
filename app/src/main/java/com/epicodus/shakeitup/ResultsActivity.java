@@ -135,7 +135,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 case 0:
                     Marker drinksMarker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
-                            .icon(BitmapDescriptorFactory.defaultMarker(180))
+                            .icon(BitmapDescriptorFactory.defaultMarker(187))
                             .title(business.getName()));
                     mMarkersBusinessesHashMap.put(drinksMarker.getId(), business);
                     break;
@@ -149,7 +149,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 case 2:
                     Marker funMarker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
-                            .icon(BitmapDescriptorFactory.defaultMarker(47))
+                            .icon(BitmapDescriptorFactory.defaultMarker(14))
                             .title(business.getName()));
                     mMarkersBusinessesHashMap.put(funMarker.getId(), business);
                     break;
@@ -218,7 +218,15 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                                 .into(badge, new MarkerImageCallback(marker));
                         title.setText(business.getName());
                         snippet.setText(business.getPhone());
-                        snippet.setTextColor(Color.parseColor("#000000"));
+                        Log.d("Marker ID: ", marker.getId());
+
+                        if (marker.getId().equals("m0")) {
+                            snippet.setTextColor(Color.parseColor("#26C6DA"));
+                        } else if (marker.getId().equals("m1")) {
+                            snippet.setTextColor(Color.parseColor("#7E57C2"));
+                        } else if (marker.getId().equals("m2")) {
+                            snippet.setTextColor(Color.parseColor("#E64A19"));
+                        }
 
                         return view;
                     }
