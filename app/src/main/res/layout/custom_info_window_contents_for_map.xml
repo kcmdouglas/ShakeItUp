@@ -20,8 +20,8 @@
 
     <ImageView
         android:id="@+id/badge"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp" />
 
@@ -37,7 +37,7 @@
             android:layout_gravity="center_horizontal"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/abc_primary_text_material_light"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="14dp"
             android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/abc_secondary_text_material_light"
+            android:textColor="@color/colorAccent"
             android:textSize="14dp" />
     </LinearLayout>
 </LinearLayout>
