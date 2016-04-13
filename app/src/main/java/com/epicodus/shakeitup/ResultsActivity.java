@@ -3,6 +3,8 @@ package com.epicodus.shakeitup;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -38,7 +40,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnInfoWindowClickListener {
     @Bind(R.id.drinkImageView) ImageView mDrinkImageView;
     @Bind(R.id.dinnerImageView) ImageView mDinnerImageView;
     @Bind(R.id.funImageView) ImageView mFunImageView;
@@ -110,6 +112,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             ActivityCompat.requestPermissions(ResultsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSION_REQUEST);
         }
+        mMap.setOnInfoWindowClickListener(this);
     }
 
     public void initializeMapMarkers() {
@@ -205,6 +208,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                                 .into(badge, new MarkerImageCallback(marker));
                         title.setText(business.getName());
                         snippet.setText(business.getPhone());
+                        snippet.setTextColor(Color.parseColor("#000000"));
 
                         return view;
                     }
@@ -233,6 +237,11 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(this, "Info window clicked", Toast.LENGTH_SHORT).show();
     }
 
     @Override
