@@ -19,4 +19,6 @@
 
     <string name="dinnerChoiceInstructions">Choose a place for dinner!</string>
     <string name="funChoiceInstructions">Choose a fun follow-up activity!</string>
+
+    <string name="cutoff_name">%s…</string>
 </resources>
