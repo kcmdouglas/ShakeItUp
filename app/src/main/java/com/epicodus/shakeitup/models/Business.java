@@ -110,6 +110,10 @@ public class Business {
     private static ArrayList<Business> getRandomBusinesses(ArrayList<Business> arrayList) {
         ArrayList<Business> randomBusinesses = new ArrayList<>();
 
+        if (arrayList.size() < 3) {
+            return arrayList;
+        }
+
         for (int i = 0; i < 3; i++) {
             int randomIndex = -1;
             boolean notRepeated = true;

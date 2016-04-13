@@ -25,9 +25,9 @@ import se.akerfeldt.okhttp.signpost.SigningInterceptor;
 
 public class YelpService {
     private static final String TAG = YelpService.class.getSimpleName();
-    public static final String DINNER = "dinner+restaurant";
-    public static final String DRINK = "Cocktail+Bars";
-    public static final String FUN = "Arts+Entertainment";
+    public static final String DINNER = "restaurant";
+    public static final String DRINK = "drinks";
+    public static final String FUN = "entertainment";
     private Context mContext;
 
     public YelpService(Context context) {
