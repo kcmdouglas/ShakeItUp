@@ -13,4 +13,6 @@
     </string>
     <string name="restart">Restart</string>
     <string name="share">Share</string>
+
+    <string name="preference_file_key">com.epicodus.shakeitup.PREFERENCE_FILE_KEY</string>
 </resources>
