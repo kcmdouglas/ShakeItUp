@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +50,10 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     @Bind(R.id.dinnerNameTextView) TextView mDinnerNameTextView;
     @Bind(R.id.funNameTextView) TextView mFunNameTextView;
 
+    @Bind(R.id.drinkCardView) CardView mDrinkCardView;
+    @Bind(R.id.dinnerCardView) CardView mDinnerCardView;
+    @Bind(R.id.funCardView) CardView mFunCardView;
+
     @Bind(R.id.restartButton) Button mRestartButton;
     @Bind(R.id.shareButton) Button mShareButton;
 
@@ -76,6 +82,10 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
         initializeCardImages();
         initializeCardText();
+
+        mDrinkCardView.setOnClickListener(this);
+        mDinnerCardView.setOnClickListener(this);
+        mFunCardView.setOnClickListener(this);
 
         mRestartButton.setOnClickListener(this);
         mShareButton.setOnClickListener(this);
@@ -241,7 +251,10 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(this, "Info window clicked", Toast.LENGTH_SHORT).show();
+        Business business = mMarkersBusinessesHashMap.get(marker.getId());
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+        callIntent.setData(Uri.parse("tel:" + business.getPhone()));
+        startActivity(callIntent);
     }
 
     @Override
@@ -258,6 +271,18 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 shareIntent.setType("text/plain");
 
                 startActivity(Intent.createChooser(shareIntent, "How do you want to share?"));
+                break;
+            case R.id.drinkCardView:
+                Intent yelpDrinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mDrink.getMobileUrl()));
+                startActivity(yelpDrinkIntent);
+                break;
+            case R.id.dinnerCardView:
+                Intent yelpDinnerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mDinner.getMobileUrl()));
+                startActivity(yelpDinnerIntent);
+                break;
+            case R.id.funCardView:
+                Intent yelpFunIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mFun.getMobileUrl()));
+                startActivity(yelpFunIntent);
                 break;
         }
     }
