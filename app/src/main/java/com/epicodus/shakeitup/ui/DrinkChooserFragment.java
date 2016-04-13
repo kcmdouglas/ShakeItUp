@@ -1,10 +1,10 @@
 package com.epicodus.shakeitup.ui;
 
-
 import android.app.Activity;
 import android.content.ClipData;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.R;
@@ -21,17 +23,18 @@ import com.epicodus.shakeitup.adapters.ItemGridAdapter;
 import com.epicodus.shakeitup.adapters.ItemListAdapter;
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class DrinkChooserFragment extends Fragment {
-    List<Business> mDrinksArray, mSelectedBusinessesArray;
+public class DrinkChooserFragment extends Fragment { List<Business> mDrinksArray, mSelectedBusinessesArray;
     ListView listView1;
-    GridView gridView3;
+    GridView drinkGridView;
+    CardView drinkCardView;
+    TextView drinkTextView;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
@@ -47,23 +50,24 @@ public class DrinkChooserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
         listView1 = (ListView) view.findViewById(R.id.listview1);
-        gridView3 = (GridView) view.findViewById(R.id.gridview3);
-
+        drinkGridView = (GridView) view.findViewById(R.id.drinkGridView);
+        drinkCardView = (CardView) view.findViewById(R.id.drinkCardView);
+        drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
         area1.setAbsListView(listView1);
-        area3.setAbsListView(gridView3);
+        area3.setAbsListView(drinkGridView);
 
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), mDrinksArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
 
         listView1.setAdapter(myItemListAdapter1);
-        gridView3.setAdapter(myItemGridAdapter3);
+        drinkGridView.setAdapter(myItemGridAdapter3);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
 
@@ -115,7 +119,6 @@ public class DrinkChooserFragment extends Fragment {
                 case DragEvent.ACTION_DRAG_EXITED:
                     break;
                 case DragEvent.ACTION_DROP:
-
                     PassObject passObj = (PassObject)event.getLocalState();
                     View view = passObj.getView();
                     Business passedItem = passObj.getItem();
@@ -134,6 +137,13 @@ public class DrinkChooserFragment extends Fragment {
                     if (mListener != null) {
                         mListener.onFirstItemDroppedInDropZone(passedItem);
                     }
+
+                    Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.drinkImageView));
+                    drinkTextView.setText(passedItem.getName());
+
+                    drinkCardView.setVisibility(View.VISIBLE);
+                    drinkGridView.setVisibility(View.GONE);
+
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
 
@@ -162,7 +172,7 @@ public class DrinkChooserFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-}
+    }
 
 
     AdapterView.OnItemClickListener listOnItemClickListener = new AdapterView.OnItemClickListener(){
@@ -193,5 +203,4 @@ public class DrinkChooserFragment extends Fragment {
 
     public interface OnFirstItemDroppedInDropZoneListener {
         void onFirstItemDroppedInDropZone(Business item);
-    }
-}
+    }}

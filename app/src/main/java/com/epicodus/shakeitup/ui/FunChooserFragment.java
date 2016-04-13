@@ -1,9 +1,12 @@
 package com.epicodus.shakeitup.ui;
 
+
 import android.app.Activity;
 import android.content.ClipData;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.ChooserActivity;
@@ -21,23 +26,40 @@ import com.epicodus.shakeitup.adapters.ItemGridAdapter;
 import com.epicodus.shakeitup.adapters.ItemListAdapter;
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class FunChooserFragment extends Fragment {
+
     List<Business> mFunArray, mSelectedBusinessesArray;
     ListView listView1;
-    GridView gridView3;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
     private OnThirdItemDroppedInDropZone mListener;
     Business mDrinkPassed;
     Business mDinnerPassed;
+    GridView drinkGridView;
+    GridView dinnerGridView;
+    GridView funGridView;
+    CardView dinnerCardView;
+    CardView drinkCardView;
+    CardView funCardView;
+    TextView funTextView;
+    TextView dinnerTextView;
+    TextView drinkTextView;
+    TextView instructionsText;
+    ImageView mDrinkImageView;
+    ImageView mDinnerImageView;
+
 
     public FunChooserFragment() {
     }
@@ -50,27 +72,40 @@ public class FunChooserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line reuses fragment layout from before
-        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
         ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
-        gridView3 = (GridView) view.findViewById(R.id.gridview3);
+        funGridView = (GridView) view.findViewById(R.id.funGridView);
+        funCardView = (CardView) view.findViewById(R.id.funCardView);
+        funTextView = (TextView) view.findViewById(R.id.funTextView);
+        dinnerTextView = (TextView) view.findViewById(R.id.dinnerTextView);
+        drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
+        dinnerGridView = (GridView) view.findViewById(R.id.dinnerGridView);
+        dinnerCardView = (CardView) view.findViewById(R.id.dinnerCardView);
+        drinkGridView = (GridView) view.findViewById(R.id.drinkGridView);
+        drinkCardView = (CardView) view.findViewById(R.id.drinkCardView);
+
+        instructionsText = (TextView) view.findViewById(R.id.instructionsText);
+
+        mDrinkImageView = (ImageView) view.findViewById(R.id.drinkImageView);
+        mDinnerImageView = (ImageView) view.findViewById(R.id.dinnerImageView);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
         area1.setAbsListView(listView1);
-        area3.setAbsListView(gridView3);
+        area3.setAbsListView(funGridView);
         initItems();
         myItemListAdapter1 = new ItemListAdapter(getContext(), mFunArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
         listView1.setAdapter(myItemListAdapter1);
-        gridView3.setAdapter(myItemGridAdapter3);
+        funGridView.setAdapter(myItemGridAdapter3);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
-        gridView3.setOnItemClickListener(listOnItemClickListener);
+        funGridView.setOnItemClickListener(listOnItemClickListener);
 
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
-        gridView3.setOnItemLongClickListener(myOnItemLongClickListener);
+        funGridView.setOnItemLongClickListener(myOnItemLongClickListener);
 
         return view;
 
@@ -130,6 +165,9 @@ public class FunChooserFragment extends Fragment {
                     ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.absListView.getAdapter());
                     List<Business> destList = destAdapter.getList();
 
+                    Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.funImageView));
+                    funTextView.setText(passedItem.getName());
+
                     addItemToList(destList, mDrinkPassed);
                     addItemToList(destList, mDinnerPassed);
 
@@ -137,11 +175,14 @@ public class FunChooserFragment extends Fragment {
                         addItemToList(destList, passedItem);
                     }
 
+                    funGridView.setVisibility(View.GONE);
+                    funCardView.setVisibility(View.VISIBLE);
+
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
-                    if (mListener != null) {
-                        mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mDinnerPassed, passedItem);
-                    }
+
+                    mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mDinnerPassed, passedItem);
+
 
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
@@ -188,8 +229,21 @@ public class FunChooserFragment extends Fragment {
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
         mDinnerPassed = Parcels.unwrap(bundle.getParcelable("dinner"));
-        mSelectedBusinessesArray.add(mDrinkPassed);
-        mSelectedBusinessesArray.add(mDinnerPassed);
+
+        instructionsText.setText(R.string.funChoiceInstructions);
+
+        Picasso.with(getContext()).load(mDrinkPassed.getImageUrl()).fit().centerCrop().into(mDrinkImageView);
+        Picasso.with(getContext()).load(mDinnerPassed.getImageUrl()).fit().centerCrop().into(mDinnerImageView);
+
+        drinkTextView.setText(mDrinkPassed.getName());
+        dinnerTextView.setText(mDinnerPassed.getName());
+
+        drinkGridView.setVisibility(View.GONE);
+        drinkCardView.setVisibility(View.VISIBLE);
+        dinnerGridView.setVisibility(View.GONE);
+        dinnerCardView.setVisibility(View.VISIBLE);
+        funGridView.setVisibility(View.VISIBLE);
+
         mFunArray = Business.getRandomFun();
     }
 
@@ -205,4 +259,5 @@ public class FunChooserFragment extends Fragment {
     public interface OnThirdItemDroppedInDropZone {
         void onThirdItemDroppedInDropZone(Business firstItem, Business secondItem, Business thirdItem);
     }
+
 }

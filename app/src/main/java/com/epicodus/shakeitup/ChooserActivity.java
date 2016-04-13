@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.services.YelpService;
@@ -58,7 +59,6 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         args.putParcelable("drink", Parcels.wrap(item));
         dinnerChooserFragment.setArguments(args);
         loadingDialog.show(); //show progress dialog before make Dinner API request
-        //TODO: add transition animation, here or in the fragment onCreateView?
         getPlaces(item, YelpService.DINNER, dinnerChooserFragment);
     }
 
@@ -69,14 +69,13 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         args.putParcelable("drink", Parcels.wrap(drinkItem));
         args.putParcelable("dinner", Parcels.wrap(dinnerItem));
         funChooserFragment.setArguments(args);
-        //TODO: add transition animation
         loadingDialog.show(); //show progress dialog before make Dinner API request
         getPlaces(dinnerItem, YelpService.FUN, funChooserFragment);
     }
 
     @Override
     public void onThirdItemDroppedInDropZone(Business firstItem, Business secondItem, Business thirdItem) {
-        //TODO: add transition animation
+        Toast.makeText(this, "Hurray!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("drink", Parcels.wrap(firstItem));
         intent.putExtra("dinner", Parcels.wrap(secondItem));

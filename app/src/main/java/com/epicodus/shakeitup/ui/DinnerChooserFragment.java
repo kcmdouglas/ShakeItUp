@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.ChooserActivity;
@@ -21,6 +24,7 @@ import com.epicodus.shakeitup.adapters.ItemGridAdapter;
 import com.epicodus.shakeitup.adapters.ItemListAdapter;
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.models.PassObject;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
@@ -31,12 +35,20 @@ import java.util.List;
 public class DinnerChooserFragment extends Fragment {
     List<Business> mDinnersArray, mSelectedBusinessesArray;
     ListView listView1;
-    GridView gridView3;
+    GridView drinkGridView;
+    GridView dinnerGridView;
+    CardView dinnerCardView;
+    CardView drinkCardView;
+    TextView dinnerTextView;
+    TextView drinkTextView;
+    TextView instructionsText;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
     private OnSecondItemDroppedInDropZone mListener;
     Business mDrinkPassed;
+    ImageView mDrinkImageView;
+
 
     public DinnerChooserFragment() {
     }
@@ -48,26 +60,38 @@ public class DinnerChooserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
         ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
-        gridView3 = (GridView) view.findViewById(R.id.gridview3);
+        mDrinkImageView = (ImageView) view.findViewById(R.id.drinkImageView);
+
+        dinnerGridView = (GridView) view.findViewById(R.id.dinnerGridView);
+        dinnerCardView = (CardView) view.findViewById(R.id.dinnerCardView);
+        dinnerTextView = (TextView) view.findViewById(R.id.dinnerTextView);
+
+        drinkGridView = (GridView) view.findViewById(R.id.drinkGridView);
+        drinkCardView = (CardView) view.findViewById(R.id.drinkCardView);
+        drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
+
+        instructionsText = (TextView) view.findViewById(R.id.instructionsText);
+
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
         area1.setAbsListView(listView1);
-        area3.setAbsListView(gridView3);
+        area3.setAbsListView(dinnerGridView);
+
         initItems();
+
         myItemListAdapter1 = new ItemListAdapter(getContext(), mDinnersArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
-
         listView1.setAdapter(myItemListAdapter1);
 
-        gridView3.setAdapter(myItemGridAdapter3);
-
+        dinnerGridView.setAdapter(myItemGridAdapter3);
         listView1.setOnItemClickListener(listOnItemClickListener);
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
+
 
         return view;
 
@@ -133,6 +157,11 @@ public class DinnerChooserFragment extends Fragment {
                         addItemToList(destList, passedItem);
                     }
 
+                    Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.dinnerImageView));
+                    dinnerTextView.setText(passedItem.getName());
+
+                    dinnerGridView.setVisibility(View.GONE);
+                    dinnerCardView.setVisibility(View.VISIBLE);
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
                     if (mListener != null) {
@@ -184,7 +213,18 @@ public class DinnerChooserFragment extends Fragment {
 
         Bundle bundle = getArguments();
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
-        mSelectedBusinessesArray.add(mDrinkPassed);
+
+        instructionsText.setText(R.string.dinnerChoiceInstructions);
+
+        Picasso.with(getContext()).load(mDrinkPassed.getImageUrl()).fit().centerCrop().into(mDrinkImageView);
+        drinkTextView.setText(mDrinkPassed.getName());
+
+
+        drinkGridView.setVisibility(View.GONE);
+        drinkCardView.setVisibility(View.VISIBLE);
+        dinnerCardView.setVisibility(View.GONE);
+        dinnerGridView.setVisibility(View.VISIBLE);
+
         mDinnersArray = Business.getRandomDinner();
 
     }

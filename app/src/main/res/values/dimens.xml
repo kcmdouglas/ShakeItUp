@@ -6,4 +6,5 @@
     <dimen name="results_cardview_width">100dp</dimen>
     <dimen name="results_cardview_imageview_height">100dp</dimen>
     <dimen name="results_cardview_textview_height">60dp</dimen>
+    <dimen name="chooser_empty_cardview_height">160dp</dimen>
 </resources>
