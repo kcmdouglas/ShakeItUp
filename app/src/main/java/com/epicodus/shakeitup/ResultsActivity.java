@@ -3,11 +3,15 @@ package com.epicodus.shakeitup;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,13 +42,17 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnInfoWindowClickListener {
     @Bind(R.id.drinkImageView) ImageView mDrinkImageView;
     @Bind(R.id.dinnerImageView) ImageView mDinnerImageView;
     @Bind(R.id.funImageView) ImageView mFunImageView;
     @Bind(R.id.drinkNameTextView) TextView mDrinkNameTextView;
     @Bind(R.id.dinnerNameTextView) TextView mDinnerNameTextView;
     @Bind(R.id.funNameTextView) TextView mFunNameTextView;
+
+    @Bind(R.id.drinkCardView) CardView mDrinkCardView;
+    @Bind(R.id.dinnerCardView) CardView mDinnerCardView;
+    @Bind(R.id.funCardView) CardView mFunCardView;
 
     @Bind(R.id.restartButton) Button mRestartButton;
     @Bind(R.id.shareButton) Button mShareButton;
@@ -75,6 +83,10 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         initializeCardImages();
         initializeCardText();
 
+        mDrinkCardView.setOnClickListener(this);
+        mDinnerCardView.setOnClickListener(this);
+        mFunCardView.setOnClickListener(this);
+
         mRestartButton.setOnClickListener(this);
         mShareButton.setOnClickListener(this);
 
@@ -89,7 +101,14 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 }
             });
         }
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 
     @Override
@@ -103,6 +122,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             ActivityCompat.requestPermissions(ResultsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSION_REQUEST);
         }
+        mMap.setOnInfoWindowClickListener(this);
     }
 
     public void initializeMapMarkers() {
@@ -198,6 +218,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                                 .into(badge, new MarkerImageCallback(marker));
                         title.setText(business.getName());
                         snippet.setText(business.getPhone());
+                        snippet.setTextColor(Color.parseColor("#000000"));
 
                         return view;
                     }
@@ -229,6 +250,14 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @Override
+    public void onInfoWindowClick(Marker marker) {
+        Business business = mMarkersBusinessesHashMap.get(marker.getId());
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+        callIntent.setData(Uri.parse("tel:" + business.getPhone()));
+        startActivity(callIntent);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.restartButton:
@@ -238,10 +267,22 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             case R.id.shareButton:
                 Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                 shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "Let's go on a date to: \n" + mDrink.getName() + "\n" + mDinner.getName() + "\n" + mFun.getName());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Let's shake it up at: \n" + mDrink.getName() + "\n" + mDinner.getName() + "\n" + mFun.getName());
                 shareIntent.setType("text/plain");
 
                 startActivity(Intent.createChooser(shareIntent, "How do you want to share?"));
+                break;
+            case R.id.drinkCardView:
+                Intent yelpDrinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mDrink.getMobileUrl()));
+                startActivity(yelpDrinkIntent);
+                break;
+            case R.id.dinnerCardView:
+                Intent yelpDinnerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mDinner.getMobileUrl()));
+                startActivity(yelpDinnerIntent);
+                break;
+            case R.id.funCardView:
+                Intent yelpFunIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mFun.getMobileUrl()));
+                startActivity(yelpFunIntent);
                 break;
         }
     }
