@@ -216,6 +216,7 @@ tools:context=".ui.DrinkChooserFragment">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/instructionsText"
+            android:textColor="@color/colorDrinkAccent"
             android:textAlignment="center"
             android:text="Choose a place to have drinks!"
             android:textSize="20sp"

@@ -60,7 +60,7 @@ public class DinnerChooserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
         ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
         mDrinkImageView = (ImageView) view.findViewById(R.id.drinkImageView);
@@ -215,6 +215,7 @@ public class DinnerChooserFragment extends Fragment {
         mDrinkPassed = Parcels.unwrap(bundle.getParcelable("drink"));
 
         instructionsText.setText(R.string.dinnerChoiceInstructions);
+        instructionsText.setTextColor(getResources().getColor(R.color.colorDinnerAccent));
 
         Picasso.with(getContext()).load(mDrinkPassed.getImageUrl()).fit().centerCrop().into(mDrinkImageView);
         drinkTextView.setText(mDrinkPassed.getName());

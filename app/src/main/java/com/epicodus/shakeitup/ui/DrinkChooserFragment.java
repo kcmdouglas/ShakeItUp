@@ -50,7 +50,7 @@ public class DrinkChooserFragment extends Fragment { List<Business> mDrinksArray
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
         listView1 = (ListView) view.findViewById(R.id.listview1);
         drinkGridView = (GridView) view.findViewById(R.id.drinkGridView);
         drinkCardView = (CardView) view.findViewById(R.id.drinkCardView);

@@ -3,7 +3,6 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -29,7 +28,6 @@ import com.epicodus.shakeitup.models.PassObject;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +70,7 @@ public class FunChooserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line reuses fragment layout from before
-        View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
+        View view = inflater.inflate(R.layout.fragment_chooser, container, false);
         ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
         funGridView = (GridView) view.findViewById(R.id.funGridView);
@@ -231,6 +229,7 @@ public class FunChooserFragment extends Fragment {
         mDinnerPassed = Parcels.unwrap(bundle.getParcelable("dinner"));
 
         instructionsText.setText(R.string.funChoiceInstructions);
+        instructionsText.setTextColor(getResources().getColor(R.color.colorFunAccent));
 
         Picasso.with(getContext()).load(mDrinkPassed.getImageUrl()).fit().centerCrop().into(mDrinkImageView);
         Picasso.with(getContext()).load(mDinnerPassed.getImageUrl()).fit().centerCrop().into(mDinnerImageView);
