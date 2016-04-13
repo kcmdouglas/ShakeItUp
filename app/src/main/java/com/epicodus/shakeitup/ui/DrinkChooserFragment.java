@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.R;
@@ -33,6 +34,7 @@ public class DrinkChooserFragment extends Fragment { List<Business> mDrinksArray
     ListView listView1;
     GridView drinkGridView;
     CardView drinkCardView;
+    TextView drinkTextView;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
@@ -50,8 +52,9 @@ public class DrinkChooserFragment extends Fragment { List<Business> mDrinksArray
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exp_chooser, container, false);
         listView1 = (ListView) view.findViewById(R.id.listview1);
-        drinkGridView = (GridView) view.findViewById(R.id.gridview3);
-
+        drinkGridView = (GridView) view.findViewById(R.id.drinkGridView);
+        drinkCardView = (CardView) view.findViewById(R.id.drinkCardView);
+        drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
         area1.setOnDragListener(myOnDragListener);
@@ -136,9 +139,11 @@ public class DrinkChooserFragment extends Fragment { List<Business> mDrinksArray
                     }
 
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.drinkImageView));
+                    drinkTextView.setText(passedItem.getName());
 
                     drinkCardView.setVisibility(View.VISIBLE);
                     drinkGridView.setVisibility(View.GONE);
+
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
 
