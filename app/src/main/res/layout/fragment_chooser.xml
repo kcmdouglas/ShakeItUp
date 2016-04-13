@@ -1,63 +1,259 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:orientation="vertical"
-android:padding="4dp"
-tools:context=".ui.DrinkChooserFragment" >
+tools:context=".ui.DrinkChooserFragment">
 
-    <LinearLayout
+    <!--Drink Dotted Line-->
+    <com.epicodus.shakeitup.ui.LinearLayoutAbsListView
+        android:id="@+id/pane3"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
         android:orientation="horizontal"
-      >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingBottom="6dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
 
-            <com.epicodus.shakeitup.ui.LinearLayoutAbsListView
-                android:id="@+id/pane3"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
+            <GridView
+                android:id="@+id/drinkGridView"
+                android:layout_width="@dimen/results_cardview_width"
+                android:layout_height="@dimen/chooser_empty_cardview_height"
+                android:gravity="center"
                 android:layout_margin="4dp"
-                android:background="@android:color/background_light"
-                android:orientation="vertical">
+                android:paddingBottom="6dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/drink_dotted_border"
+                android:visibility="visible"
+                />
 
-                <GridView
-                    android:id="@+id/gridview3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:numColumns="3"
-                    android:gravity="center" />
-            </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
-
-
-            <com.epicodus.shakeitup.ui.LinearLayoutAbsListView
-                android:id="@+id/pane1"
-                android:layout_width="match_parent"
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="@dimen/results_cardview_width"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pane3"
-                android:background="@android:color/background_light"
-                android:orientation="vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin" >
+                android:id="@+id/drinkCardView"
+                card_view:cardBackgroundColor="@color/colorDrinkAccent"
+                android:layout_margin="4dp"
+                card_view:cardCornerRadius="1dp"
+                android:visibility="gone">
 
-                <ListView
-                    android:id="@+id/listview1"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    />
+                    android:layout_height="match_parent">
 
-            </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
-        </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/drinkImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/results_cardview_imageview_height"
+                        android:layout_centerHorizontal="true"/>
 
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/results_cardview_textview_height"
+                        android:layout_below="@id/drinkImageView"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_vertical"
+                        android:padding="2dp"
+                        android:id="@+id/drinkTextView"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryText"
+                        android:text="Moonlight Mediterranean Food" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" >
+            </Space>
+
+            <GridView
+                android:id="@+id/dinnerGridView"
+                android:layout_width="@dimen/results_cardview_width"
+                android:layout_height="@dimen/chooser_empty_cardview_height"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:layout_margin="4dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/dinner_dotted_border"
+                android:visibility="invisible"
+                />
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="@dimen/results_cardview_width"
+                android:layout_height="wrap_content"
+                android:id="@+id/dinnerCardView"
+                android:layout_margin="4dp"
+                card_view:cardCornerRadius="1dp"
+                card_view:cardBackgroundColor="@color/colorDinnerAccent"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/dinnerImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/results_cardview_imageview_height"
+                        android:layout_centerHorizontal="true"/>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/results_cardview_textview_height"
+                        android:layout_below="@id/dinnerImageView"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_vertical"
+                        android:padding="2dp"
+                        android:id="@+id/dinnerTextView"
+                        android:textColor="@color/colorPrimaryText"
+                        android:textAlignment="center"
+                        android:text="Tacos" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" >
+            </Space>
+
+            <GridView
+                android:id="@+id/funGridView"
+                android:layout_width="@dimen/results_cardview_width"
+                android:layout_height="@dimen/chooser_empty_cardview_height"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:layout_margin="4dp"
+
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/fun_dotted_border"
+                android:visibility="invisible"
+                />
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="@dimen/results_cardview_width"
+                android:layout_height="wrap_content"
+                android:id="@+id/funCardView"
+                android:layout_margin="4dp"
+                card_view:cardBackgroundColor="@color/colorFunAccent"
+                card_view:cardCornerRadius="1dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/funImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/results_cardview_imageview_height"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/colorFunAccent"/>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/results_cardview_textview_height"
+                        android:layout_below="@id/funImageView"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_vertical"
+                        android:padding="2dp"
+                        android:id="@+id/funTextView"
+                        android:textColor="@color/colorPrimaryText"
+                        android:background="@color/colorFunAccent"
+                        android:textAlignment="center"
+                        android:text="Shut Up And Eat" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
+
+
+
+    <!--Instruction text-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pane3"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingBottom="10dp"
+        android:id="@+id/instructionsRow"
+        android:weightSum="1.0">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/instructionsText"
+            android:textColor="@color/colorDrinkAccent"
+            android:textAlignment="center"
+            android:text="Choose a place to have drinks!"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
+    <!--List of locations-->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/instructionsRow">
 
-</LinearLayout>
+        <com.epicodus.shakeitup.ui.LinearLayoutAbsListView
+            android:id="@+id/pane1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pane3"
+            android:background="@android:color/background_light"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin" >
+
+            <ListView
+                android:id="@+id/listview1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                />
+
+        </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
+
