@@ -1,6 +1,7 @@
 package com.epicodus.shakeitup.services;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.epicodus.shakeitup.R;
 

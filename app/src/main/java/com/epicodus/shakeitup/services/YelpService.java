@@ -90,14 +90,12 @@ public class YelpService {
                     for (int z = 0; z < arrayOfCategories.length(); z++) {
                         JSONArray categoriesArray = arrayOfCategories.getJSONArray(z);
                         yelpCategory += categoriesArray.getString(0);
-                        Log.d(TAG, yelpCategory);
                     }
                     String phone = "";
                     try {
                         phone = businessJSON.getString("display_phone");
                     } catch (JSONException jsone) {
                         jsone.printStackTrace();
-                        Log.e(TAG, category);
                     }
                     String snippetText = businessJSON.getString("snippet_text");
                     String imageUrl = businessJSON.getString("image_url");

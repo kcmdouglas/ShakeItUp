@@ -28,7 +28,7 @@ public class GeolocationService {
     private Context mContext;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
-    public String currentState;
+    public String currentCity;
 
     public GeolocationService(Context context) {
         this.mContext = context;
@@ -66,7 +66,7 @@ public class GeolocationService {
                 JSONObject stateObject = addressComponents.getJSONObject(2);
                 String stateName = stateObject.getString("short_name");
                 addToSharedPreferences(address);
-                currentState = stateName;
+                currentCity = stateName;
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -79,8 +79,8 @@ public class GeolocationService {
         mEditor.putString("location", location).commit();
     }
 
-    public String getCurrentState() {
-        return currentState;
+    public String getCurrentCity() {
+        return currentCity;
     }
 
 }

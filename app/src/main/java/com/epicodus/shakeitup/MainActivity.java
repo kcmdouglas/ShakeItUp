@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         shakeButton.setOnClickListener(this);
 
-        initializeUnsplashBackground();
-
        }
 
     private void getDrinkPlaces(final String location) {
@@ -161,41 +159,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initializeUnsplashBackground() {
         final UnsplashService unsplashService = new UnsplashService(this);
         final GeolocationService geolocationService = new GeolocationService(this);
-        String mCurrentState = geolocationService.getCurrentState();
+        String mCurrentCity = geolocationService.getCurrentCity();
 
-        if (mCurrentState != null) {
-            unsplashService.getUnsplashData(mCurrentState, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
+        geolocationService.getCurrentAddress(mCurrentLocation, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    unsplashService.processResults(response);
-                    mBackgroundImgUrl = unsplashService.getImageUrl();
-                    Picasso.with(MainActivity.this)
-                            .load(mBackgroundImgUrl)
-                            .resize(400, 400)
-                            .centerCrop()
-                            .into(backgroundImg);
-                }
-            });
-        } else {
-            geolocationService.getCurrentAddress(mCurrentLocation, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                geolocationService.processResults(response);
+                String mCurrentCity = geolocationService.getCurrentCity();
+                unsplashService.getUnsplashData(mCurrentCity, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    geolocationService.processResults(response);
-                    //initializeUnsplashBackground();
-                }
-            });
-        }
-
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        unsplashService.processResults(response);
+                        mBackgroundImgUrl = unsplashService.getImageUrl();
+                        if (mBackgroundImgUrl != null) {
+                            Picasso.with(MainActivity.this)
+                                    .load(mBackgroundImgUrl)
+                                    .resize(400, 400)
+                                    .centerCrop()
+                                    .into(backgroundImg);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -205,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
                 mCurrentLocation = (mLastLocation.getLatitude() + "," + mLastLocation.getLongitude());
+                initializeUnsplashBackground();
             }
         } else {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
