@@ -13,12 +13,14 @@ tools:context=".ui.DrinkChooserFragment">
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:elevation="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:background="@color/colorPrimaryDark"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -38,8 +40,7 @@ tools:context=".ui.DrinkChooserFragment">
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:background="@drawable/drink_dotted_border"
-                android:visibility="visible"
-                />
+                android:visibility="visible" />
 
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -71,7 +72,8 @@ tools:context=".ui.DrinkChooserFragment">
                         android:padding="2dp"
                         android:id="@+id/drinkTextView"
                         android:textAlignment="center"
-                        android:textColor="@color/colorPrimaryText"
+                        android:textColor="@color/colorIcons"
+                        android:textStyle="bold"
                         android:text="Moonlight Mediterranean Food" />
 
                 </RelativeLayout>
@@ -127,7 +129,8 @@ tools:context=".ui.DrinkChooserFragment">
                         android:gravity="center_vertical"
                         android:padding="2dp"
                         android:id="@+id/dinnerTextView"
-                        android:textColor="@color/colorPrimaryText"
+                        android:textColor="@color/colorIcons"
+                        android:textStyle="bold"
                         android:textAlignment="center"
                         android:text="Tacos" />
 
@@ -186,7 +189,8 @@ tools:context=".ui.DrinkChooserFragment">
                         android:gravity="center_vertical"
                         android:padding="2dp"
                         android:id="@+id/funTextView"
-                        android:textColor="@color/colorPrimaryText"
+                        android:textColor="@color/colorIcons"
+                        android:textStyle="bold"
                         android:background="@color/colorFunAccent"
                         android:textAlignment="center"
                         android:text="Shut Up And Eat" />
@@ -200,58 +204,69 @@ tools:context=".ui.DrinkChooserFragment">
 
 
 
-    <!--Instruction text-->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/pane3"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingBottom="10dp"
-        android:id="@+id/instructionsRow"
-        android:weightSum="1.0">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/instructionsText"
-            android:textColor="@color/colorDrinkAccent"
-            android:textAlignment="center"
-            android:text="Choose a place to have drinks!"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-    </LinearLayout>
 
     <!--List of locations-->
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_below="@id/instructionsRow">
+        android:layout_below="@id/pane3"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        card_view:cardCornerRadius="1dp"
+        card_view:cardElevation="5dp">
 
-        <com.epicodus.shakeitup.ui.LinearLayoutAbsListView
-            android:id="@+id/pane1"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pane3"
-            android:background="@android:color/background_light"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin" >
+            android:layout_height="match_parent">
 
-            <ListView
-                android:id="@+id/listview1"
+            <!--Instruction text-->
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                />
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/instructionsRow"
+                android:weightSum="1.0">
 
-        </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/instructionsText"
+                    android:textColor="@color/colorDrinkAccent"
+                    android:textAlignment="center"
+                    android:text="Choose a place to have drinks!"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <com.epicodus.shakeitup.ui.LinearLayoutAbsListView
+                android:id="@+id/pane1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/instructionsRow"
+                android:background="@android:color/background_light"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin" >
+
+                <ListView
+                    android:id="@+id/listview1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    />
+
+            </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
+        </RelativeLayout>
+
 
     </android.support.v7.widget.CardView>
 
