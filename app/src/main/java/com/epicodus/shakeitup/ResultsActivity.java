@@ -37,6 +37,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -167,9 +168,23 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     public void initializeCardText() {
-        mDrinkNameTextView.setText(mDrink.getName());
-        mDinnerNameTextView.setText(mDinner.getName());
-        mFunNameTextView.setText(mFun.getName());
+        if (mDrink.getName().length() > 25) {
+            mDrinkNameTextView.setText(String.format(Locale.US, getString(R.string.cutoff_name), mDrink.getName().substring(0, 24)));
+        } else {
+            mDrinkNameTextView.setText(mDrink.getName());
+        }
+
+        if (mDinner.getName().length() > 25) {
+            mDinnerNameTextView.setText(String.format(Locale.US, getString(R.string.cutoff_name), mDinner.getName().substring(0, 24)));
+        } else {
+            mDinnerNameTextView.setText(mDinner.getName());
+        }
+
+        if (mFun.getName().length() > 25) {
+            mFunNameTextView.setText(String.format(Locale.US, getString(R.string.cutoff_name), mFun.getName().substring(0, 24)));
+        } else {
+            mFunNameTextView.setText(mFun.getName());
+        }
     }
 
     @Override
