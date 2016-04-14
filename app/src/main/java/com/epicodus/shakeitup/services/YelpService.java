@@ -87,7 +87,13 @@ public class YelpService {
                     String name = businessJSON.getString("name");
                     JSONArray arrayOfCategories = businessJSON.getJSONArray("categories");
                     String yelpCategory = "";
-                    for (int z = 0; z < arrayOfCategories.length(); z++) {
+                    int iterator = 0;
+                    if (arrayOfCategories.length() < 2) {
+                        iterator = arrayOfCategories.length();
+                    } else {
+                        iterator = 2;
+                    }
+                    for (int z = 0; z < iterator; z++) {
                         JSONArray categoriesArray = arrayOfCategories.getJSONArray(z);
                         yelpCategory += categoriesArray.getString(0) + ", ";
                     }

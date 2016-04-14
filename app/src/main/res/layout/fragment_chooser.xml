@@ -230,7 +230,7 @@ tools:context=".ui.DrinkChooserFragment">
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/activity_horizontal_margin"
                 android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="2dp"
                 android:id="@+id/instructionsRow"
                 android:weightSum="1.0">
 
@@ -248,14 +248,14 @@ tools:context=".ui.DrinkChooserFragment">
             <com.epicodus.shakeitup.ui.LinearLayoutAbsListView
                 android:id="@+id/pane1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/instructionsRow"
                 android:background="@android:color/background_light"
                 android:orientation="vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin" >
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp" >
 
                 <ListView
                     android:id="@+id/listview1"
