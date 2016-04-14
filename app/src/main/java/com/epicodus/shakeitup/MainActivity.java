@@ -1,12 +1,14 @@
 package com.epicodus.shakeitup;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -84,8 +86,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (yelpService.processResults(response, YelpService.DRINK)) {
-                    Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
-                    startActivity(intent);
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.hide();
+                            Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                                startActivity(intent, options.toBundle());
+                            } else {
+                                startActivity(intent);
+                            }
+                        }
+                    });
                 } else {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -152,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initializeProgressDialog() {
         loadingDialog = new ProgressDialog(this);
-        loadingDialog.setTitle("loading...");
-        loadingDialog.setMessage("Preparing data...");
+        loadingDialog.setTitle("Hold on...");
+        loadingDialog.setMessage("We're finding some great places for you!");
         loadingDialog.setCancelable(false);
     }
 
@@ -231,4 +244,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
 }

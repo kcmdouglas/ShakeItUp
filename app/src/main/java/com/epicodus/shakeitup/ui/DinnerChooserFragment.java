@@ -223,7 +223,7 @@ public class DinnerChooserFragment extends Fragment {
                     }
 
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.dinnerImageView));
-                    dinnerTextView.setText(passedItem.getName());
+                    dinnerTextView.setText(passedItem.getCardText());
 
                     dinnerGridView.setVisibility(View.GONE);
                     dinnerCardView.setVisibility(View.VISIBLE);
@@ -284,7 +284,7 @@ public class DinnerChooserFragment extends Fragment {
         instructionsText.setTextColor(getResources().getColor(R.color.colorDinnerAccent));
 
         Picasso.with(getContext()).load(mDrinkPassed.getImageUrl()).fit().centerCrop().into(mDrinkImageView);
-        drinkTextView.setText(mDrinkPassed.getName());
+        drinkTextView.setText(mDrinkPassed.getCardText());
 
 
         drinkGridView.setVisibility(View.GONE);

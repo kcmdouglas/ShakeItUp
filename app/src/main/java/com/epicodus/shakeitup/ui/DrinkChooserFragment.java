@@ -2,6 +2,9 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
+
+import android.os.Build;
+
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
@@ -9,6 +12,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Settings;
@@ -40,7 +44,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Locale;
 
 public class DrinkChooserFragment extends Fragment {
     List<Business> mDrinksArray, mSelectedBusinessesArray;
@@ -83,6 +87,8 @@ public class DrinkChooserFragment extends Fragment {
         drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
+
+
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
         area1.setAbsListView(listView1);
@@ -145,7 +151,6 @@ public class DrinkChooserFragment extends Fragment {
 
 
         listView1.setOnItemClickListener(listOnItemClickListener);
-
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
 
         return view;
@@ -214,7 +219,7 @@ public class DrinkChooserFragment extends Fragment {
                     }
 
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.drinkImageView));
-                    drinkTextView.setText(passedItem.getName());
+                    drinkTextView.setText(passedItem.getCardText());
 
                     drinkCardView.setVisibility(View.VISIBLE);
                     drinkGridView.setVisibility(View.GONE);
@@ -288,4 +293,6 @@ public class DrinkChooserFragment extends Fragment {
         myItemListAdapter1.list.addAll(mDrinksArray);
         myItemListAdapter1.notifyDataSetChanged();
     }
+
+
 }

@@ -9,21 +9,49 @@ import android.widget.TextView;
 public class ListViewHolder {
     String imageUrl;
     TextView text;
+    TextView category;
+    TextView snippet;
+    TextView rating;
 
-    public String getIcon() {
+    public TextView getRating() {
+        return rating;
+    }
+
+    public void setRating(TextView rating) {
+        this.rating = rating;
+    }
+
+    public String getImageUrl() {
         return imageUrl;
     }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public TextView getSnippet() {
+        return snippet;
+    }
+
+    public void setSnippet(TextView snippet) {
+        this.snippet = snippet;
+    }
+
+    public TextView getCategory() {
+        return category;
+    }
+
 
     public TextView getText() {
         return text;
     }
 
-    public void setIcon(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public void setText(TextView text) {
         this.text = text;
+    }
+
+    public void setCategory(TextView category) {
+        this.category = category;
     }
 }
 
