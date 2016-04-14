@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -17,9 +18,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.shakeButton) Button shakeButton;
     @Bind(R.id.locationTextView) TextView locationLabel;
     @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
+    @Bind(R.id.backgroundImageView2) ImageView backgroundImageView2;
+    @Bind(R.id.jumbotron) RelativeLayout jumbotron;
     public static ProgressDialog loadingDialog;
     public static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
@@ -61,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         initializeProgressDialog();
         initializeUnsplashBackground();
+
+//        TODO: hide keyboard on
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -183,15 +194,99 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(Call call, Response response) throws IOException {
                 unsplashService.processResults(response);
                 mBackgroundImgUrl = unsplashService.getImageUrl();
+
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (mBackgroundImgUrl != null) {
+                            final ImageView backgoundImageToShow;
+                            final ImageView backgoundImageToHide;
+                            if (backgroundImageView.getAlpha() == 0.0f) {
+                                backgoundImageToShow = backgroundImageView;
+                                backgoundImageToHide = backgroundImageView2;
+                            } else {
+                                backgoundImageToShow = backgroundImageView2;
+                                backgoundImageToHide = backgroundImageView;
+                            }
                             Picasso.with(MainActivity.this)
                                     .load(mBackgroundImgUrl)
                                     .resize(400, 400)
                                     .centerCrop()
-                                    .into(backgroundImageView);
+                                    .into(backgoundImageToShow, new com.squareup.picasso.Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                            Log.d(TAG, "Image = " + backgroundImageView.getAlpha());
+                                            Log.d(TAG, "Image2 = " + backgroundImageView2.getAlpha());
+
+                                            Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+                                            fadeOut.setInterpolator(new AccelerateInterpolator());
+                                            fadeOut.setStartOffset(15000);
+                                            fadeOut.setDuration(3000);
+
+                                            Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+                                            fadeIn.setInterpolator(new AccelerateInterpolator());
+                                            fadeIn.setStartOffset(0);
+                                            fadeIn.setDuration(3000);
+
+                                            AnimationSet animationHide = new AnimationSet(false);
+                                            animationHide.addAnimation(fadeOut);
+                                            backgoundImageToHide.setAnimation(animationHide);
+                                            animationHide.setAnimationListener(new Animation.AnimationListener() {
+                                                @Override
+                                                public void onAnimationStart(Animation animation) {
+                                                    Log.d(TAG, "FADE OUT");
+//                                                    backgoundImageToShow.setAlpha(1.0f);
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animation animation) {
+                                                    backgoundImageToHide.setAlpha(0.0f);
+                                                    StringBuilder str = new StringBuilder(unsplashService.getColor());
+                                                    str.insert(1, "79");
+                                                    Log.d(TAG, str.toString());
+                                                    jumbotron.setBackgroundColor(Color.parseColor(str.toString()));
+//                                                try {
+//                                                    Thread.sleep(90000);
+//                                                } catch (InterruptedException e) {
+//                                                    e.printStackTrace();
+//                                                }
+                                                    initializeUnsplashBackground();
+                                                }
+
+                                                @Override
+                                                public void onAnimationRepeat(Animation animation) {
+
+                                                }
+                                            });
+
+                                            AnimationSet animationShow = new AnimationSet(false);
+                                            animationShow.addAnimation(fadeIn);
+                                            backgoundImageToShow.setAnimation(animationShow);
+                                            animationShow.setAnimationListener(new Animation.AnimationListener() {
+                                                @Override
+                                                public void onAnimationStart(Animation animation) {
+                                                    Log.d(TAG, "FADE IN");
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animation animation) {
+                                                    backgoundImageToShow.setAlpha(1.0f);
+                                                }
+
+                                                @Override
+                                                public void onAnimationRepeat(Animation animation) {
+
+                                                }
+                                            });
+//
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.e(TAG, "Picasso image loading has failed");
+                                        }
+                                    });
                         }
                     }
                 });

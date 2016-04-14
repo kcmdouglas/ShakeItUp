@@ -30,7 +30,7 @@ public class GeolocationService {
     private Context mContext;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
-    public String currentCity;
+    private String currentCity;
 
     public GeolocationService(Context context) {
         this.mContext = context;
