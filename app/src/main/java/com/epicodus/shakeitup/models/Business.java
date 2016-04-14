@@ -2,12 +2,14 @@ package com.epicodus.shakeitup.models;
 
 import android.util.Log;
 
+import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.services.YelpService;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Guest on 4/11/16.
@@ -24,6 +26,7 @@ public class Business {
     String address;
     String yelpCategory;
     String snippetText;
+    String cardText;
     static ArrayList<Business> dinnerList = new ArrayList<>();
     static ArrayList<Business> drinkList = new ArrayList<>();
     static ArrayList<Business> funList = new ArrayList<>();
@@ -41,6 +44,7 @@ public class Business {
         this.address = address;
         this.yelpCategory = yelpCategory;
         this.snippetText = snippetText;
+        this.cardText = initializeCardText(name);
     }
 
     public String getYelpCategory() {
@@ -162,5 +166,19 @@ public class Business {
             case YelpService.FUN: funList.clear();
                 break;
         }
+    }
+
+    private String initializeCardText(String name) {
+        String label;
+        if (name.length() > 25) {
+            label = String.format(Locale.US, "%s…", name.substring(0, 24));
+        } else {
+            label = name;
+        }
+        return label;
+    }
+
+    public String getCardText() {
+        return cardText;
     }
 }

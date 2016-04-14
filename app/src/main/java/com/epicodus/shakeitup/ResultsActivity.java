@@ -6,13 +6,16 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -73,6 +76,10 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         ButterKnife.bind(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setEnterTransition(new Slide(Gravity.RIGHT).setStartDelay(400).setDuration(400));
+        }
 
         mDrink = Parcels.unwrap(getIntent().getParcelableExtra("drink"));
         mDinner = Parcels.unwrap(getIntent().getParcelableExtra("dinner"));
@@ -246,28 +253,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                         return view;
                     }
                 });
-
-                float bearing = mMap.getCameraPosition().bearing;
-                int zoom = (int)mMap.getCameraPosition().zoom;
-                if ((bearing >= 0.0 && bearing < 45.0) || (bearing > 305.0 && bearing <= 360.0)) {
-                    // i.e. if our map is rotated facing between NW and NE, towards North
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(business.getLatlng().latitude + (double)90/Math.pow(2, zoom), business.getLatlng().longitude), zoom);
-                    mMap.animateCamera(cu);
-                } else if (bearing > 45.0 && bearing < 135.0) {
-                    // i.e. if our map is rotated facing between NE and SE, towards East
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(business.getLatlng().latitude, business.getLatlng().longitude + (double)90/Math.pow(2, zoom)), zoom);
-                    mMap.animateCamera(cu);
-                } else if (bearing > 135.0 && bearing < 225.0) {
-                    // i.e. if our map is rotated facing between SE and SW, towards South
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(business.getLatlng().latitude - (double)90/Math.pow(2, zoom), business.getLatlng().longitude), zoom);
-                    mMap.animateCamera(cu);
-                } else {
-                    // i.e. if our map is rotated facing between SW and NW, towards West
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(business.getLatlng().latitude, business.getLatlng().longitude - (double)90/Math.pow(2, zoom)), zoom);
-                    mMap.animateCamera(cu);
-                }
-                marker.showInfoWindow();
-                return true;
+                return false;
             }
         });
     }

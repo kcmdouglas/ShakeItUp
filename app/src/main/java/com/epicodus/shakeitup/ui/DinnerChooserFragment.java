@@ -2,7 +2,14 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.DragEvent;
@@ -49,6 +56,15 @@ public class DinnerChooserFragment extends Fragment {
     Business mDrinkPassed;
     ImageView mDrinkImageView;
 
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    private SensorEventListener listener;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 1500;
+    private long lastShakeTime = 0;
+    private MediaPlayer mediaPlayer;
+
 
     public DinnerChooserFragment() {
     }
@@ -89,6 +105,55 @@ public class DinnerChooserFragment extends Fragment {
         listView1.setAdapter(myItemListAdapter1);
 
         dinnerGridView.setAdapter(myItemGridAdapter3);
+
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        listener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                Sensor sensor = event.sensor;
+                if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                    float x = event.values[0];
+                    float y = event.values[1];
+                    float z = event.values[2];
+
+                    long currentTime = System.currentTimeMillis();
+                    if ((currentTime - lastUpdate) > 100) {
+                        long timeDifference = currentTime - lastUpdate;
+                        lastUpdate = currentTime;
+
+                        float speed = Math.abs(x + y + z - last_x - last_y - last_z)/timeDifference * 10000;
+                        if (speed > SHAKE_THRESHOLD) {
+                            long now = System.currentTimeMillis();
+                            if (now - lastShakeTime > 1000) {
+                                ChooserActivity activity = (ChooserActivity) getActivity();
+                                activity.soundManager("plate");
+                                Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                                if (vibrator.hasVibrator()) {
+                                    vibrator.vibrate(300);
+                                }
+                                randomizeDinner();
+                            }
+
+                            lastShakeTime = System.currentTimeMillis();
+                        }
+                    }
+
+                    last_x = x;
+                    last_y = y;
+                    last_z = z;
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        mSensorManager.registerListener(listener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         listView1.setOnItemClickListener(listOnItemClickListener);
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
 
@@ -158,7 +223,7 @@ public class DinnerChooserFragment extends Fragment {
                     }
 
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.dinnerImageView));
-                    dinnerTextView.setText(passedItem.getName());
+                    dinnerTextView.setText(passedItem.getCardText());
 
                     dinnerGridView.setVisibility(View.GONE);
                     dinnerCardView.setVisibility(View.VISIBLE);
@@ -167,6 +232,7 @@ public class DinnerChooserFragment extends Fragment {
                     if (mListener != null) {
                         mListener.onSecondItemDroppedInDropZone(mDrinkPassed, passedItem);
                     }
+                    mSensorManager.unregisterListener(listener);
 
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
@@ -218,7 +284,7 @@ public class DinnerChooserFragment extends Fragment {
         instructionsText.setTextColor(getResources().getColor(R.color.colorDinnerAccent));
 
         Picasso.with(getContext()).load(mDrinkPassed.getImageUrl()).fit().centerCrop().into(mDrinkImageView);
-        drinkTextView.setText(mDrinkPassed.getName());
+        drinkTextView.setText(mDrinkPassed.getCardText());
 
 
         drinkGridView.setVisibility(View.GONE);
@@ -238,8 +304,14 @@ public class DinnerChooserFragment extends Fragment {
         return items.add(item);
     }
 
-
     public interface OnSecondItemDroppedInDropZone {
         void onSecondItemDroppedInDropZone(Business firstItem, Business secondItem);
+    }
+
+    private void randomizeDinner() {
+        mDinnersArray = Business.getRandomDinner();
+        myItemListAdapter1.list.clear();
+        myItemListAdapter1.list.addAll(mDinnersArray);
+        myItemListAdapter1.notifyDataSetChanged();
     }
 }

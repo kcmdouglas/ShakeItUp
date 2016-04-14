@@ -1,12 +1,18 @@
 package com.epicodus.shakeitup;
 
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.models.Business;
@@ -23,6 +29,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ChooserActivity extends AppCompatActivity implements DrinkChooserFragment.OnFirstItemDroppedInDropZoneListener, DinnerChooserFragment.OnSecondItemDroppedInDropZone, FunChooserFragment.OnThirdItemDroppedInDropZone {
 
@@ -33,6 +40,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     ArrayList<Business> mDrinksArray = new ArrayList<>();
     ArrayList<Business> mDinnersArray = new ArrayList<>();
     ArrayList<Business> mFunArray = new ArrayList<>();
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +49,23 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         MainActivity.loadingDialog.hide();
         initializeProgressDialog();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setEnterTransition(new Fade().setDuration(400));
+        }
+
         if (savedInstanceState == null) {
             DrinkChooserFragment drinkChooserFragment = DrinkChooserFragment.newInstance();
             mDrinksArray = Business.getRandomDrink();
             Bundle args = new Bundle();
             args.putParcelable("drinksArray", Parcels.wrap(mDrinksArray));
             drinkChooserFragment.setArguments(args);
-            getSupportFragmentManager().beginTransaction().add(R.id.chooser_content_layout, drinkChooserFragment).commit();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).add(R.id.chooser_content_layout, drinkChooserFragment).commit();
+            } else {
+                getSupportFragmentManager().beginTransaction().add(R.id.chooser_content_layout, drinkChooserFragment).commit();
+
+            }
+
         }
 
     }
@@ -80,7 +98,12 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         intent.putExtra("drink", Parcels.wrap(firstItem));
         intent.putExtra("dinner", Parcels.wrap(secondItem));
         intent.putExtra("fun", Parcels.wrap(thirdItem));
-        startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ChooserActivity.this);
+            startActivity(intent, options.toBundle());
+        } else {
+            startActivity(intent);
+        }
 
     }
 
@@ -97,7 +120,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
             public void onResponse(Call call, Response response) throws IOException {
                 if ((chooserFragment instanceof DinnerChooserFragment) || (chooserFragment instanceof FunChooserFragment)) {
                     yelpService.processResults(response, category);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.chooser_content_layout, chooserFragment).commit();
+                    getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left).replace(R.id.chooser_content_layout, chooserFragment).commit();
                 } else {
                     Log.e(TAG, "Called fragment not instance of DinnerChooserFragment or FunChooserFragment");
                 }
@@ -112,4 +135,24 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         loadingDialog.setMessage("Preparing data...");
         loadingDialog.setCancelable(false);
     }
+
+
+    public void soundManager(String soundName) {
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+            mediaPlayer.release();
+        }
+
+        if (soundName.equals("ice")) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.ice_glass);
+            mediaPlayer.start();
+        } else if (soundName.equals("plate")) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.plate);
+            mediaPlayer.start();
+        } else if (soundName.equals("guitar")) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.guitar);
+            mediaPlayer.start();
+        }
+    }
+
 }
