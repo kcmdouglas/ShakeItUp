@@ -85,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
        }
 
-    private void getDrinkPlaces(final String location) {
+    private void getDrinkPlaces(final String location, Boolean mode) {
         final YelpService yelpService = new YelpService(this);
 
-        yelpService.getYelpData(location, YelpService.DRINK, new Callback() {
+        yelpService.getYelpData(location, YelpService.DRINK, mode, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -97,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (yelpService.processResults(response, YelpService.DRINK)) {
+                    if (Business.getDrinkList().size() < 3) {
+                        getDrinkPlaces(location, YelpService.EXPANDED_MODE);
+                    }
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (locationLabel.getText().length() == 0) {
             getDrinkForCurrentLocation();
         } else {
-            getDrinkPlaces(locationLabel.getText().toString());
+            getDrinkPlaces(locationLabel.getText().toString(), YelpService.NORMAL_MODE);
         }
     }
 
@@ -169,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 geolocationService.processResults(response);
                 mSharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 mFormattedAddress = mSharedPreferences.getString("location", null);
-                getDrinkPlaces(mFormattedAddress);
+                getDrinkPlaces(mFormattedAddress, YelpService.NORMAL_MODE);
             }
         });
     }

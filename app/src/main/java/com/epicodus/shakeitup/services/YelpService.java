@@ -6,6 +6,7 @@ import android.widget.Switch;
 
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Business;
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -28,28 +29,41 @@ public class YelpService {
     public static final String DINNER = "restaurant";
     public static final String DRINK = "drinks";
     public static final String FUN = "entertainment";
+    public static final Boolean NORMAL_MODE = true;
+    public static final Boolean EXPANDED_MODE = false;
     private Context mContext;
 
     public YelpService(Context context) {
         this.mContext = context;
     }
 
-    public void getYelpData(String location, String category, Callback callback) {
+    public void getYelpData(String location, String category, Boolean mode, Callback callback) {
         final String CONSUMER_KEY = mContext.getString(R.string.consumer_key);
         final String CONSUMER_SECRET = mContext.getString(R.string.consumer_secret);
         final String TOKEN = mContext.getString(R.string.token);
         final String TOKEN_SECRET = mContext.getString(R.string.token_secret);
         String radius = "";
-        switch (category) {
-            case DINNER:
-                radius = "1600";
-                break;
-            case DRINK:
-                radius = "8000";
-                break;
-            case FUN:
-                radius = "10000";
-                break;
+        if (mode) {
+            switch (category) {
+                case DINNER:
+                    radius = "1600";
+                    break;
+                case DRINK:
+                    radius = "8000";
+                    break;
+                case FUN:
+                    radius = "10000";
+                    break;
+            }
+        } else {
+            switch (category) {
+                case DINNER: radius = "1600";
+                    break;
+                case DRINK: radius = "40000";
+                    break;
+                case FUN: radius = "10000";
+                    break;
+            }
         }
         OkHttpOAuthConsumer consumer = new OkHttpOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
         consumer.setTokenWithSecret(TOKEN, TOKEN_SECRET);
