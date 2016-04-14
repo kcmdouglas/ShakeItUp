@@ -60,6 +60,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Bind(R.id.restartButton) Button mRestartButton;
     @Bind(R.id.shareButton) Button mShareButton;
+    @Bind(R.id.directionsButton) Button mDirectionsButton;
 
     private GoogleMap mMap;
     private static final int MAP_PADDING = 85;
@@ -70,6 +71,8 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     private Business mFun;
     private ArrayList<Business> mBusinesses = new ArrayList<>();
     private Map<String, Business> mMarkersBusinessesHashMap = new HashMap<>();
+    private boolean drinkDirectionsReceived = false;
+    private boolean dinnerDirectionsReceived = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
         mRestartButton.setOnClickListener(this);
         mShareButton.setOnClickListener(this);
+        mDirectionsButton.setOnClickListener(this);
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -292,6 +296,28 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
             case R.id.funCardView:
                 Intent yelpFunIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mFun.getMobileUrl()));
                 startActivity(yelpFunIntent);
+                break;
+            case R.id.directionsButton:
+                if (!drinkDirectionsReceived) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("google.navigation:q=" + mDrink.getAddress()));
+                    intent.setPackage("com.google.android.apps.maps");
+                    drinkDirectionsReceived = true;
+                    mDirectionsButton.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.colorDinnerAccent));
+                    startActivity(intent);
+                } else if (!dinnerDirectionsReceived) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("google.navigation:q=" + mDinner.getAddress()));
+                    intent.setPackage("com.google.android.apps.maps");
+                    dinnerDirectionsReceived = true;
+                    mDirectionsButton.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.colorFunAccent));
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("google.navigation:q=" + mFun.getAddress()));
+                    intent.setPackage("com.google.android.apps.maps");
+                    startActivity(intent);
+                }
                 break;
         }
     }
