@@ -47,5 +47,4 @@ public class ItemListAdapter extends ItemBaseAdapter {
 
         return rowView;
     }
-
 }

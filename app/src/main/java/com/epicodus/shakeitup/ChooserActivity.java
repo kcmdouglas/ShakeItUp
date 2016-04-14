@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
@@ -46,7 +47,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         initializeProgressDialog();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Slide(Gravity.RIGHT));
+            getWindow().setEnterTransition(new Fade().setDuration(400));
         }
 
         if (savedInstanceState == null) {
@@ -131,6 +132,5 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         loadingDialog.setMessage("Preparing data...");
         loadingDialog.setCancelable(false);
     }
-
 
 }

@@ -1,38 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:focusable="false"
-    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:focusable="false"
+    android:focusableInTouchMode="true"
     android:background="@color/colorPrimaryDark"
     tools:context="com.epicodus.shakeitup.MainActivity">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/locationTextView"
-        android:layout_alignParentTop="true"
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/backgroundImageView"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:layout_marginTop="125dp"
-        android:hint="Search Neighborhood, Address, or City"
-        android:textColorHint="@color/colorIcons"
-        android:textColor="@color/colorIcons"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:singleLine="true" />
+        android:scaleType="centerCrop" />
 
-    <Button
+    <RelativeLayout
+        app:layout_widthPercent="80%"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shake your evening up!"
-        android:id="@+id/shakeButton"
-        android:layout_below="@+id/locationTextView"
-        android:backgroundTint="@color/colorAccent"
-        android:textColor="@color/colorIcons"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:paddingTop="40dp"
+        android:paddingBottom="30dp"
+        android:background="@color/colorAccent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/locationTextView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:hint="Search Neighborhood, Address, or City"
+            android:textColorHint="@color/colorIcons"
+            android:textColor="@color/colorIcons"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:singleLine="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shake your evening up!"
+            android:id="@+id/shakeButton"
+            android:layout_below="@+id/locationTextView"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/colorIcons"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+
+</android.support.percent.PercentRelativeLayout>
