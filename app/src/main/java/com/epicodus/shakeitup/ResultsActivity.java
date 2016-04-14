@@ -78,7 +78,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         ButterKnife.bind(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Slide(Gravity.RIGHT));
+            getWindow().setEnterTransition(new Slide(Gravity.RIGHT).setStartDelay(400).setDuration(400));
         }
 
         mDrink = Parcels.unwrap(getIntent().getParcelableExtra("drink"));

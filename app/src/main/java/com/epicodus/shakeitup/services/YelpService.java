@@ -89,8 +89,9 @@ public class YelpService {
                     String yelpCategory = "";
                     for (int z = 0; z < arrayOfCategories.length(); z++) {
                         JSONArray categoriesArray = arrayOfCategories.getJSONArray(z);
-                        yelpCategory += categoriesArray.getString(0);
+                        yelpCategory += categoriesArray.getString(0) + ", ";
                     }
+                    yelpCategory = yelpCategory.substring(0, yelpCategory.length() - 2);
                     String phone = "";
                     try {
                         phone = businessJSON.getString("display_phone");
