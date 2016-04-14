@@ -159,9 +159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initializeUnsplashBackground() {
         final UnsplashService unsplashService = new UnsplashService(this);
-        final GeolocationService geolocationService = new GeolocationService(this);
 
-        geolocationService.getCurrentAddress(mCurrentLocation, new Callback() {
+        unsplashService.getUnsplashData(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -169,33 +168,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                geolocationService.processResults(response);
-                String mCurrentCity = geolocationService.getCurrentCity();
-                unsplashService.getUnsplashData(mCurrentCity, new Callback() {
+                unsplashService.processResults(response);
+                mBackgroundImgUrl = unsplashService.getImageUrl();
+                MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        unsplashService.processResults(response);
-                        mBackgroundImgUrl = unsplashService.getImageUrl();
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (mBackgroundImgUrl != null) {
-                                    Picasso.with(MainActivity.this)
-                                            .load(mBackgroundImgUrl)
-                                            .resize(400, 400)
-                                            .centerCrop()
-                                            .into(backgroundImageView);
-                                }
-                            }
-                        });
-
+                    public void run() {
+                        if (mBackgroundImgUrl != null) {
+                            Picasso.with(MainActivity.this)
+                                    .load(mBackgroundImgUrl)
+                                    .resize(400, 400)
+                                    .centerCrop()
+                                    .into(backgroundImageView);
+                        }
                     }
                 });
+
             }
         });
     }
@@ -207,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
                 mCurrentLocation = (mLastLocation.getLatitude() + "," + mLastLocation.getLongitude());
-                initializeUnsplashBackground();
             }
         } else {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
