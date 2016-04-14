@@ -153,10 +153,7 @@ public class DinnerChooserFragment extends Fragment {
         };
 
         mSensorManager.registerListener(listener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        listView1.setOnItemClickListener(listOnItemClickListener);
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
-
 
         return view;
 
@@ -260,19 +257,6 @@ public class DinnerChooserFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
-    AdapterView.OnItemClickListener listOnItemClickListener = new AdapterView.OnItemClickListener(){
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            Toast.makeText(getContext(),
-                    ((Business)(parent.getItemAtPosition(position))).getName(),
-                    Toast.LENGTH_SHORT).show();
-        }
-
-    };
 
     private void initItems(){
         mSelectedBusinessesArray = new ArrayList<>();

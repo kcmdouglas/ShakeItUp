@@ -64,6 +64,7 @@ public class FunChooserFragment extends Fragment {
     ImageView mDrinkImageView;
     ImageView mDinnerImageView;
 
+
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private SensorEventListener listener;
@@ -162,9 +163,6 @@ public class FunChooserFragment extends Fragment {
 
         mSensorManager.registerListener(listener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        listView1.setOnItemClickListener(listOnItemClickListener);
-        funGridView.setOnItemClickListener(listOnItemClickListener);
-
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
         funGridView.setOnItemLongClickListener(myOnItemLongClickListener);
 
@@ -225,7 +223,7 @@ public class FunChooserFragment extends Fragment {
                     ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.absListView.getAdapter());
                     List<Business> destList = destAdapter.getList();
 
-                    initializeCard(passedItem, R.id.funCardView);
+                    initializeCard(passedItem, R.id.funImageView);
 
                     addItemToList(destList, mDrinkPassed);
                     addItemToList(destList, mDinnerPassed);
@@ -274,19 +272,6 @@ public class FunChooserFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
-    AdapterView.OnItemClickListener listOnItemClickListener = new AdapterView.OnItemClickListener(){
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            Toast.makeText(getContext(),
-                    ((Business)(parent.getItemAtPosition(position))).getName(),
-                    Toast.LENGTH_SHORT).show();
-        }
-
-    };
 
     private void initItems(){
         mSelectedBusinessesArray = new ArrayList<>();
