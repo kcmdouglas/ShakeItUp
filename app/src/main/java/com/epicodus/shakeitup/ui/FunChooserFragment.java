@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.DragEvent;
@@ -41,7 +42,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FunChooserFragment extends Fragment implements SensorEventListener {
+public class FunChooserFragment extends Fragment {
     List<Business> mFunArray, mSelectedBusinessesArray;
     ListView listView1;
     ItemListAdapter myItemListAdapter1;
@@ -65,6 +66,7 @@ public class FunChooserFragment extends Fragment implements SensorEventListener 
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
+    private SensorEventListener listener;
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 1500;
@@ -114,7 +116,51 @@ public class FunChooserFragment extends Fragment implements SensorEventListener 
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        listener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                Sensor sensor = event.sensor;
+                if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                    float x = event.values[0];
+                    float y = event.values[1];
+                    float z = event.values[2];
+
+                    long currentTime = System.currentTimeMillis();
+                    if ((currentTime - lastUpdate) > 100) {
+                        long timeDifference = currentTime - lastUpdate;
+                        lastUpdate = currentTime;
+
+                        float speed = Math.abs(x + y + z - last_x - last_y - last_z)/timeDifference * 10000;
+                        if (speed > SHAKE_THRESHOLD) {
+                            long now = System.currentTimeMillis();
+                            if (now - lastShakeTime > 1000) {
+                                ChooserActivity activity = (ChooserActivity) getActivity();
+                                activity.soundManager("guitar");
+                                Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                                if (vibrator.hasVibrator()) {
+                                    vibrator.vibrate(300);
+                                }
+                                randomizeFun();
+                            }
+
+                            lastShakeTime = System.currentTimeMillis();
+                        }
+                    }
+
+                    last_x = x;
+                    last_y = y;
+                    last_z = z;
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        mSensorManager.registerListener(listener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
         funGridView.setOnItemClickListener(listOnItemClickListener);
@@ -196,7 +242,7 @@ public class FunChooserFragment extends Fragment implements SensorEventListener 
 
                     mListener.onThirdItemDroppedInDropZone(mDrinkPassed, mDinnerPassed, passedItem);
 
-
+                    mSensorManager.unregisterListener(listener);
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
                 default:
@@ -274,40 +320,40 @@ public class FunChooserFragment extends Fragment implements SensorEventListener 
         return items.add(item);
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        Sensor sensor = event.sensor;
-        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-
-            long currentTime = System.currentTimeMillis();
-            if ((currentTime - lastUpdate) > 100) {
-                long timeDifference = currentTime - lastUpdate;
-                lastUpdate = currentTime;
-
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/timeDifference * 10000;
-                if (speed > SHAKE_THRESHOLD) {
-                    long now = System.currentTimeMillis();
-                    if (now - lastShakeTime > 1000) {
-                        randomizeFun();
-                    }
-
-                    lastShakeTime = System.currentTimeMillis();
-                }
-            }
-
-            last_x = x;
-            last_y = y;
-            last_z = z;
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
+//    @Override
+//    public void onSensorChanged(SensorEvent event) {
+//        Sensor sensor = event.sensor;
+//        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+//            float x = event.values[0];
+//            float y = event.values[1];
+//            float z = event.values[2];
+//
+//            long currentTime = System.currentTimeMillis();
+//            if ((currentTime - lastUpdate) > 100) {
+//                long timeDifference = currentTime - lastUpdate;
+//                lastUpdate = currentTime;
+//
+//                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/timeDifference * 10000;
+//                if (speed > SHAKE_THRESHOLD) {
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastShakeTime > 1000) {
+//                        randomizeFun();
+//                    }
+//
+//                    lastShakeTime = System.currentTimeMillis();
+//                }
+//            }
+//
+//            last_x = x;
+//            last_y = y;
+//            last_z = z;
+//        }
+//    }
+//
+//    @Override
+//    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//    }
 
 
     public interface OnThirdItemDroppedInDropZone {
