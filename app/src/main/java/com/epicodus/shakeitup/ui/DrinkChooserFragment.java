@@ -2,6 +2,7 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -57,6 +58,8 @@ public class DrinkChooserFragment extends Fragment { List<Business> mDrinksArray
         drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
+
+
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
         area1.setAbsListView(listView1);
@@ -70,7 +73,6 @@ public class DrinkChooserFragment extends Fragment { List<Business> mDrinksArray
         drinkGridView.setAdapter(myItemGridAdapter3);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
-
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
 
         return view;
