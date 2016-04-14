@@ -16,6 +16,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.ContextThemeWrapper;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -177,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initializeProgressDialog() {
         loadingDialog = new ProgressDialog(this);
         loadingDialog.setTitle("Hold on...");
-        loadingDialog.setMessage("We're finding some great places for you!");
+        loadingDialog.setMessage("We're finding some great places for you...");
         loadingDialog.setCancelable(false);
     }
 

@@ -47,7 +47,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
         MainActivity.loadingDialog.hide();
-        initializeProgressDialog();
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Fade().setDuration(400));
@@ -76,6 +76,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(item));
         dinnerChooserFragment.setArguments(args);
+        initializeProgressDialog(item.getName() + "? I've heard good things!", "We need to find a good restaurant to go to next...");
         loadingDialog.show(); //show progress dialog before make Dinner API request
         getPlaces(item, YelpService.DINNER, dinnerChooserFragment);
     }
@@ -87,13 +88,14 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         args.putParcelable("drink", Parcels.wrap(drinkItem));
         args.putParcelable("dinner", Parcels.wrap(dinnerItem));
         funChooserFragment.setArguments(args);
+        initializeProgressDialog("I've heard great things about " + dinnerItem.getName() + "!", "Now let's plan an activity...");
         loadingDialog.show(); //show progress dialog before make Dinner API request
         getPlaces(dinnerItem, YelpService.FUN, funChooserFragment);
     }
 
     @Override
     public void onThirdItemDroppedInDropZone(Business firstItem, Business secondItem, Business thirdItem) {
-        Toast.makeText(this, "Hurray!", Toast.LENGTH_LONG).show();
+        initializeProgressDialog("This date is going to be so great!", "Let me put the whole package together...");
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("drink", Parcels.wrap(firstItem));
         intent.putExtra("dinner", Parcels.wrap(secondItem));
@@ -129,10 +131,10 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         });
     }
 
-    private void initializeProgressDialog() {
+    private void initializeProgressDialog(String title, String message) {
         loadingDialog = new ProgressDialog(this);
-        loadingDialog.setTitle("loading...");
-        loadingDialog.setMessage("Preparing data...");
+        loadingDialog.setTitle(title);
+        loadingDialog.setMessage(message);
         loadingDialog.setCancelable(false);
     }
 
