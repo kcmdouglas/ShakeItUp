@@ -59,6 +59,7 @@ public class UnsplashService {
                 JSONObject urlsObject = bodyObject.getJSONObject("urls");
                 String regularImgUrl = urlsObject.getString("regular");
                 imageUrl = regularImgUrl;
+                Log.d("unsplashlog", response.toString());
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();

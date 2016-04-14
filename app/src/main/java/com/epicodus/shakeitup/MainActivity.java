@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.shakeButton) Button shakeButton;
     @Bind(R.id.locationTextView) TextView locationLabel;
     @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
+    @Bind(R.id.backgroundImageView2) ImageView backgroundImageView2;
     public static ProgressDialog loadingDialog;
     public static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initializeProgressDialog();
+        initializeUnsplashBackground();
+
+//        TODO: hide keyboard on
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)

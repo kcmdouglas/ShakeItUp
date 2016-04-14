@@ -17,6 +17,15 @@
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop" />
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/backgroundImageView2"
+        android:src="@drawable/"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop" />
+
     <RelativeLayout
         app:layout_widthPercent="80%"
         android:layout_width="wrap_content"
