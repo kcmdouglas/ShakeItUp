@@ -93,7 +93,6 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
     @Override
     public void onThirdItemDroppedInDropZone(Business firstItem, Business secondItem, Business thirdItem) {
-        Toast.makeText(this, "Hurray!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("drink", Parcels.wrap(firstItem));
         intent.putExtra("dinner", Parcels.wrap(secondItem));
