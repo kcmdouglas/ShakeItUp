@@ -3,6 +3,7 @@ package com.epicodus.shakeitup.ui;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -99,6 +100,9 @@ public class DinnerChooserFragment extends Fragment {
         area3.setAbsListView(dinnerGridView);
 
         initItems();
+        TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
+        Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
+        instructions.setTypeface(journal);
 
         myItemListAdapter1 = new ItemListAdapter(getContext(), mDinnersArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
@@ -153,10 +157,7 @@ public class DinnerChooserFragment extends Fragment {
         };
 
         mSensorManager.registerListener(listener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        listView1.setOnItemClickListener(listOnItemClickListener);
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
-
 
         return view;
 
@@ -260,19 +261,6 @@ public class DinnerChooserFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
-    AdapterView.OnItemClickListener listOnItemClickListener = new AdapterView.OnItemClickListener(){
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            Toast.makeText(getContext(),
-                    ((Business)(parent.getItemAtPosition(position))).getName(),
-                    Toast.LENGTH_SHORT).show();
-        }
-
-    };
 
     private void initItems(){
         mSelectedBusinessesArray = new ArrayList<>();

@@ -4,6 +4,7 @@ package com.epicodus.shakeitup.ui;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -64,6 +65,7 @@ public class FunChooserFragment extends Fragment {
     ImageView mDrinkImageView;
     ImageView mDinnerImageView;
 
+
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private SensorEventListener listener;
@@ -109,6 +111,9 @@ public class FunChooserFragment extends Fragment {
         area1.setAbsListView(listView1);
         area3.setAbsListView(funGridView);
         initItems();
+        TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
+        Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
+        instructions.setTypeface(journal);
         myItemListAdapter1 = new ItemListAdapter(getContext(), mFunArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
         listView1.setAdapter(myItemListAdapter1);
@@ -161,9 +166,6 @@ public class FunChooserFragment extends Fragment {
         };
 
         mSensorManager.registerListener(listener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        listView1.setOnItemClickListener(listOnItemClickListener);
-        funGridView.setOnItemClickListener(listOnItemClickListener);
 
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
         funGridView.setOnItemLongClickListener(myOnItemLongClickListener);
@@ -274,19 +276,6 @@ public class FunChooserFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
-    AdapterView.OnItemClickListener listOnItemClickListener = new AdapterView.OnItemClickListener(){
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            Toast.makeText(getContext(),
-                    ((Business)(parent.getItemAtPosition(position))).getName(),
-                    Toast.LENGTH_SHORT).show();
-        }
-
-    };
 
     private void initItems(){
         mSelectedBusinessesArray = new ArrayList<>();

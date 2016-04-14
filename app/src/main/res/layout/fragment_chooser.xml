@@ -202,10 +202,6 @@ tools:context=".ui.DrinkChooserFragment">
         </LinearLayout>
     </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
 
-
-
-
-
     <!--List of locations-->
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -240,8 +236,8 @@ tools:context=".ui.DrinkChooserFragment">
                     android:id="@+id/instructionsText"
                     android:textColor="@color/colorDrinkAccent"
                     android:textAlignment="center"
-                    android:text="Choose a place to have drinks!"
-                    android:textSize="20sp"
+                    android:text="@string/drinksChoiceInstructions"
+                    android:textSize="38sp"
                     android:textStyle="bold"/>
             </LinearLayout>
 

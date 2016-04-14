@@ -4,35 +4,52 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp">
 
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="100dp"
-        android:id="@+id/rowImageView"
-        android:background="@color/colorAccent" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:background="#ffffff"
-        android:layout_height="match_parent"
-        android:padding="10dp">
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:id="@+id/rowImageView"
+                android:background="@color/colorAccent" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/restaurantNameTextView"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:text="Restaurant Name"
-            android:textColor="@color/colorPrimary"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:background="#ffffff"
+            android:layout_height="match_parent"
+            android:id="@+id/draggableLinearLayout"
+            android:padding="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="One Cuisine Type"
-            android:id="@+id/categoryTextView"
-            android:textStyle="italic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/restaurantNameTextView"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:text="Restaurant Name"
+                android:textColor="@color/colorPrimary"/>
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="One Cuisine Type"
+                android:id="@+id/categoryTextView"
+                android:textStyle="italic"/>
+        </LinearLayout>
 
+        <ImageView
+                android:id="@+id/blackDragIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignRight="@id/draggableLinearLayout"
+                android:layout_alignBottom="@id/draggableLinearLayout"
+                android:gravity="bottom|right"
+                android:src="@drawable/ic_reorder_black_24dp" />
+    </RelativeLayout>
 </LinearLayout>
