@@ -2,6 +2,7 @@ package com.epicodus.shakeitup.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Business;
@@ -25,6 +26,7 @@ import se.akerfeldt.okhttp.signpost.SigningInterceptor;
  * Created by Guest on 4/13/16.
  */
 public class GeolocationService {
+    private static final String TAG = GeolocationService.class.getSimpleName();
     private Context mContext;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
@@ -56,6 +58,7 @@ public class GeolocationService {
     public void processResults(Response response) {
         try {
             String jsonData = response.body().string();
+            Log.d(TAG, response.toString());
             if (response.isSuccessful()) {
                 JSONObject geolocationJSON = new JSONObject(jsonData);
                 JSONArray results = geolocationJSON.getJSONArray("results");
@@ -63,10 +66,18 @@ public class GeolocationService {
                 String address = resultsObject.getString("formatted_address");
                 JSONObject components = results.getJSONObject(1);
                 JSONArray addressComponents = components.getJSONArray("address_components");
-                JSONObject stateObject = addressComponents.getJSONObject(2);
-                String stateName = stateObject.getString("short_name");
+                for (int i=0; i<addressComponents.length(); i++) {
+                    JSONObject addressComponent = addressComponents.getJSONObject(i);
+                    JSONArray types = addressComponent.getJSONArray("types");
+                    for (int j=0; j<types.length(); j++) {
+                        if (types.getString(j).equals("locality")) {
+                            currentCity = addressComponent.getString("short_name");
+                        }
+                    }
+                }
+//                JSONObject stateObject = addressComponents.getJSONObject(2);
+//                String stateName = stateObject.getString("short_name");
                 addToSharedPreferences(address);
-                currentCity = stateName;
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();

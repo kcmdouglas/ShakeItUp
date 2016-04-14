@@ -180,13 +180,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onResponse(Call call, Response response) throws IOException {
                         unsplashService.processResults(response);
                         mBackgroundImgUrl = unsplashService.getImageUrl();
-                        if (mBackgroundImgUrl != null) {
-                            Picasso.with(MainActivity.this)
-                                    .load(mBackgroundImgUrl)
-                                    .resize(400, 400)
-                                    .centerCrop()
-                                    .into(backgroundImageView);
-                        }
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mBackgroundImgUrl != null) {
+                                    Picasso.with(MainActivity.this)
+                                            .load(mBackgroundImgUrl)
+                                            .resize(400, 400)
+                                            .centerCrop()
+                                            .into(backgroundImageView);
+                                }
+                            }
+                        });
+
                     }
                 });
             }

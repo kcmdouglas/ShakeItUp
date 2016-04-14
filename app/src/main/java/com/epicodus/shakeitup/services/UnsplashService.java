@@ -23,6 +23,7 @@ import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
  * Created by Guest on 4/13/16.
  */
 public class UnsplashService {
+    private static final String TAG = UnsplashService.class.getSimpleName();
     private Context mContext;
     public static String imageUrl;
 
@@ -52,6 +53,7 @@ public class UnsplashService {
     public void processResults(Response response) {
         try {
             String jsonData = response.body().string();
+            Log.d(TAG, response.toString());
             if (response.isSuccessful()) {
                 JSONObject bodyObject = new JSONObject(jsonData);
                 JSONObject urlsObject = bodyObject.getJSONObject("urls");
