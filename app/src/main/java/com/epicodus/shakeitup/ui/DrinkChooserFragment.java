@@ -14,6 +14,7 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DrinkChooserFragment extends Fragment implements SensorEventListener {
+public class DrinkChooserFragment extends Fragment {
     List<Business> mDrinksArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView drinkGridView;
@@ -62,6 +63,7 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 1500;
     private long lastShakeTime = 0;
+    private SensorEventListener listener;
     private MediaPlayer mediaPlayer;
 
     public DrinkChooserFragment() {
@@ -69,6 +71,10 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
 
     public static DrinkChooserFragment newInstance() {
         return new DrinkChooserFragment();
+    }
+
+    public ItemListAdapter getAdapter() {
+        return myItemListAdapter1;
     }
 
     @Override
@@ -97,7 +103,52 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        listener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                Sensor sensor = event.sensor;
+                if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                    float x = event.values[0];
+                    float y = event.values[1];
+                    float z = event.values[2];
+
+                    long currentTime = System.currentTimeMillis();
+                    if ((currentTime - lastUpdate) > 100) {
+                        long timeDifference = currentTime - lastUpdate;
+                        lastUpdate = currentTime;
+
+                        float speed = Math.abs(x + y + z - last_x - last_y - last_z)/timeDifference * 10000;
+                        if (speed > SHAKE_THRESHOLD) {
+                            long now = System.currentTimeMillis();
+                            if (now - lastShakeTime > 1000) {
+                                ChooserActivity activity = (ChooserActivity) getActivity();
+                                activity.soundManager("ice");
+                                Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                                if (vibrator.hasVibrator()) {
+                                    vibrator.vibrate(300);
+                                }
+                                randomizeDrink();
+                            }
+
+                            lastShakeTime = System.currentTimeMillis();
+                        }
+                    }
+
+                    last_x = x;
+                    last_y = y;
+                    last_z = z;
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        mSensorManager.registerListener(listener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
 
         listView1.setOnItemClickListener(listOnItemClickListener);
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
@@ -176,6 +227,8 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
                     srcAdapter.notifyDataSetChanged();
                     destAdapter.notifyDataSetChanged();
 
+                    mSensorManager.unregisterListener(listener);
+
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
                 default:
@@ -228,41 +281,6 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
 
     private boolean addItemToList(List<Business> items, Business item){
         return items.add(item);
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        Sensor sensor = event.sensor;
-        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-
-            long currentTime = System.currentTimeMillis();
-            if ((currentTime - lastUpdate) > 100) {
-                long timeDifference = currentTime - lastUpdate;
-                lastUpdate = currentTime;
-
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/timeDifference * 10000;
-                if (speed > SHAKE_THRESHOLD) {
-                    long now = System.currentTimeMillis();
-                    if (now - lastShakeTime > 1000) {
-                        randomizeDrink();
-                    }
-
-                    lastShakeTime = System.currentTimeMillis();
-                }
-            }
-
-            last_x = x;
-            last_y = y;
-            last_z = z;
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     public interface OnFirstItemDroppedInDropZoneListener {
