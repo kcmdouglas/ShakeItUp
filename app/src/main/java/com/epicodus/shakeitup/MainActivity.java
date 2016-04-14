@@ -178,34 +178,82 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(Call call, Response response) throws IOException {
                 unsplashService.processResults(response);
                 mBackgroundImgUrl = unsplashService.getImageUrl();
+
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (mBackgroundImgUrl != null) {
+                            final ImageView backgoundImageToShow;
+                            final ImageView backgoundImageToHide;
+                            if (backgroundImageView.getAlpha() == 0.0f) {
+                                backgoundImageToShow = backgroundImageView;
+                                backgoundImageToHide = backgroundImageView2;
+                            } else {
+                                backgoundImageToShow = backgroundImageView2;
+                                backgoundImageToHide = backgroundImageView;
+                            }
                             Picasso.with(MainActivity.this)
                                     .load(mBackgroundImgUrl)
                                     .resize(400, 400)
                                     .centerCrop()
-                                    .into(backgroundImageView, new com.squareup.picasso.Callback() {
+                                    .into(backgoundImageToShow, new com.squareup.picasso.Callback() {
                                         @Override
                                         public void onSuccess() {
 
-                                            Animation fadeOut = new AlphaAnimation(1, 0);
+
+                                            Log.d(TAG, "Image = " + backgroundImageView.getAlpha());
+                                            Log.d(TAG, "Image2 = " + backgroundImageView2.getAlpha());
+
+                                            Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
                                             fadeOut.setInterpolator(new AccelerateInterpolator());
                                             fadeOut.setStartOffset(1000);
-                                            fadeOut.setDuration(1000);
+                                            fadeOut.setDuration(3000);
 
-                                            AnimationSet animation = new AnimationSet(false);
-                                            animation.addAnimation(fadeOut);
-                                            backgroundImageView2.setAnimation(animation);
-                                            animation.setAnimationListener(new Animation.AnimationListener() {
+                                            Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+                                            fadeIn.setInterpolator(new AccelerateInterpolator());
+                                            fadeIn.setStartOffset(1000);
+                                            fadeIn.setDuration(3000);
+
+                                            AnimationSet animationHide = new AnimationSet(false);
+                                            animationHide.addAnimation(fadeOut);
+                                            backgoundImageToHide.setAnimation(animationHide);
+                                            animationHide.setAnimationListener(new Animation.AnimationListener() {
                                                 @Override
                                                 public void onAnimationStart(Animation animation) {
+                                                    Log.d(TAG, "FADE OUT");
+//                                                    backgoundImageToShow.setAlpha(1.0f);
                                                 }
 
                                                 @Override
                                                 public void onAnimationEnd(Animation animation) {
-                                                    backgroundImageView2.setImageAlpha(0);
+                                                    backgoundImageToHide.setAlpha(0.0f);
+
+                                                try {
+                                                    Thread.sleep(7500);
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                    initializeUnsplashBackground();
+                                                }
+
+                                                @Override
+                                                public void onAnimationRepeat(Animation animation) {
+
+                                                }
+                                            });
+
+                                            AnimationSet animationShow = new AnimationSet(false);
+                                            animationShow.addAnimation(fadeIn);
+                                            backgoundImageToShow.setAnimation(animationShow);
+                                            animationShow.setAnimationListener(new Animation.AnimationListener() {
+                                                @Override
+                                                public void onAnimationStart(Animation animation) {
+                                                    Log.d(TAG, "FADE IN");
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animation animation) {
+                                                    backgoundImageToShow.setAlpha(1.0f);
                                                 }
 
                                                 @Override
