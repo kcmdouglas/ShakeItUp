@@ -4,6 +4,7 @@ package com.epicodus.shakeitup.ui;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -110,6 +111,9 @@ public class FunChooserFragment extends Fragment {
         area1.setAbsListView(listView1);
         area3.setAbsListView(funGridView);
         initItems();
+        TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
+        Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
+        instructions.setTypeface(journal);
         myItemListAdapter1 = new ItemListAdapter(getContext(), mFunArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
         listView1.setAdapter(myItemListAdapter1);

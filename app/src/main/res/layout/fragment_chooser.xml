@@ -236,8 +236,8 @@ tools:context=".ui.DrinkChooserFragment">
                     android:id="@+id/instructionsText"
                     android:textColor="@color/colorDrinkAccent"
                     android:textAlignment="center"
-                    android:text="@string/drinkChoiceInstructions"
-                    android:textSize="18sp"
+                    android:text="@string/drinksChoiceInstructions"
+                    android:textSize="38sp"
                     android:textStyle="bold"/>
             </LinearLayout>
 

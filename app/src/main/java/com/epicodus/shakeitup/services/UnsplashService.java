@@ -26,6 +26,7 @@ public class UnsplashService {
     private static final String TAG = UnsplashService.class.getSimpleName();
     private Context mContext;
     public static String imageUrl;
+    private String color;
 
     public UnsplashService(Context context) {
         this.mContext = context;
@@ -58,7 +59,9 @@ public class UnsplashService {
                 JSONObject bodyObject = new JSONObject(jsonData);
                 JSONObject urlsObject = bodyObject.getJSONObject("urls");
                 String regularImgUrl = urlsObject.getString("regular");
+                color = bodyObject.getString("color");
                 imageUrl = regularImgUrl;
+                Log.d("unsplashlog", response.toString());
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -69,5 +72,9 @@ public class UnsplashService {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public String getColor() {
+        return color;
     }
 }
