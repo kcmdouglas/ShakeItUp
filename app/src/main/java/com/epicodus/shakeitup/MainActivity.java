@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.locationTextView) TextView locationLabel;
     @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
     @Bind(R.id.backgroundImageView2) ImageView backgroundImageView2;
+    @Bind(R.id.jumbotron) RelativeLayout jumbotron;
     public static ProgressDialog loadingDialog;
     public static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
@@ -213,18 +216,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         @Override
                                         public void onSuccess() {
 
-
                                             Log.d(TAG, "Image = " + backgroundImageView.getAlpha());
                                             Log.d(TAG, "Image2 = " + backgroundImageView2.getAlpha());
 
                                             Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
                                             fadeOut.setInterpolator(new AccelerateInterpolator());
-                                            fadeOut.setStartOffset(1000);
+                                            fadeOut.setStartOffset(15000);
                                             fadeOut.setDuration(3000);
 
                                             Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
                                             fadeIn.setInterpolator(new AccelerateInterpolator());
-                                            fadeIn.setStartOffset(1000);
+                                            fadeIn.setStartOffset(0);
                                             fadeIn.setDuration(3000);
 
                                             AnimationSet animationHide = new AnimationSet(false);
@@ -240,12 +242,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                 @Override
                                                 public void onAnimationEnd(Animation animation) {
                                                     backgoundImageToHide.setAlpha(0.0f);
-
-                                                try {
-                                                    Thread.sleep(7500);
-                                                } catch (InterruptedException e) {
-                                                    e.printStackTrace();
-                                                }
+                                                    StringBuilder str = new StringBuilder(unsplashService.getColor());
+                                                    str.insert(1, "79");
+                                                    Log.d(TAG, str.toString());
+                                                    jumbotron.setBackgroundColor(Color.parseColor(str.toString()));
+//                                                try {
+//                                                    Thread.sleep(90000);
+//                                                } catch (InterruptedException e) {
+//                                                    e.printStackTrace();
+//                                                }
                                                     initializeUnsplashBackground();
                                                 }
 
