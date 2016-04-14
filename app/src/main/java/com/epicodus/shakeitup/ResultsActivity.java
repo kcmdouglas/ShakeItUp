@@ -298,6 +298,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 startActivity(yelpFunIntent);
                 break;
             case R.id.directionsButton:
+                //progressive navigation through each destination in turn
                 if (!drinkDirectionsReceived) {
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("google.navigation:q=" + mDrink.getAddress()));
