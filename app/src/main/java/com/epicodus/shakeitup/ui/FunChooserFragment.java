@@ -229,7 +229,7 @@ public class FunChooserFragment extends Fragment {
                     ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.absListView.getAdapter());
                     List<Business> destList = destAdapter.getList();
 
-                    initializeCard(passedItem, R.id.funCardView);
+                    initializeCard(passedItem, R.id.funImageView);
 
                     addItemToList(destList, mDrinkPassed);
                     addItemToList(destList, mDinnerPassed);
