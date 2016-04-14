@@ -18,11 +18,13 @@
         android:scaleType="centerCrop" />
 
     <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="150dp"
+        app:layout_widthPercent="80%"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:paddingTop="20dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="30dp"
         android:background="@color/colorAccent">
 
         <EditText
