@@ -3,6 +3,8 @@ package com.epicodus.shakeitup.ui;
 import android.app.Activity;
 import android.content.ClipData;
 
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Build;
 
 import android.content.Context;
@@ -88,6 +90,9 @@ public class DrinkChooserFragment extends Fragment {
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
 
+        TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
+        Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
+        instructions.setTypeface(journal);
 
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
