@@ -2,6 +2,12 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -32,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DinnerChooserFragment extends Fragment {
+public class DinnerChooserFragment extends Fragment implements SensorEventListener {
     List<Business> mDinnersArray, mSelectedBusinessesArray;
     ListView listView1;
     GridView drinkGridView;
@@ -48,6 +54,14 @@ public class DinnerChooserFragment extends Fragment {
     private OnSecondItemDroppedInDropZone mListener;
     Business mDrinkPassed;
     ImageView mDrinkImageView;
+
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 1500;
+    private long lastShakeTime = 0;
+    private MediaPlayer mediaPlayer;
 
 
     public DinnerChooserFragment() {
@@ -89,6 +103,11 @@ public class DinnerChooserFragment extends Fragment {
         listView1.setAdapter(myItemListAdapter1);
 
         dinnerGridView.setAdapter(myItemGridAdapter3);
+
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         listView1.setOnItemClickListener(listOnItemClickListener);
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
 
@@ -238,8 +257,50 @@ public class DinnerChooserFragment extends Fragment {
         return items.add(item);
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        Sensor sensor = event.sensor;
+        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - lastUpdate) > 100) {
+                long timeDifference = currentTime - lastUpdate;
+                lastUpdate = currentTime;
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/timeDifference * 10000;
+                if (speed > SHAKE_THRESHOLD) {
+                    long now = System.currentTimeMillis();
+                    if (now - lastShakeTime > 1000) {
+                        randomizeDinner();
+                    }
+
+                    lastShakeTime = System.currentTimeMillis();
+                }
+            }
+
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
 
     public interface OnSecondItemDroppedInDropZone {
         void onSecondItemDroppedInDropZone(Business firstItem, Business secondItem);
+    }
+
+    private void randomizeDinner() {
+        mDinnersArray = Business.getRandomDinner();
+        myItemListAdapter1.list.clear();
+        myItemListAdapter1.list.addAll(mDinnersArray);
+        myItemListAdapter1.notifyDataSetChanged();
     }
 }
