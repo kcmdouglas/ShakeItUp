@@ -31,14 +31,14 @@ public class UnsplashService {
         this.mContext = context;
     }
 
-    public void getUnsplashData(String location, Callback callback) {
+    public void getUnsplashData(Callback callback) {
         final String APPLICATION_ID = mContext.getString(R.string.unsplash_id);
         final String SECRET = mContext.getString(R.string.unsplash_id);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.unsplash.com/photos/random?&query=" + location).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.unsplash.com/photos/random?&query=drinks").newBuilder();
         urlBuilder.addQueryParameter("client_id", APPLICATION_ID);
         String url = urlBuilder.build().toString();
 
