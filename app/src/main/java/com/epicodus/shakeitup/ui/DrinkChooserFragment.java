@@ -2,6 +2,9 @@ package com.epicodus.shakeitup.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
+
+import android.os.Build;
+
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
@@ -9,6 +12,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -75,6 +79,8 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
         drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
+
+
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);
         area1.setAbsListView(listView1);
@@ -92,7 +98,6 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         listView1.setOnItemClickListener(listOnItemClickListener);
-
         listView1.setOnItemLongClickListener(myOnItemLongClickListener);
 
         return view;
