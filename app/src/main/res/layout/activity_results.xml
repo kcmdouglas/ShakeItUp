@@ -186,16 +186,25 @@
             android:layout_height="wrap_content"
             android:text="@string/restart"
             android:id="@+id/restartButton"
-            android:layout_weight="0.5"
+            android:layout_weight="0.33"
             android:textColor="@color/colorIcons"
             android:backgroundTint="@color/colorAccent"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/directions"
+            android:id="@+id/directionsButton"
+            android:layout_weight="0.33"
+            android:textColor="@color/colorIcons"
+            android:backgroundTint="@color/colorDrinkAccent"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/share"
             android:id="@+id/shareButton"
-            android:layout_weight="0.5"
+            android:layout_weight="0.33"
             android:textColor="@color/colorIcons"
             android:backgroundTint="@color/colorAccent"/>
     </LinearLayout>

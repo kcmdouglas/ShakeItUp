@@ -309,42 +309,6 @@ public class FunChooserFragment extends Fragment {
         return items.add(item);
     }
 
-//    @Override
-//    public void onSensorChanged(SensorEvent event) {
-//        Sensor sensor = event.sensor;
-//        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-//            float x = event.values[0];
-//            float y = event.values[1];
-//            float z = event.values[2];
-//
-//            long currentTime = System.currentTimeMillis();
-//            if ((currentTime - lastUpdate) > 100) {
-//                long timeDifference = currentTime - lastUpdate;
-//                lastUpdate = currentTime;
-//
-//                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/timeDifference * 10000;
-//                if (speed > SHAKE_THRESHOLD) {
-//                    long now = System.currentTimeMillis();
-//                    if (now - lastShakeTime > 1000) {
-//                        randomizeFun();
-//                    }
-//
-//                    lastShakeTime = System.currentTimeMillis();
-//                }
-//            }
-//
-//            last_x = x;
-//            last_y = y;
-//            last_z = z;
-//        }
-//    }
-//
-//    @Override
-//    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-//
-//    }
-
-
     public interface OnThirdItemDroppedInDropZone {
         void onThirdItemDroppedInDropZone(Business firstItem, Business secondItem, Business thirdItem);
     }
