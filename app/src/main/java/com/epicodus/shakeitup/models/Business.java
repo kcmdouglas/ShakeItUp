@@ -22,14 +22,15 @@ public class Business {
     String imageUrl;
     LatLng latlng;
     String address;
+    String yelpCategory;
+    String snippetText;
     static ArrayList<Business> dinnerList = new ArrayList<>();
     static ArrayList<Business> drinkList = new ArrayList<>();
     static ArrayList<Business> funList = new ArrayList<>();
 
-    public Business() {
-    }
+    public Business() {}
 
-    public Business(String rating, String mobileUrl, String reviewCount, String name, String phone, String imageUrl, LatLng latlng, String address) {
+    public Business(String rating, String mobileUrl, String reviewCount, String name, String phone, String imageUrl, LatLng latlng, String address, String yelpCategory, String snippetText) {
         this.rating = rating;
         this.mobileUrl = mobileUrl;
         this.reviewCount = reviewCount;
@@ -38,6 +39,16 @@ public class Business {
         this.imageUrl = imageUrl;
         this.latlng = latlng;
         this.address = address;
+        this.yelpCategory = yelpCategory;
+        this.snippetText = snippetText;
+    }
+
+    public String getYelpCategory() {
+        return yelpCategory;
+    }
+
+    public String getSnippetText() {
+        return snippetText;
     }
 
     public String getRating() {
