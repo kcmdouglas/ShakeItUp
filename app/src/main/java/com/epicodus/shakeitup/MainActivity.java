@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initializeUnsplashBackground() {
         final UnsplashService unsplashService = new UnsplashService(this);
         final GeolocationService geolocationService = new GeolocationService(this);
-        String mCurrentCity = geolocationService.getCurrentCity();
 
         geolocationService.getCurrentAddress(mCurrentLocation, new Callback() {
             @Override
