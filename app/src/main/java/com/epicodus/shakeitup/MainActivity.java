@@ -15,6 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -181,7 +186,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     .load(mBackgroundImgUrl)
                                     .resize(400, 400)
                                     .centerCrop()
-                                    .into(backgroundImageView);
+                                    .into(backgroundImageView, new com.squareup.picasso.Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                            Animation fadeOut = new AlphaAnimation(1, 0);
+                                            fadeOut.setInterpolator(new AccelerateInterpolator());
+                                            fadeOut.setStartOffset(1000);
+                                            fadeOut.setDuration(1000);
+
+                                            AnimationSet animation = new AnimationSet(false);
+                                            animation.addAnimation(fadeOut);
+                                            backgroundImageView2.setAnimation(animation);
+                                            animation.setAnimationListener(new Animation.AnimationListener() {
+                                                @Override
+                                                public void onAnimationStart(Animation animation) {
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animation animation) {
+                                                    backgroundImageView2.setImageAlpha(0);
+                                                }
+
+                                                @Override
+                                                public void onAnimationRepeat(Animation animation) {
+
+                                                }
+                                            });
+//
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.e(TAG, "Picasso image loading has failed");
+                                        }
+                                    });
                         }
                     }
                 });

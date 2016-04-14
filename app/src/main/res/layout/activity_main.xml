@@ -21,7 +21,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/backgroundImageView2"
-        android:src="@drawable/"
+        android:src="@drawable/photo_coffee_test"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop" />
@@ -34,7 +34,7 @@
         android:layout_centerVertical="true"
         android:paddingTop="40dp"
         android:paddingBottom="30dp"
-        android:background="@color/colorAccent">
+        android:background="@color/colorSecondaryText">
 
         <EditText
             android:layout_width="match_parent"
