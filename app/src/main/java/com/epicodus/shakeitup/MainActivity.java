@@ -96,23 +96,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (yelpService.processResults(response, YelpService.DRINK)) {
-                    if (Business.getDrinkList().size() < 3) {
+                if (Business.getDrinkList().size() < 3) {
+                    if (yelpService.processResults(response, YelpService.DRINK)) {
                         getDrinkPlaces(location, YelpService.EXPANDED_MODE);
-                    }
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingDialog.hide();
-                            Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
-                                startActivity(intent, options.toBundle());
-                            } else {
-                                startActivity(intent);
+
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.hide();
+                                Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                                    startActivity(intent, options.toBundle());
+                                } else {
+                                    startActivity(intent);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 } else {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override

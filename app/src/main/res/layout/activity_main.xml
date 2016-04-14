@@ -23,7 +23,8 @@
         android:id="@+id/backgroundImageView2"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
 
     <RelativeLayout
         app:layout_widthPercent="80%"
@@ -44,7 +45,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:hint="Search Neighborhood, Address, or City"
+            android:hint="Search Address or Zip"
             android:textColorHint="@color/colorIcons"
             android:textColor="@color/colorIcons"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
