@@ -221,13 +221,11 @@ public class FunChooserFragment extends Fragment {
                     List<Business> srcList = passObj.getSrcList();
                     AbsListView parent = (AbsListView)view.getParent();
                     ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(parent.getAdapter());
-
                     LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)v;
                     ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.absListView.getAdapter());
                     List<Business> destList = destAdapter.getList();
 
-                    Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.funImageView));
-                    funTextView.setText(passedItem.getCardText());
+                    initializeCard(passedItem, R.id.funCardView);
 
                     addItemToList(destList, mDrinkPassed);
                     addItemToList(destList, mDinnerPassed);
@@ -255,6 +253,11 @@ public class FunChooserFragment extends Fragment {
         }
 
     };
+
+    private void initializeCard(Business business, int viewId) {
+        Picasso.with(getContext()).load(business.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(viewId));
+        funTextView.setText(business.getCardText());
+    }
 
     @Override
     public void onAttach(Activity activity) {
