@@ -95,6 +95,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
     @Override
     public void onThirdItemDroppedInDropZone(Business firstItem, Business secondItem, Business thirdItem) {
+
         initializeProgressDialog("This date is going to be so great!", "Let me put the whole package together...");
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("drink", Parcels.wrap(firstItem));
