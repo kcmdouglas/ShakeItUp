@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = MainActivity.class.getSimpleName();
     @Bind(R.id.shakeButton) Button shakeButton;
     @Bind(R.id.locationTextView) TextView locationLabel;
-    @Bind(R.id.backgroundImageView) ImageView backgroundImg;
+    @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
     public static ProgressDialog loadingDialog;
     public static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     .load(mBackgroundImgUrl)
                                     .resize(400, 400)
                                     .centerCrop()
-                                    .into(backgroundImg);
+                                    .into(backgroundImageView);
                         }
                     }
                 });
