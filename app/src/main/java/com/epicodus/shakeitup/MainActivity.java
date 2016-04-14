@@ -17,15 +17,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.services.GeolocationService;
+import com.epicodus.shakeitup.services.UnsplashService;
 import com.epicodus.shakeitup.services.YelpService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = MainActivity.class.getSimpleName();
     @Bind(R.id.shakeButton) Button shakeButton;
     @Bind(R.id.locationTextView) TextView locationLabel;
+    @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
     public static ProgressDialog loadingDialog;
     public static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 411;
     private SharedPreferences mSharedPreferences;
     private String mFormattedAddress;
+    private String mBackgroundImgUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initializeProgressDialog();
-
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -65,9 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         shakeButton.setOnClickListener(this);
 
-    }
+       }
 
-    private void getDrinkPlaces(String location) {
+    private void getDrinkPlaces(final String location) {
         final YelpService yelpService = new YelpService(this);
 
         yelpService.getYelpData(location, YelpService.DRINK, new Callback() {
@@ -86,7 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             loadingDialog.hide();
-                            Toast.makeText(MainActivity.this, "You fud!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Oops, that address doesn't work!", Toast.LENGTH_LONG).show();
+                            locationLabel.setText("");
+                            locationLabel.setHint("Please try again!");
                         }
                     });
                 }
@@ -150,6 +156,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadingDialog.setCancelable(false);
     }
 
+    private void initializeUnsplashBackground() {
+        final UnsplashService unsplashService = new UnsplashService(this);
+        final GeolocationService geolocationService = new GeolocationService(this);
+
+        geolocationService.getCurrentAddress(mCurrentLocation, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                geolocationService.processResults(response);
+                String mCurrentCity = geolocationService.getCurrentCity();
+                unsplashService.getUnsplashData(mCurrentCity, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        unsplashService.processResults(response);
+                        mBackgroundImgUrl = unsplashService.getImageUrl();
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mBackgroundImgUrl != null) {
+                                    Picasso.with(MainActivity.this)
+                                            .load(mBackgroundImgUrl)
+                                            .resize(400, 400)
+                                            .centerCrop()
+                                            .into(backgroundImageView);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -157,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
                 mCurrentLocation = (mLastLocation.getLatitude() + "," + mLastLocation.getLongitude());
+                initializeUnsplashBackground();
             }
         } else {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
