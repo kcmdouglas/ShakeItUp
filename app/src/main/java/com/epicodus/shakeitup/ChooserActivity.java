@@ -28,6 +28,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ChooserActivity extends AppCompatActivity implements DrinkChooserFragment.OnFirstItemDroppedInDropZoneListener, DinnerChooserFragment.OnSecondItemDroppedInDropZone, FunChooserFragment.OnThirdItemDroppedInDropZone {
 
@@ -132,5 +133,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         loadingDialog.setMessage("Preparing data...");
         loadingDialog.setCancelable(false);
     }
+
+
 
 }

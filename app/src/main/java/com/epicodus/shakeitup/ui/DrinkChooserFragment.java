@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.epicodus.shakeitup.ChooserActivity;
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.adapters.ItemBaseAdapter;
 import com.epicodus.shakeitup.adapters.ItemGridAdapter;
@@ -42,6 +43,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DrinkChooserFragment extends Fragment implements SensorEventListener {
     List<Business> mDrinksArray, mSelectedBusinessesArray;
@@ -166,7 +168,7 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
                     }
 
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.drinkImageView));
-                    drinkTextView.setText(passedItem.getName());
+                    drinkTextView.setText(passedItem.getCardText());
 
                     drinkCardView.setVisibility(View.VISIBLE);
                     drinkGridView.setVisibility(View.GONE);
@@ -273,4 +275,6 @@ public class DrinkChooserFragment extends Fragment implements SensorEventListene
         myItemListAdapter1.list.addAll(mDrinksArray);
         myItemListAdapter1.notifyDataSetChanged();
     }
+
+
 }

@@ -181,7 +181,7 @@ public class FunChooserFragment extends Fragment implements SensorEventListener 
                     List<Business> destList = destAdapter.getList();
 
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.funImageView));
-                    funTextView.setText(passedItem.getName());
+                    funTextView.setText(passedItem.getCardText());
 
                     addItemToList(destList, mDrinkPassed);
                     addItemToList(destList, mDinnerPassed);
@@ -251,8 +251,8 @@ public class FunChooserFragment extends Fragment implements SensorEventListener 
         Picasso.with(getContext()).load(mDrinkPassed.getImageUrl()).fit().centerCrop().into(mDrinkImageView);
         Picasso.with(getContext()).load(mDinnerPassed.getImageUrl()).fit().centerCrop().into(mDinnerImageView);
 
-        drinkTextView.setText(mDrinkPassed.getName());
-        dinnerTextView.setText(mDinnerPassed.getName());
+        drinkTextView.setText(mDrinkPassed.getCardText());
+        dinnerTextView.setText(mDinnerPassed.getCardText());
 
         drinkGridView.setVisibility(View.GONE);
         drinkCardView.setVisibility(View.VISIBLE);
