@@ -246,28 +246,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                         return view;
                     }
                 });
-
-                float bearing = mMap.getCameraPosition().bearing;
-                int zoom = (int)mMap.getCameraPosition().zoom;
-                if ((bearing >= 0.0 && bearing < 45.0) || (bearing > 305.0 && bearing <= 360.0)) {
-                    // i.e. if our map is rotated facing between NW and NE, towards North
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(business.getLatlng().latitude + (double)90/Math.pow(2, zoom), business.getLatlng().longitude), zoom);
-                    mMap.animateCamera(cu);
-                } else if (bearing > 45.0 && bearing < 135.0) {
-                    // i.e. if our map is rotated facing between NE and SE, towards East
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(business.getLatlng().latitude, business.getLatlng().longitude + (double)90/Math.pow(2, zoom)), zoom);
-                    mMap.animateCamera(cu);
-                } else if (bearing > 135.0 && bearing < 225.0) {
-                    // i.e. if our map is rotated facing between SE and SW, towards South
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(business.getLatlng().latitude - (double)90/Math.pow(2, zoom), business.getLatlng().longitude), zoom);
-                    mMap.animateCamera(cu);
-                } else {
-                    // i.e. if our map is rotated facing between SW and NW, towards West
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(business.getLatlng().latitude, business.getLatlng().longitude - (double)90/Math.pow(2, zoom)), zoom);
-                    mMap.animateCamera(cu);
-                }
-                marker.showInfoWindow();
-                return true;
+                return false;
             }
         });
     }

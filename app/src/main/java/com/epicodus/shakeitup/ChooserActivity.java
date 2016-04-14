@@ -112,4 +112,5 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         loadingDialog.setMessage("Preparing data...");
         loadingDialog.setCancelable(false);
     }
+
 }
