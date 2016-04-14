@@ -12,6 +12,8 @@ import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Business;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -34,15 +36,16 @@ public class ItemListAdapter extends ItemBaseAdapter {
 
             ListViewHolder listViewHolder = new ListViewHolder();
             Picasso.with(context).load(list.get(position).getImageUrl()).fit().centerCrop().into((ImageView) rowView.findViewById(R.id.rowImageView));
-            listViewHolder.setText((TextView) rowView.findViewById(R.id.rowTextView));
-
+            listViewHolder.setText((TextView) rowView.findViewById(R.id.restaurantNameTextView));
+            listViewHolder.setCategory((TextView) rowView.findViewById(R.id.categoryTextView));
             rowView.setTag(listViewHolder);
         }
 
         ListViewHolder holder = (ListViewHolder) rowView.getTag();
-        Picasso.with(context).load(list.get(position).getImageUrl()).fit().centerCrop().into((ImageView) rowView.findViewById(R.id.rowImageView));
-        holder.getText().setText(list.get(position).getName());
-
+        Business business = list.get(position);
+        Picasso.with(context).load(business.getImageUrl()).fit().centerCrop().into((ImageView) rowView.findViewById(R.id.rowImageView));
+        holder.getText().setText(business.getName());
+        holder.getCategory().setText(business.getYelpCategory());
         rowView.setOnDragListener(new ItemOnDragListener(this.context, list.get(position)));
 
         return rowView;
