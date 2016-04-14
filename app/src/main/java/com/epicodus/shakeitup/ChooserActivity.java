@@ -3,6 +3,7 @@ package com.epicodus.shakeitup;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     ArrayList<Business> mDrinksArray = new ArrayList<>();
     ArrayList<Business> mDinnersArray = new ArrayList<>();
     ArrayList<Business> mFunArray = new ArrayList<>();
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,4 +115,21 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         loadingDialog.setCancelable(false);
     }
 
+    public void soundManager(String soundName) {
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+            mediaPlayer.release();
+        }
+
+        if (soundName.equals("ice")) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.ice_glass);
+            mediaPlayer.start();
+        } else if (soundName.equals("plate")) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.plate);
+            mediaPlayer.start();
+        } else if (soundName.equals("guitar")) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.guitar);
+            mediaPlayer.start();
+        }
+    }
 }
