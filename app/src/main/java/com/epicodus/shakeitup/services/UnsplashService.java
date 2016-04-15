@@ -33,8 +33,16 @@ public class UnsplashService {
     }
 
     public void getUnsplashData(Callback callback) {
-        final String APPLICATION_ID = mContext.getString(R.string.unsplash_id);
-        final String SECRET = mContext.getString(R.string.unsplash_id);
+        long randomNumber = Math.round(Math.random());
+        String currentKey;
+
+        if (randomNumber == 0) {
+            currentKey = mContext.getString(R.string.unsplash_id_one);
+        } else {
+            currentKey = mContext.getString(R.string.unsplash_id_two);
+        }
+
+        final String APPLICATION_ID = currentKey;
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
