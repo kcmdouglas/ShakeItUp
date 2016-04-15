@@ -226,13 +226,13 @@ tools:context=".ui.DrinkChooserFragment">
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/activity_horizontal_margin"
                 android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="2dp"
                 android:id="@+id/instructionsRow"
                 android:weightSum="1.0">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
                     android:id="@+id/instructionsText"
                     android:textColor="@color/colorDrinkAccent"
                     android:textAlignment="center"
@@ -246,23 +246,31 @@ tools:context=".ui.DrinkChooserFragment">
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/instructionsRow"
+                android:layout_above="@+id/shakeToShuffle"
                 android:background="@android:color/background_light"
                 android:orientation="vertical"
-                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp" >
+                android:layout_marginRight="8dp" >
 
                 <ListView
                     android:id="@+id/listview1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     />
 
             </com.epicodus.shakeitup.ui.LinearLayoutAbsListView>
-        </RelativeLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/shakeToShuffle"
+                android:gravity="center_vertical"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="≠ shake to shuffle ≠"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="30sp"/>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 

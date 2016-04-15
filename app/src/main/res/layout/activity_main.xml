@@ -27,24 +27,35 @@
 
     <RelativeLayout
         app:layout_widthPercent="80%"
+        app:layout_heightPercent="50%"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:id="@+id/jumbotron"
-        android:paddingTop="40dp"
+        android:paddingTop="30dp"
         android:paddingBottom="30dp"
         android:background="@color/colorSecondaryText"
         android:translationZ="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:id="@+id/titleTextView"
+            android:textSize="60sp"
+            android:textColor="@color/colorIcons"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/locationTextView"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/locationTextView"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:gravity="center"
-            android:hint="Search Address or Zip"
+            android:hint="Search by Address or City"
             android:textColorHint="@color/colorIcons"
             android:textColor="@color/colorIcons"
             android:layout_marginBottom="@dimen/activity_vertical_margin"

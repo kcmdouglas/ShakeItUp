@@ -91,8 +91,10 @@ public class DrinkChooserFragment extends Fragment {
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
 
         TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
+        TextView shakeToShuffle = (TextView) view.findViewById(R.id.shakeToShuffle);
         Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
         instructions.setTypeface(journal);
+        shakeToShuffle.setTypeface(journal);
 
         area1.setOnDragListener(myOnDragListener);
         area3.setOnDragListener(myOnDragListener);

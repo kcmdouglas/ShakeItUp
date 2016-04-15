@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -16,6 +17,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.ContextThemeWrapper;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
     @Bind(R.id.backgroundImageView2) ImageView backgroundImageView2;
     @Bind(R.id.jumbotron) RelativeLayout jumbotron;
+    @Bind(R.id.titleTextView) TextView mTitleTextView;
     public static ProgressDialog loadingDialog;
     public static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
@@ -80,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .addApi(LocationServices.API)
                     .build();
         }
+
+        Typeface journal = Typeface.createFromAsset(getAssets(), "fonts/journal.ttf");
+        mTitleTextView.setTypeface(journal);
 
         shakeButton.setOnClickListener(this);
 
@@ -226,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initializeProgressDialog() {
         loadingDialog = new ProgressDialog(this);
         loadingDialog.setTitle("Hold on...");
-        loadingDialog.setMessage("We're finding some great places for you!");
+        loadingDialog.setMessage("We're finding some great places for you...");
         loadingDialog.setCancelable(false);
     }
 

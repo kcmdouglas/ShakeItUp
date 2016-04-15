@@ -101,8 +101,10 @@ public class DinnerChooserFragment extends Fragment {
 
         initItems();
         TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
+        TextView shakeToShuffle = (TextView) view.findViewById(R.id.shakeToShuffle);
         Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
         instructions.setTypeface(journal);
+        shakeToShuffle.setTypeface(journal);
 
         myItemListAdapter1 = new ItemListAdapter(getContext(), mDinnersArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
