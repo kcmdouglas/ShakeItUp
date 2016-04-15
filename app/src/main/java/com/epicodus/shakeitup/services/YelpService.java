@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Switch;
 
+import com.epicodus.shakeitup.Constants;
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Business;
 import com.google.android.gms.common.api.BooleanResult;
@@ -38,10 +39,10 @@ public class YelpService {
     }
 
     public void getYelpData(String location, String category, Boolean mode, Callback callback) {
-        final String CONSUMER_KEY = mContext.getString(R.string.consumer_key);
-        final String CONSUMER_SECRET = mContext.getString(R.string.consumer_secret);
-        final String TOKEN = mContext.getString(R.string.token);
-        final String TOKEN_SECRET = mContext.getString(R.string.token_secret);
+        final String CONSUMER_KEY = Constants.YELP_CONSUMER_KEY;
+        final String CONSUMER_SECRET = Constants.YELP_CONSUMER_SECRET;
+        final String TOKEN = Constants.YELP_TOKEN;
+        final String TOKEN_SECRET = Constants.YELP_TOKEN_SECRET;
         String radius = "";
         if (mode) {
             switch (category) {

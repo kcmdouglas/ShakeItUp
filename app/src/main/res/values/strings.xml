@@ -1,15 +1,10 @@
 <resources>
     <string name="app_name">Shake It Up!</string>
-    <string name="consumer_key">s5HPEtEzcXAopt3qEA8uyg</string>
-    <string name="consumer_secret">BLtzvHCPEIe9pHqIh9OPId8jqf4</string>
-    <string name="token">-uF4v28Ge_ZODOD0f8gUsz3WPM0vhFf2</string>
-    <string name="token_secret">RULkBF0QhisS6jO1FLAuPMYW-bM</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="permission_request">"To see where you are on the map, allow ShakeItUp to use your location."</string>
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-        AIzaSyDG9zyzNAHXKxKzrFu3GItH5DTihG38ARU
+        AIzaSyCUhx6QpyY0YZyI5YJY8GxMnq-t3yMAmck
     </string>
 
     <string name="directions">Let\'s Go</string>
@@ -22,14 +17,10 @@
     <string name="dinnerChoiceInstructions">Choose a place for dinner!</string>
     <string name="funChoiceInstructions">Choose a fun activity!</string>
 
-    <string name="unsplash_id_one">30b441f4b0ed266545bc2f79eabb7772e8ba113f37e9f8a48246de63d7d580cb</string>
-    <string name="unsplash_id_two">0ad09549504e2af16a0d95059a7f6446187734c68b1074f3f0ca3c40916b5d9a</string>
-    <string name="unsplash_secret">94d2fbd2b9c79a102c127db83901a5395a6849704e3c336e3d0ac625c0e6f9b0</string>
-
     <string name="cutoff_name">%s…</string>
     <string name="progress_txt">Hold on...</string>
 
     <string name="search_button_input">Shake up your night!</string>
-    <string name="search_button_blank">Shake it near you!</string>
-    <string name="search_text_hint">Shake it by Address or City</string>
+    <string name="search_button_blank">Or search near you!</string>
+    <string name="search_text_hint">Search by Address or City</string>
 </resources>

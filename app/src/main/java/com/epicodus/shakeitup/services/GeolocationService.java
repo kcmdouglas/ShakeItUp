@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.epicodus.shakeitup.Constants;
 import com.epicodus.shakeitup.R;
 import com.epicodus.shakeitup.models.Business;
 
@@ -37,7 +38,7 @@ public class GeolocationService {
     }
 
     public void getCurrentAddress(String latLng, Callback callback) {
-        final String API_KEY = mContext.getString(R.string.google_maps_key);
+        final String API_KEY = Constants.GOOGLE_MAPS_KEY;
         mSharedPreferences = mContext.getSharedPreferences(mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
         OkHttpClient client = new OkHttpClient.Builder()

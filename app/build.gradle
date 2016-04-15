@@ -18,6 +18,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rulgit pues.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'GOOGLE_MAPS_KEY', GoogleMapsKey
+        it.buildConfigField 'String', 'UNSPLASH_KEY', UnsplashKey
+        it.buildConfigField 'String', 'YELP_CONSUMER_KEY', YelpConsumerKey
+        it.buildConfigField 'String', 'YELP_CONSUMER_SECRET', YelpConsumerSecret
+        it.buildConfigField 'String', 'YELP_TOKEN', YelpToken
+        it.buildConfigField 'String', 'YELP_TOKEN_SECRET', YelpTokenSecret
+    }
 }
 
 dependencies {

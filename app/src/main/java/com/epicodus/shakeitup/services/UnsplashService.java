@@ -3,6 +3,7 @@ package com.epicodus.shakeitup.services;
 import android.content.Context;
 import android.util.Log;
 
+import com.epicodus.shakeitup.Constants;
 import com.epicodus.shakeitup.R;
 
 import org.json.JSONArray;
@@ -33,17 +34,7 @@ public class UnsplashService {
     }
 
     public void getUnsplashData(Callback callback) {
-        long randomNumber = Math.round(Math.random());
-        Log.d(TAG, "unsplash random number " + randomNumber);
-        String currentKey;
-
-        if (randomNumber == 0) {
-            currentKey = mContext.getString(R.string.unsplash_id_one);
-        } else {
-            currentKey = mContext.getString(R.string.unsplash_id_two);
-        }
-
-        final String APPLICATION_ID = currentKey;
+        final String APPLICATION_ID = Constants.UNSPLASH_KEY;
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
