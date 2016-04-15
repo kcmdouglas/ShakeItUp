@@ -125,7 +125,7 @@ public class Business {
     private static ArrayList<Business> getRandomBusinesses(ArrayList<Business> arrayList) {
         ArrayList<Business> randomBusinesses = new ArrayList<>();
 
-        if (arrayList.size() < 3) {
+        if (arrayList.size() <= 3) {
             return arrayList;
         }
 
@@ -135,6 +135,7 @@ public class Business {
             while (notRepeated) {
                 notRepeated = false;
                 randomIndex = (int)((Math.random() * (arrayList.size() - 1)) + 1);
+                Log.d("TAGTAG", randomIndex+"");
                 for(int y = 0; y < randomBusinesses.size(); y++) {
                     if (arrayList.get(randomIndex).equals(randomBusinesses.get(y))) {
                         notRepeated = true;

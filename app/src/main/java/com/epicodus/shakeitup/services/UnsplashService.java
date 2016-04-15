@@ -33,13 +33,22 @@ public class UnsplashService {
     }
 
     public void getUnsplashData(Callback callback) {
-        final String APPLICATION_ID = mContext.getString(R.string.unsplash_id);
-        final String SECRET = mContext.getString(R.string.unsplash_id);
+        long randomNumber = Math.round(Math.random());
+        Log.d(TAG, "unsplash random number " + randomNumber);
+        String currentKey;
+
+        if (randomNumber == 0) {
+            currentKey = mContext.getString(R.string.unsplash_id_one);
+        } else {
+            currentKey = mContext.getString(R.string.unsplash_id_two);
+        }
+
+        final String APPLICATION_ID = currentKey;
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.unsplash.com/photos/random?&query=drinks").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.unsplash.com/photos/random?&query=night").newBuilder();
         urlBuilder.addQueryParameter("client_id", APPLICATION_ID);
         String url = urlBuilder.build().toString();
 

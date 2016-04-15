@@ -17,13 +17,6 @@
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop" />
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/backgroundImageView2"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop" />
 
     <RelativeLayout
         app:layout_widthPercent="80%"
@@ -54,9 +47,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/locationTextView"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:hint="Search by Address or City"
+            android:hint="@string/search_text_hint"
             android:textColorHint="@color/colorIcons"
             android:textColor="@color/colorIcons"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -67,12 +62,15 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shake up your night"
+            android:text="Shake It Near You!"
+            android:textSize="14sp"
             android:id="@+id/shakeButton"
             android:layout_below="@+id/locationTextView"
             android:backgroundTint="@color/colorAccent"
             android:textColor="@color/colorIcons"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:padding="20dp"
+            android:alpha="1" />
 
 
     </RelativeLayout>

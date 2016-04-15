@@ -19,8 +19,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.shakeButton) Button shakeButton;
     @Bind(R.id.locationTextView) TextView locationLabel;
     @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
-    @Bind(R.id.backgroundImageView2) ImageView backgroundImageView2;
+//    @Bind(R.id.backgroundImageView2) ImageView backgroundImageView2;
     @Bind(R.id.jumbotron) RelativeLayout jumbotron;
     @Bind(R.id.titleTextView) TextView mTitleTextView;
     public static ProgressDialog loadingDialog;
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 411;
     private SharedPreferences mSharedPreferences;
     private String mFormattedAddress;
-    private String mBackgroundImgUrl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initializeProgressDialog();
+        backgroundImageView.setAlpha(1.0f);
+//        backgroundImageView2.setAlpha(0.0f);
         initializeUnsplashBackground();
 
 //        TODO: hide keyboard on
@@ -92,12 +97,80 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         shakeButton.setOnClickListener(this);
 
-       }
+        locationLabel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    shakeButton.setText(R.string.search_button_blank);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() != 0) {
+                    shakeButton.setText(R.string.search_button_input);
+                }
+            }
+        });
+
+
+    }
 
     private void getDrinkPlaces(final String location) {
+        getData(location);
+    }
+
+    public void getData (final String location) {
         final YelpService yelpService = new YelpService(this);
 
-        yelpService.getYelpData(location, YelpService.DRINK, new Callback() {
+        yelpService.getYelpData(location, YelpService.DRINK, YelpService.NORMAL_MODE, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (yelpService.processResults(response, YelpService.DRINK)) {
+                    if (Business.getDrinkList().size() < 3) {
+                        getDataExpanded(location);
+                    } else {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.hide();
+                                Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                                    startActivity(intent, options.toBundle());
+                                } else {
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.hide();
+                            Toast.makeText(MainActivity.this, "Oops, that address doesn't work!", Toast.LENGTH_LONG).show();
+                            locationLabel.setText("");
+                            locationLabel.setHint("Please try again!");
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void getDataExpanded (final String location) {
+        final YelpService yelpService = new YelpService(this);
+
+        yelpService.getYelpData(location, YelpService.DRINK, YelpService.EXPANDED_MODE, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -111,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
 
                             Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
+                            Log.d(TAG, Business.getDrinkList().size()+" AMOUNT OF DRINK PLACES");
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 ActivityOptionsCompat options = ActivityOptionsCompat
                                         .makeSceneTransitionAnimation(MainActivity.this, mTitleTextView, "shakeText");
@@ -124,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            loadingDialog.hide();
+//                            loadingDialog.hide();
                             Toast.makeText(MainActivity.this, "Oops, that address doesn't work!", Toast.LENGTH_LONG).show();
                             locationLabel.setText("");
                             locationLabel.setHint("Please try again!");
@@ -204,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 unsplashService.processResults(response);
-                mBackgroundImgUrl = unsplashService.getImageUrl();
+                final String mBackgroundImgUrl = unsplashService.getImageUrl();
 
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
@@ -212,13 +286,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (mBackgroundImgUrl != null) {
                             final ImageView backgoundImageToShow;
                             final ImageView backgoundImageToHide;
-                            if (backgroundImageView.getAlpha() == 0.0f) {
-                                backgoundImageToShow = backgroundImageView;
-                                backgoundImageToHide = backgroundImageView2;
-                            } else {
-                                backgoundImageToShow = backgroundImageView2;
-                                backgoundImageToHide = backgroundImageView;
-                            }
+//                            if (backgroundImageView.getAlpha() != 0.0f) {
+//                                backgoundImageToShow = backgroundImageView;
+//                                backgoundImageToHide = backgroundImageView2;
+//                            } else {
+//                                backgoundImageToShow = backgroundImageView2;
+//                                backgoundImageToHide = backgroundImageView;
+//                            }
+                            backgoundImageToShow = backgroundImageView;
                             Picasso.with(MainActivity.this)
                                     .load(mBackgroundImgUrl)
                                     .resize(400, 400)
@@ -228,68 +303,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         public void onSuccess() {
 
                                             Log.d(TAG, "Image = " + backgroundImageView.getAlpha());
-                                            Log.d(TAG, "Image2 = " + backgroundImageView2.getAlpha());
 
-                                            Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-                                            fadeOut.setInterpolator(new AccelerateInterpolator());
-                                            fadeOut.setStartOffset(15000);
-                                            fadeOut.setDuration(3000);
-
-                                            Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-                                            fadeIn.setInterpolator(new AccelerateInterpolator());
-                                            fadeIn.setStartOffset(0);
-                                            fadeIn.setDuration(3000);
-
-                                            AnimationSet animationHide = new AnimationSet(false);
-                                            animationHide.addAnimation(fadeOut);
-                                            backgoundImageToHide.setAnimation(animationHide);
-                                            animationHide.setAnimationListener(new Animation.AnimationListener() {
-                                                @Override
-                                                public void onAnimationStart(Animation animation) {
-                                                    Log.d(TAG, "FADE OUT");
-//                                                    backgoundImageToShow.setAlpha(1.0f);
-                                                }
-
-                                                @Override
-                                                public void onAnimationEnd(Animation animation) {
-                                                    backgoundImageToHide.setAlpha(0.0f);
-                                                    StringBuilder str = new StringBuilder(unsplashService.getColor());
-                                                    str.insert(1, "79");
-                                                    Log.d(TAG, str.toString());
-                                                    jumbotron.setBackgroundColor(Color.parseColor(str.toString()));
-//                                                try {
-//                                                    Thread.sleep(90000);
-//                                                } catch (InterruptedException e) {
-//                                                    e.printStackTrace();
-//                                                }
-                                                    initializeUnsplashBackground();
-                                                }
-
-                                                @Override
-                                                public void onAnimationRepeat(Animation animation) {
-
-                                                }
-                                            });
-
-                                            AnimationSet animationShow = new AnimationSet(false);
-                                            animationShow.addAnimation(fadeIn);
-                                            backgoundImageToShow.setAnimation(animationShow);
-                                            animationShow.setAnimationListener(new Animation.AnimationListener() {
-                                                @Override
-                                                public void onAnimationStart(Animation animation) {
-                                                    Log.d(TAG, "FADE IN");
-                                                }
-
-                                                @Override
-                                                public void onAnimationEnd(Animation animation) {
-                                                    backgoundImageToShow.setAlpha(1.0f);
-                                                }
-
-                                                @Override
-                                                public void onAnimationRepeat(Animation animation) {
-
-                                                }
-                                            });
+//                                            backgoundImageToShow.setVisibility(View.VISIBLE);
+//                                            backgoundImageToHide.setVisibility(View.INVISIBLE);
+                                            backgoundImageToShow.setAlpha(1.0f);
+                                            imageAnimationShow(backgoundImageToShow, unsplashService.getColor());
+//                                            imageAnimationHide(backgoundImageToHide, backgoundImageToShow, unsplashService.getColor());
 //
                                         }
 
@@ -301,6 +320,83 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 });
+
+            }
+        });
+    }
+
+    public void imageAnimationShow (final ImageView imageViewShow, final String color) {
+//        imageViewHide.setVisibility(View.INVISIBLE);
+//        imageViewShow.setVisibility(View.VISIBLE);
+
+        Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+        fadeIn.setInterpolator(new AccelerateInterpolator());
+        fadeIn.setStartOffset(0);
+        fadeIn.setDuration(800);
+
+        AnimationSet animationShow = new AnimationSet(false);
+        animationShow.addAnimation(fadeIn);
+        imageViewShow.startAnimation(animationShow);
+        animationShow.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+//                imageViewShow.setVisibility(View.VISIBLE);
+                Log.d(TAG, "FADE IN starts     " + imageViewShow.getVisibility());
+                if (color != null) {
+                    StringBuilder str = new StringBuilder(color);
+                    str.insert(1, "79");
+                    jumbotron.setBackgroundColor(Color.parseColor(str.toString()));
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Log.d(TAG, "FADE IN ends");
+//                imageViewShow.setAlpha(1.0f);
+                imageAnimationHide(imageViewShow);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+    }
+
+    public void imageAnimationHide (final ImageView imageViewHide) {
+        Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setStartOffset(15000);
+        fadeOut.setDuration(2000);
+
+
+        AnimationSet animationHide = new AnimationSet(false);
+        animationHide.addAnimation(fadeOut);
+        imageViewHide.startAnimation(animationHide);
+        animationHide.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                Log.d(TAG, "FADE OUT starts    " + imageViewHide.getVisibility());
+
+//                                                    backgoundImageToShow.setAlpha(1.0f);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                initializeUnsplashBackground();
+                Log.d(TAG, "FADE OUT ends");
+                imageViewHide.setAlpha(0.0f);
+//                imageViewHide.setVisibility(View.INVISIBLE);
+
+//                                                try {
+//                                                    Thread.sleep(90000);
+//                                                } catch (InterruptedException e) {
+//                                                    e.printStackTrace();
+//                                                }
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
 
             }
         });
@@ -351,11 +447,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+//    To setup a listener on the enter key on device keyboard
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            View view = this.getCurrentFocus();
+            onClick(view);
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
     private void shakeAndBake(View view) {
         view.animate()
             .rotation(3)
             .setInterpolator(new CycleInterpolator(8))
             .setDuration(1400);
     }
-
 }
