@@ -50,7 +50,7 @@
             android:inputType="text"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:hint="Shake It by Address or City"
+            android:hint="@string/search_text_hint"
             android:textColorHint="@color/colorIcons"
             android:textColor="@color/colorIcons"
             android:layout_marginBottom="@dimen/activity_vertical_margin"

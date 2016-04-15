@@ -34,6 +34,7 @@ public class UnsplashService {
 
     public void getUnsplashData(Callback callback) {
         long randomNumber = Math.round(Math.random());
+        Log.d(TAG, "unsplash random number " + randomNumber);
         String currentKey;
 
         if (randomNumber == 0) {
