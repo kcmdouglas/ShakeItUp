@@ -53,6 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/locationTextView"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:hint="Shake It by Address or City"
