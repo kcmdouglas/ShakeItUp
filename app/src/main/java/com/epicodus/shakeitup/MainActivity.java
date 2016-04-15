@@ -22,6 +22,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -416,6 +417,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+//    To setup a listener on the enter key on device keyboard
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            View view = this.getCurrentFocus();
+            onClick(view);
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
 }
