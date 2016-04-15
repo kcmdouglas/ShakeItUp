@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
     @Bind(R.id.backgroundImageView2) ImageView backgroundImageView2;
     @Bind(R.id.jumbotron) RelativeLayout jumbotron;
+    @Bind(R.id.titleTextView) TextView mTitleTextView;
     public static ProgressDialog loadingDialog;
     public static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
@@ -82,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .addApi(LocationServices.API)
                     .build();
         }
+
+        Typeface journal = Typeface.createFromAsset(getAssets(), "fonts/journal.ttf");
+        mTitleTextView.setTypeface(journal);
 
         shakeButton.setOnClickListener(this);
 
