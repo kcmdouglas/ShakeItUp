@@ -10,13 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.epicodus.shakeitup.models.Business;
 import com.epicodus.shakeitup.services.YelpService;
@@ -25,14 +20,13 @@ import com.epicodus.shakeitup.ui.DrinkChooserFragment;
 import com.epicodus.shakeitup.ui.FunChooserFragment;
 
 import org.parceler.Parcels;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-
-import java.util.ArrayList;
-import java.util.Locale;
 
 public class ChooserActivity extends AppCompatActivity implements DrinkChooserFragment.OnFirstItemDroppedInDropZoneListener, DinnerChooserFragment.OnSecondItemDroppedInDropZone, FunChooserFragment.OnThirdItemDroppedInDropZone {
 
@@ -141,7 +135,6 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
                     yelpService.processResults(response, category);
                     getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left).replace(R.id.chooser_content_layout, chooserFragment).commit();
                 } else {
-                    Log.e(TAG, "Called fragment not instance of DinnerChooserFragment or FunChooserFragment");
                 }
 
             }

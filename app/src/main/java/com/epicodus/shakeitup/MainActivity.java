@@ -1,7 +1,6 @@
 package com.epicodus.shakeitup;
 
 import android.Manifest;
-import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,19 +9,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.view.ContextThemeWrapper;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -30,7 +27,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.CycleInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -60,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.shakeButton) Button shakeButton;
     @Bind(R.id.locationTextView) TextView locationLabel;
     @Bind(R.id.backgroundImageView) ImageView backgroundImageView;
-//    @Bind(R.id.backgroundImageView2) ImageView backgroundImageView2;
     @Bind(R.id.jumbotron) RelativeLayout jumbotron;
     @Bind(R.id.titleTextView) TextView mTitleTextView;
+    @Bind(R.id.poweredByYelpButton) ImageView mPoweredByYelpButton;
     public static ProgressDialog loadingDialog;
     public static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
@@ -71,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences mSharedPreferences;
     private String mFormattedAddress;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,10 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         initializeProgressDialog();
         backgroundImageView.setAlpha(1.0f);
-//        backgroundImageView2.setAlpha(0.0f);
         initializeUnsplashBackground();
 
-//        TODO: hide keyboard on
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -96,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTitleTextView.setTypeface(journal);
 
         shakeButton.setOnClickListener(this);
+        mPoweredByYelpButton.setOnClickListener(this);
 
         locationLabel.addTextChangedListener(new TextWatcher() {
             @Override
@@ -141,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-//                                loadingDialog.hide();
                                 Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     ActivityOptionsCompat options = ActivityOptionsCompat
@@ -157,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-//                            loadingDialog.hide();
                             Toast.makeText(MainActivity.this, "Oops, that address doesn't work!", Toast.LENGTH_LONG).show();
                             locationLabel.setText("");
                             locationLabel.setHint("Please try again!");
@@ -185,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
 
                             Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
-                            Log.d(TAG, Business.getDrinkList().size()+" AMOUNT OF DRINK PLACES");
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 ActivityOptionsCompat options = ActivityOptionsCompat
                                         .makeSceneTransitionAnimation(MainActivity.this, mTitleTextView, "shakeText");
@@ -199,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-//                            loadingDialog.hide();
                             Toast.makeText(MainActivity.this, "Oops, that address doesn't work!", Toast.LENGTH_LONG).show();
                             locationLabel.setText("");
                             locationLabel.setHint("Please try again!");
@@ -224,21 +214,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-//        Hiding keyboard
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-
-        shakeAndBake(mTitleTextView);
-
-        Log.d(TAG, locationLabel.getText().length() + "");
-        if (locationLabel.getText().length() == 0) {
-            getDrinkForCurrentLocation();
-        } else {
-            getDrinkPlaces(locationLabel.getText().toString());
+        switch (v.getId()) {
+            case R.id.shakeButton:
+                shakeAndBake(mTitleTextView);
+                if (locationLabel.getText().length() == 0) {
+                    getDrinkForCurrentLocation();
+                } else {
+                    getDrinkPlaces(locationLabel.getText().toString());
+                }
+                break;
+            case R.id.poweredByYelpButton:
+                Intent poweredByYelpIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.yelp.com"));
+                startActivity(poweredByYelpIntent);
+                break;
         }
+
+
     }
 
     private void getDrinkForCurrentLocation() {
@@ -286,14 +282,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void run() {
                         if (mBackgroundImgUrl != null) {
                             final ImageView backgoundImageToShow;
-                            final ImageView backgoundImageToHide;
-//                            if (backgroundImageView.getAlpha() != 0.0f) {
-//                                backgoundImageToShow = backgroundImageView;
-//                                backgoundImageToHide = backgroundImageView2;
-//                            } else {
-//                                backgoundImageToShow = backgroundImageView2;
-//                                backgoundImageToHide = backgroundImageView;
-//                            }
                             backgoundImageToShow = backgroundImageView;
                             Picasso.with(MainActivity.this)
                                     .load(mBackgroundImgUrl)
@@ -302,20 +290,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     .into(backgoundImageToShow, new com.squareup.picasso.Callback() {
                                         @Override
                                         public void onSuccess() {
-
-                                            Log.d(TAG, "Image = " + backgroundImageView.getAlpha());
-
-//                                            backgoundImageToShow.setVisibility(View.VISIBLE);
-//                                            backgoundImageToHide.setVisibility(View.INVISIBLE);
                                             backgoundImageToShow.setAlpha(1.0f);
                                             imageAnimationShow(backgoundImageToShow, unsplashService.getColor());
-//                                            imageAnimationHide(backgoundImageToHide, backgoundImageToShow, unsplashService.getColor());
-//
                                         }
 
                                         @Override
                                         public void onError() {
-                                            Log.e(TAG, "Picasso image loading has failed");
                                         }
                                     });
                         }
@@ -327,9 +307,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void imageAnimationShow (final ImageView imageViewShow, final String color) {
-//        imageViewHide.setVisibility(View.INVISIBLE);
-//        imageViewShow.setVisibility(View.VISIBLE);
-
         Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
         fadeIn.setInterpolator(new AccelerateInterpolator());
         fadeIn.setStartOffset(0);
@@ -341,8 +318,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         animationShow.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-//                imageViewShow.setVisibility(View.VISIBLE);
-                Log.d(TAG, "FADE IN starts     " + imageViewShow.getVisibility());
                 if (color != null) {
                     StringBuilder str = new StringBuilder(color);
                     str.insert(1, "79");
@@ -352,8 +327,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Log.d(TAG, "FADE IN ends");
-//                imageViewShow.setAlpha(1.0f);
                 imageAnimationHide(imageViewShow);
             }
 
@@ -376,24 +349,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         animationHide.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                Log.d(TAG, "FADE OUT starts    " + imageViewHide.getVisibility());
 
-//                                                    backgoundImageToShow.setAlpha(1.0f);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 initializeUnsplashBackground();
-                Log.d(TAG, "FADE OUT ends");
                 imageViewHide.setAlpha(0.0f);
-//                imageViewHide.setVisibility(View.INVISIBLE);
-
-//                                                try {
-//                                                    Thread.sleep(90000);
-//                                                } catch (InterruptedException e) {
-//                                                    e.printStackTrace();
-//                                                }
-
             }
 
             @Override

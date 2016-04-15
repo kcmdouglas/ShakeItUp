@@ -62,7 +62,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shake It Near You!"
+            android:text="@string/search_button_blank"
             android:textSize="14sp"
             android:id="@+id/shakeButton"
             android:layout_below="@+id/locationTextView"
@@ -72,6 +72,28 @@
             android:padding="20dp"
             android:alpha="1" />
 
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_widthPercent="50%"
+        app:layout_heightPercent="5%"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/poweredByYelpButton"
+            android:scaleType="centerCrop"
+            android:src="@drawable/yelp_powered_btn_light"
+            android:elevation="5dp"
+            android:clickable="true"
+            android:alpha="0.75" />
 
     </RelativeLayout>
 
