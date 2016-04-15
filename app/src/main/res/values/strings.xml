@@ -31,4 +31,5 @@
 
     <string name="search_button_input">Shake up your night!</string>
     <string name="search_button_blank">Shake it near you!</string>
+    <string name="search_text_hint">Shake it by Address or City</string>
 </resources>
