@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="results_cardview_width">180dp</dimen>
+    <dimen name="list_image_width">180dp</dimen>
+    <dimen name="list_image_height">140dp</dimen>
+    <dimen name="list_name_text_size">26sp</dimen>
+    <dimen name="list_category_text_size">20sp</dimen>
+    <dimen name="list_draggable_height">40dp</dimen>
+    <dimen name="list_draggable_width">40dp</dimen>
+
+</resources>

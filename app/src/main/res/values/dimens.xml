@@ -7,4 +7,10 @@
     <dimen name="results_cardview_imageview_height">100dp</dimen>
     <dimen name="results_cardview_textview_height">60dp</dimen>
     <dimen name="chooser_empty_cardview_height">160dp</dimen>
+    <dimen name="list_image_width">130dp</dimen>
+    <dimen name="list_image_height">100dp</dimen>
+    <dimen name="list_name_text_size">16sp</dimen>
+    <dimen name="list_category_text_size">14sp</dimen>
+    <dimen name="list_draggable_height">30dp</dimen>
+    <dimen name="list_draggable_width">30dp</dimen>
 </resources>

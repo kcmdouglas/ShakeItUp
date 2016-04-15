@@ -2,5 +2,6 @@
 <resources>
 
     <dimen name="results_cardview_width">120dp</dimen>
+    <dimen name="list_image_width">130dp</dimen>
 
 </resources>
