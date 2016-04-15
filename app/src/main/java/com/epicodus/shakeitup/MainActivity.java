@@ -18,8 +18,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -90,12 +93,80 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         shakeButton.setOnClickListener(this);
 
-       }
+        locationLabel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    shakeButton.setText(R.string.search_button_blank);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() != 0) {
+                    shakeButton.setText(R.string.search_button_input);
+                }
+            }
+        });
+
+
+    }
 
     private void getDrinkPlaces(final String location) {
+        getData(location);
+    }
+
+    public void getData (final String location) {
         final YelpService yelpService = new YelpService(this);
 
-        yelpService.getYelpData(location, YelpService.DRINK, new Callback() {
+        yelpService.getYelpData(location, YelpService.DRINK, YelpService.NORMAL_MODE, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (yelpService.processResults(response, YelpService.DRINK)) {
+                    if (Business.getDrinkList().size() < 3) {
+                        getDataExpanded(location);
+                    } else {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.hide();
+                                Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                                    startActivity(intent, options.toBundle());
+                                } else {
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.hide();
+                            Toast.makeText(MainActivity.this, "Oops, that address doesn't work!", Toast.LENGTH_LONG).show();
+                            locationLabel.setText("");
+                            locationLabel.setHint("Please try again!");
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void getDataExpanded (final String location) {
+        final YelpService yelpService = new YelpService(this);
+
+        yelpService.getYelpData(location, YelpService.DRINK, YelpService.EXPANDED_MODE, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -109,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
                             loadingDialog.hide();
                             Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
+                            Log.d(TAG, Business.getDrinkList().size()+" AMOUNT OF DRINK PLACES");
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
                                 startActivity(intent, options.toBundle());
@@ -345,6 +417,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+//    To setup a listener on the enter key on device keyboard
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            View view = this.getCurrentFocus();
+            onClick(view);
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
 }

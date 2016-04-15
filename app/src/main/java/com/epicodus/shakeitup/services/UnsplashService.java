@@ -39,7 +39,7 @@ public class UnsplashService {
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.unsplash.com/photos/random?&query=drinks").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.unsplash.com/photos/random?&query=night").newBuilder();
         urlBuilder.addQueryParameter("client_id", APPLICATION_ID);
         String url = urlBuilder.build().toString();
 

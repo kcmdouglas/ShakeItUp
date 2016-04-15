@@ -112,7 +112,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 
     private void getPlaces(Business business, final String category, final Fragment chooserFragment) {
         final YelpService yelpService = new YelpService(this);
-        yelpService.getYelpData(business.getAddress(), category, new Callback() {
+        yelpService.getYelpData(business.getAddress(), category, YelpService.NORMAL_MODE, new Callback() {
 
             @Override
             public void onFailure(Call call, IOException e) {

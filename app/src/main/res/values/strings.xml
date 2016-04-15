@@ -22,11 +22,13 @@
     <string name="dinnerChoiceInstructions">Choose a place for dinner!</string>
     <string name="funChoiceInstructions">Choose a fun activity!</string>
 
-    <string name="unsplash_id">30b441f4b0ed266545bc2f79eabb7772e8ba113f37e9f8a48246de63d7d580cb</string>
-    <!--<string name="unsplash_id">0ad09549504e2af16a0d95059a7f6446187734c68b1074f3f0ca3c40916b5d9a</string>-->
+    <!--<string name="unsplash_id">30b441f4b0ed266545bc2f79eabb7772e8ba113f37e9f8a48246de63d7d580cb</string>-->
+    <string name="unsplash_id">0ad09549504e2af16a0d95059a7f6446187734c68b1074f3f0ca3c40916b5d9a</string>
     <string name="unsplash_secret">94d2fbd2b9c79a102c127db83901a5395a6849704e3c336e3d0ac625c0e6f9b0</string>
 
     <string name="cutoff_name">%s…</string>
     <string name="progress_txt">Hold on...</string>
 
+    <string name="search_button_input">Shake up your night!</string>
+    <string name="search_button_blank">Shake it near you!</string>
 </resources>
