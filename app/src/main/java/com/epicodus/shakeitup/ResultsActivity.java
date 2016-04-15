@@ -3,7 +3,6 @@ package com.epicodus.shakeitup;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -14,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.transition.Slide;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.models.Business;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,6 +37,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -244,7 +242,6 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                                 .into(badge, new MarkerImageCallback(marker));
                         title.setText(business.getName());
                         snippet.setText(business.getPhone());
-                        Log.d("Marker ID: ", marker.getId());
 
                         if (marker.getId().equals("m0")) {
                             snippet.setTextColor(Color.parseColor("#9A83BA"));
@@ -267,7 +264,9 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         Business business = mMarkersBusinessesHashMap.get(marker.getId());
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
         callIntent.setData(Uri.parse("tel:" + business.getPhone()));
-        startActivity(callIntent);
+        if (isSafe(callIntent)) {
+            startActivity(callIntent);
+        }
     }
 
     @Override
@@ -282,7 +281,6 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, "Let's shake it up at: \n" + mDrink.getName() + "\n" + mDinner.getName() + "\n" + mFun.getName());
                 shareIntent.setType("text/plain");
-
                 startActivity(Intent.createChooser(shareIntent, "How do you want to share?"));
                 break;
             case R.id.drinkCardView:
@@ -341,8 +339,13 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
 
         @Override
         public void onError() {
-            Log.e(getClass().getSimpleName(), "Error loading info window image!");
         }
+    }
+
+    private boolean isSafe(Intent intent) {
+        PackageManager packageManager = getPackageManager();
+        List activities = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return activities.size() > 0;
     }
 
 }
