@@ -9,8 +9,8 @@
         android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="130dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/list_image_width"
+                android:layout_height="@dimen/list_image_height"
                 android:id="@+id/rowImageView"
                 android:background="@color/colorAccent" />
     </RelativeLayout>
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/restaurantNameTextView"
-                android:textSize="16dp"
+                android:textSize="@dimen/list_name_text_size"
                 android:textStyle="bold"
                 android:text="Restaurant Name"
                 android:textColor="@color/colorPrimary"/>
@@ -40,13 +40,14 @@
                 android:layout_height="wrap_content"
                 android:text="One Cuisine Type"
                 android:id="@+id/categoryTextView"
+                android:textSize="@dimen/list_category_text_size"
                 android:textStyle="italic"/>
         </LinearLayout>
 
         <ImageView
                 android:id="@+id/blackDragIcon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/list_draggable_width"
+                android:layout_height="@dimen/list_draggable_height"
                 android:layout_alignRight="@id/draggableLinearLayout"
                 android:layout_alignBottom="@id/draggableLinearLayout"
                 android:gravity="bottom|right"
