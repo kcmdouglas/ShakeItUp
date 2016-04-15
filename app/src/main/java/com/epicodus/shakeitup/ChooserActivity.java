@@ -14,6 +14,7 @@ import android.transition.Fade;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,10 +56,10 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         shakeText.setTypeface(journal);
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Fade().setDuration(400));
-        }
-
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setEnterTransition(new Fade().setDuration(400));
+//        }
+//
         if (savedInstanceState == null) {
             DrinkChooserFragment drinkChooserFragment = DrinkChooserFragment.newInstance();
             mDrinksArray = Business.getRandomDrink();
@@ -66,7 +67,8 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
             args.putParcelable("drinksArray", Parcels.wrap(mDrinksArray));
             drinkChooserFragment.setArguments(args);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).add(R.id.chooser_content_layout, drinkChooserFragment).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).
+                add(R.id.chooser_content_layout, drinkChooserFragment).commit();
             } else {
                 getSupportFragmentManager().beginTransaction().add(R.id.chooser_content_layout, drinkChooserFragment).commit();
 
@@ -82,8 +84,8 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         Bundle args = new Bundle();
         args.putParcelable("drink", Parcels.wrap(item));
         dinnerChooserFragment.setArguments(args);
-        initializeProgressDialog(item.getName() + "? I've heard good things!", "We need to find a good restaurant to go to next...");
-        loadingDialog.show(); //show progress dialog before make Dinner API request
+//        initializeProgressDialog(item.getName() + "? I've heard good things!", "We need to find a good restaurant to go to next...");
+//        loadingDialog.show(); //show progress dialog before make Dinner API request
         getPlaces(item, YelpService.DINNER, dinnerChooserFragment);
     }
 
@@ -94,8 +96,8 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
         args.putParcelable("drink", Parcels.wrap(drinkItem));
         args.putParcelable("dinner", Parcels.wrap(dinnerItem));
         funChooserFragment.setArguments(args);
-        initializeProgressDialog("I've heard great things about " + dinnerItem.getName() + "!", "Now let's plan an activity...");
-        loadingDialog.show(); //show progress dialog before make Dinner API request
+//        initializeProgressDialog("I've heard great things about " + dinnerItem.getName() + "!", "Now let's plan an activity...");
+//        loadingDialog.show(); //show progress dialog before make Dinner API request
         getPlaces(dinnerItem, YelpService.FUN, funChooserFragment);
     }
 

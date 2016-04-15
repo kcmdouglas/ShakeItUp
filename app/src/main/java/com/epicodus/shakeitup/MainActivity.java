@@ -156,10 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        mTitleTextView.animate()
-                .rotation(3)
-                .setInterpolator(new CycleInterpolator(8))
-                .setDuration(1400);
+        shakeAndBake(mTitleTextView);
 
         Log.d(TAG, locationLabel.getText().length() + "");
         if (locationLabel.getText().length() == 0) {
@@ -352,6 +349,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+    private void shakeAndBake(View view) {
+        view.animate()
+            .rotation(3)
+            .setInterpolator(new CycleInterpolator(8))
+            .setDuration(1400);
     }
 
 }

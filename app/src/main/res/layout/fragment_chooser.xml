@@ -269,7 +269,7 @@ tools:context=".ui.DrinkChooserFragment">
                 android:layout_centerHorizontal="true"
                 android:text="≠ shake to shuffle ≠"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="40sp"
+                android:textSize="60sp"
                 />
         </RelativeLayout>
 

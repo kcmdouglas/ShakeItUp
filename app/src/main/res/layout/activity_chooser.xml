@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:text="≠ shake to shuffle ≠"
         android:textColor="@color/colorPrimaryLight"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:transitionName="shakeText"
         />
 </RelativeLayout>
