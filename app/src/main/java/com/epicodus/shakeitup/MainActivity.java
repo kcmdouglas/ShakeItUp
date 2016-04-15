@@ -14,6 +14,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.CycleInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -107,10 +109,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            loadingDialog.hide();
+
                             Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                                ActivityOptionsCompat options = ActivityOptionsCompat
+                                        .makeSceneTransitionAnimation(MainActivity.this, mTitleTextView, "shakeText");
                                 startActivity(intent, options.toBundle());
                             } else {
                                 startActivity(intent);
@@ -153,7 +156,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        loadingDialog.show();
+        mTitleTextView.animate()
+                .rotation(3)
+                .setInterpolator(new CycleInterpolator(8))
+                .setDuration(1400);
+
         Log.d(TAG, locationLabel.getText().length() + "");
         if (locationLabel.getText().length() == 0) {
             getDrinkForCurrentLocation();

@@ -4,6 +4,7 @@ package com.epicodus.shakeitup;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.transition.Fade;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epicodus.shakeitup.models.Business;
@@ -36,6 +38,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     private static final String TAG = ChooserActivity.class.getSimpleName();
     private DrinkChooserFragment drinkChooserFragment;
     public static ProgressDialog loadingDialog;
+    TextView shakeText;
 
     ArrayList<Business> mDrinksArray = new ArrayList<>();
     ArrayList<Business> mDinnersArray = new ArrayList<>();
@@ -46,7 +49,10 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
-        MainActivity.loadingDialog.hide();
+        shakeText = (TextView) findViewById(R.id.shakeToShuffle);
+
+        Typeface journal = Typeface.createFromAsset(getAssets(), "fonts/journal.ttf");
+        shakeText.setTypeface(journal);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
