@@ -147,21 +147,21 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 case 0:
                     Marker drinksMarker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
-                            .icon(BitmapDescriptorFactory.defaultMarker(187))
+                            .icon(BitmapDescriptorFactory.defaultMarker(265))
                             .title(business.getName()));
                     mMarkersBusinessesHashMap.put(drinksMarker.getId(), business);
                     break;
                 case 1:
                     Marker dinnerMarker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
-                            .icon(BitmapDescriptorFactory.defaultMarker(262))
+                            .icon(BitmapDescriptorFactory.defaultMarker(141))
                             .title(business.getName()));
                     mMarkersBusinessesHashMap.put(dinnerMarker.getId(), business);
                     break;
                 case 2:
                     Marker funMarker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
-                            .icon(BitmapDescriptorFactory.defaultMarker(14))
+                            .icon(BitmapDescriptorFactory.defaultMarker(20))
                             .title(business.getName()));
                     mMarkersBusinessesHashMap.put(funMarker.getId(), business);
                     break;
@@ -247,11 +247,11 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                         Log.d("Marker ID: ", marker.getId());
 
                         if (marker.getId().equals("m0")) {
-                            snippet.setTextColor(Color.parseColor("#26C6DA"));
+                            snippet.setTextColor(Color.parseColor("#9A83BA"));
                         } else if (marker.getId().equals("m1")) {
-                            snippet.setTextColor(Color.parseColor("#7E57C2"));
+                            snippet.setTextColor(Color.parseColor("#5ED186"));
                         } else if (marker.getId().equals("m2")) {
-                            snippet.setTextColor(Color.parseColor("#E64A19"));
+                            snippet.setTextColor(Color.parseColor("#F29D72"));
                         }
 
                         return view;
