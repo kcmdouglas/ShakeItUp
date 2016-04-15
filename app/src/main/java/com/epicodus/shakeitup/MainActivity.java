@@ -18,8 +18,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -92,7 +95,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         shakeButton.setOnClickListener(this);
 
-       }
+        locationLabel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    shakeButton.setText(R.string.search_button_blank);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() != 0) {
+                    shakeButton.setText(R.string.search_button_input);
+                }
+            }
+        });
+
+
+    }
 
     private void getDrinkPlaces(final String location) {
         getData(location);
@@ -418,6 +441,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+//    To setup a listener on the enter key on device keyboard
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            View view = this.getCurrentFocus();
+            onClick(view);
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
 }
