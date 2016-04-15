@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initializeProgressDialog();
+        backgroundImageView.setAlpha(1.0f);
+        backgroundImageView2.setAlpha(0.0f);
         initializeUnsplashBackground();
 
 //        TODO: hide keyboard on
@@ -277,12 +279,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                             Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
                                             fadeOut.setInterpolator(new AccelerateInterpolator());
-                                            fadeOut.setStartOffset(15000);
+                                            fadeOut.setStartOffset(3000);
                                             fadeOut.setDuration(3000);
 
                                             Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
                                             fadeIn.setInterpolator(new AccelerateInterpolator());
-                                            fadeIn.setStartOffset(0);
+                                            fadeIn.setStartOffset(3000);
                                             fadeIn.setDuration(3000);
 
                                             AnimationSet animationHide = new AnimationSet(false);
@@ -298,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                 @Override
                                                 public void onAnimationEnd(Animation animation) {
                                                     backgoundImageToHide.setAlpha(0.0f);
+                                                    backgoundImageToHide.setVisibility(View.INVISIBLE);
                                                     StringBuilder str = new StringBuilder(unsplashService.getColor());
                                                     str.insert(1, "79");
                                                     Log.d(TAG, str.toString());
@@ -328,6 +331,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                 @Override
                                                 public void onAnimationEnd(Animation animation) {
                                                     backgoundImageToShow.setAlpha(1.0f);
+                                                    backgoundImageToShow.setVisibility(View.VISIBLE);
                                                 }
 
                                                 @Override
