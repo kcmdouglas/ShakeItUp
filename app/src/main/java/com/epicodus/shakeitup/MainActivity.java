@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             backgoundImageToShow = backgroundImageView;
                             Picasso.with(MainActivity.this)
                                     .load(mBackgroundImgUrl)
-                                    .resize(400, 400)
+                                    .resize(800, 800)
                                     .centerCrop()
                                     .into(backgoundImageToShow, new com.squareup.picasso.Callback() {
                                         @Override
