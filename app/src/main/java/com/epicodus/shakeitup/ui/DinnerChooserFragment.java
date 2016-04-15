@@ -228,7 +228,6 @@ public class DinnerChooserFragment extends Fragment {
                     }
 
                     shakeAndBake(instructionsText);
-                    shakeAndBake(shakeTextView);
 
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.dinnerImageView));
                     dinnerTextView.setText(passedItem.getCardText());

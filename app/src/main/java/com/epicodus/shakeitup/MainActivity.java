@@ -141,10 +141,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                loadingDialog.hide();
+//                                loadingDialog.hide();
                                 Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                                    ActivityOptionsCompat options = ActivityOptionsCompat
+                                            .makeSceneTransitionAnimation(MainActivity.this, mTitleTextView, "shakeText");
                                     startActivity(intent, options.toBundle());
                                 } else {
                                     startActivity(intent);
@@ -156,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            loadingDialog.hide();
+//                            loadingDialog.hide();
                             Toast.makeText(MainActivity.this, "Oops, that address doesn't work!", Toast.LENGTH_LONG).show();
                             locationLabel.setText("");
                             locationLabel.setHint("Please try again!");
