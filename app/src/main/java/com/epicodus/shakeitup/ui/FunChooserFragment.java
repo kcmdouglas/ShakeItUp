@@ -112,8 +112,11 @@ public class FunChooserFragment extends Fragment {
         area3.setAbsListView(funGridView);
         initItems();
         TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
+        TextView shakeToShuffle = (TextView) view.findViewById(R.id.shakeToShuffle);
         Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
         instructions.setTypeface(journal);
+        shakeToShuffle.setTypeface(journal);
+
         myItemListAdapter1 = new ItemListAdapter(getContext(), mFunArray);
         myItemGridAdapter3 = new ItemGridAdapter(getContext(), mSelectedBusinessesArray);
         listView1.setAdapter(myItemListAdapter1);
