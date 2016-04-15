@@ -59,7 +59,7 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            getWindow().setEnterTransition(new Fade().setDuration(400));
 //        }
-//
+
         if (savedInstanceState == null) {
             DrinkChooserFragment drinkChooserFragment = DrinkChooserFragment.newInstance();
             mDrinksArray = Business.getRandomDrink();
@@ -73,6 +73,14 @@ public class ChooserActivity extends AppCompatActivity implements DrinkChooserFr
                 getSupportFragmentManager().beginTransaction().add(R.id.chooser_content_layout, drinkChooserFragment).commit();
 
             }
+
+            shakeText.animate().alpha(0).setDuration(1000).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    shakeText.setVisibility(View.GONE);
+                }
+            });
+
 
         }
 

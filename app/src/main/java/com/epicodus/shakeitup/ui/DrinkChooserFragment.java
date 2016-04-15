@@ -226,7 +226,6 @@ public class DrinkChooserFragment extends Fragment {
                         mListener.onFirstItemDroppedInDropZone(passedItem);
                     }
 
-                    shakeAndBake(shakeTextView);
                     shakeAndBake(instructionsText);
 
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.drinkImageView));

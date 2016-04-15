@@ -20,14 +20,14 @@
 
     <RelativeLayout
         app:layout_widthPercent="80%"
-        app:layout_heightPercent="50%"
+        app:layout_heightPercent="45%"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:id="@+id/jumbotron"
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
         android:background="@color/colorSecondaryText"
         android:translationZ="10dp">
 
