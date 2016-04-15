@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rulgit pues.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'GOOGLE_MAPS_KEY', GoogleMapsKey
+        it.buildConfigField 'String', 'UNSPLASH_KEY', UnsplashKey
+    }
 }
 
 dependencies {

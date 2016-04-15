@@ -9,7 +9,7 @@
     <string name="permission_request">"To see where you are on the map, allow ShakeItUp to use your location."</string>
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-        AIzaSyDG9zyzNAHXKxKzrFu3GItH5DTihG38ARU
+        AIzaSyCUhx6QpyY0YZyI5YJY8GxMnq-t3yMAmck
     </string>
 
     <string name="directions">Let\'s Go</string>
@@ -30,6 +30,6 @@
     <string name="progress_txt">Hold on...</string>
 
     <string name="search_button_input">Shake up your night!</string>
-    <string name="search_button_blank">Shake it near you!</string>
-    <string name="search_text_hint">Shake it by Address or City</string>
+    <string name="search_button_blank">Or search near you!</string>
+    <string name="search_text_hint">Search by Address or City</string>
 </resources>
