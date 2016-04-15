@@ -17,6 +17,7 @@ import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.CycleInterpolator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -50,6 +51,7 @@ public class DinnerChooserFragment extends Fragment {
     TextView dinnerTextView;
     TextView drinkTextView;
     TextView instructionsText;
+    TextView shakeTextView;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
@@ -78,7 +80,7 @@ public class DinnerChooserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chooser, container, false);
-        ChooserActivity.loadingDialog.hide();
+//        ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
         mDrinkImageView = (ImageView) view.findViewById(R.id.drinkImageView);
 
@@ -89,6 +91,7 @@ public class DinnerChooserFragment extends Fragment {
         drinkGridView = (GridView) view.findViewById(R.id.drinkGridView);
         drinkCardView = (CardView) view.findViewById(R.id.drinkCardView);
         drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
+        shakeTextView = (TextView) view.findViewById(R.id.shakeToShuffle);
 
         instructionsText = (TextView) view.findViewById(R.id.instructionsText);
 
@@ -100,10 +103,9 @@ public class DinnerChooserFragment extends Fragment {
         area3.setAbsListView(dinnerGridView);
 
         initItems();
-        TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
         TextView shakeToShuffle = (TextView) view.findViewById(R.id.shakeToShuffle);
         Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
-        instructions.setTypeface(journal);
+        instructionsText.setTypeface(journal);
         shakeToShuffle.setTypeface(journal);
 
         myItemListAdapter1 = new ItemListAdapter(getContext(), mDinnersArray);
@@ -225,6 +227,9 @@ public class DinnerChooserFragment extends Fragment {
                         addItemToList(destList, passedItem);
                     }
 
+                    shakeAndBake(instructionsText);
+                    shakeAndBake(shakeTextView);
+
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.dinnerImageView));
                     dinnerTextView.setText(passedItem.getCardText());
 
@@ -303,5 +308,12 @@ public class DinnerChooserFragment extends Fragment {
         myItemListAdapter1.list.clear();
         myItemListAdapter1.list.addAll(mDinnersArray);
         myItemListAdapter1.notifyDataSetChanged();
+    }
+
+    private void shakeAndBake(View view) {
+        view.animate()
+            .rotation(3)
+            .setInterpolator(new CycleInterpolator(8))
+            .setDuration(1400);
     }
 }

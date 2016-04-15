@@ -25,6 +25,7 @@ import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.CycleInterpolator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -54,6 +55,8 @@ public class DrinkChooserFragment extends Fragment {
     GridView drinkGridView;
     CardView drinkCardView;
     TextView drinkTextView;
+    TextView shakeTextView;
+    TextView instructionsText;
     ItemListAdapter myItemListAdapter1;
     ItemGridAdapter myItemGridAdapter3;
     LinearLayoutAbsListView area1, area3;
@@ -89,11 +92,12 @@ public class DrinkChooserFragment extends Fragment {
         drinkTextView = (TextView) view.findViewById(R.id.drinkTextView);
         area1 = (LinearLayoutAbsListView) view.findViewById(R.id.pane1);
         area3 = (LinearLayoutAbsListView) view.findViewById(R.id.pane3);
+        shakeTextView = (TextView) view.findViewById(R.id.shakeToShuffle);
 
-        TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
+        instructionsText = (TextView) view.findViewById(R.id.instructionsText);
         TextView shakeToShuffle = (TextView) view.findViewById(R.id.shakeToShuffle);
         Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
-        instructions.setTypeface(journal);
+        instructionsText.setTypeface(journal);
         shakeToShuffle.setTypeface(journal);
 
         area1.setOnDragListener(myOnDragListener);
@@ -222,6 +226,9 @@ public class DrinkChooserFragment extends Fragment {
                         mListener.onFirstItemDroppedInDropZone(passedItem);
                     }
 
+                    shakeAndBake(shakeTextView);
+                    shakeAndBake(instructionsText);
+
                     Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.drinkImageView));
                     drinkTextView.setText(passedItem.getCardText());
 
@@ -283,6 +290,13 @@ public class DrinkChooserFragment extends Fragment {
         myItemListAdapter1.list.clear();
         myItemListAdapter1.list.addAll(mDrinksArray);
         myItemListAdapter1.notifyDataSetChanged();
+    }
+
+    private void shakeAndBake(View view) {
+        view.animate()
+            .rotation(3)
+            .setInterpolator(new CycleInterpolator(8))
+            .setDuration(1400);
     }
 
 

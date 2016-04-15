@@ -18,6 +18,7 @@ import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.CycleInterpolator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -62,6 +63,7 @@ public class FunChooserFragment extends Fragment {
     TextView dinnerTextView;
     TextView drinkTextView;
     TextView instructionsText;
+    TextView shakeTextView;
     ImageView mDrinkImageView;
     ImageView mDinnerImageView;
 
@@ -88,7 +90,7 @@ public class FunChooserFragment extends Fragment {
                              Bundle savedInstanceState) {
         //this line reuses fragment layout from before
         View view = inflater.inflate(R.layout.fragment_chooser, container, false);
-        ChooserActivity.loadingDialog.hide();
+//        ChooserActivity.loadingDialog.hide();
         listView1 = (ListView) view.findViewById(R.id.listview1);
         funGridView = (GridView) view.findViewById(R.id.funGridView);
         funCardView = (CardView) view.findViewById(R.id.funCardView);
@@ -99,7 +101,7 @@ public class FunChooserFragment extends Fragment {
         dinnerCardView = (CardView) view.findViewById(R.id.dinnerCardView);
         drinkGridView = (GridView) view.findViewById(R.id.drinkGridView);
         drinkCardView = (CardView) view.findViewById(R.id.drinkCardView);
-
+        shakeTextView = (TextView) view.findViewById(R.id.shakeToShuffle);
         instructionsText = (TextView) view.findViewById(R.id.instructionsText);
 
         mDrinkImageView = (ImageView) view.findViewById(R.id.drinkImageView);
@@ -111,10 +113,9 @@ public class FunChooserFragment extends Fragment {
         area1.setAbsListView(listView1);
         area3.setAbsListView(funGridView);
         initItems();
-        TextView instructions = (TextView) view.findViewById(R.id.instructionsText);
         TextView shakeToShuffle = (TextView) view.findViewById(R.id.shakeToShuffle);
         Typeface journal = Typeface.createFromAsset(getActivity().getAssets(), "fonts/journal.ttf");
-        instructions.setTypeface(journal);
+        instructionsText.setTypeface(journal);
         shakeToShuffle.setTypeface(journal);
 
         myItemListAdapter1 = new ItemListAdapter(getContext(), mFunArray);
@@ -239,6 +240,12 @@ public class FunChooserFragment extends Fragment {
                         addItemToList(destList, passedItem);
                     }
 
+                    shakeAndBake(instructionsText);
+                    shakeAndBake(shakeTextView);
+
+                    Picasso.with(getContext()).load(passedItem.getImageUrl()).fit().centerCrop().into((ImageView) getView().findViewById(R.id.funImageView));
+                    funTextView.setText(passedItem.getCardText());
+
                     funGridView.setVisibility(View.GONE);
                     funCardView.setVisibility(View.VISIBLE);
 
@@ -321,6 +328,13 @@ public class FunChooserFragment extends Fragment {
         myItemListAdapter1.list.clear();
         myItemListAdapter1.list.addAll(mFunArray);
         myItemListAdapter1.notifyDataSetChanged();
+    }
+
+    private void shakeAndBake(View view) {
+        view.animate()
+            .rotation(3)
+            .setInterpolator(new CycleInterpolator(8))
+            .setDuration(1400);
     }
 
 }

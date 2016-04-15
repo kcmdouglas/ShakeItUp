@@ -40,7 +40,8 @@
             android:textColor="@color/colorIcons"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_centerHorizontal="true"
-            android:layout_above="@+id/locationTextView"/>
+            android:layout_above="@+id/locationTextView"
+            android:transitionName="shakeText"/>
 
         <EditText
             android:layout_width="match_parent"
