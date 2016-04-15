@@ -85,10 +85,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
        }
 
-    private void getDrinkPlaces(final String location, Boolean mode) {
+    private void getDrinkPlaces(final String location) {
+        getData(location);
+    }
+
+    public void getData (final String location) {
         final YelpService yelpService = new YelpService(this);
 
-        yelpService.getYelpData(location, YelpService.DRINK, mode, new Callback() {
+        yelpService.getYelpData(location, YelpService.DRINK, YelpService.NORMAL_MODE, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -96,10 +100,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (Business.getDrinkList().size() < 3) {
-                    if (yelpService.processResults(response, YelpService.DRINK)) {
-                        getDrinkPlaces(location, YelpService.EXPANDED_MODE);
-
+                if (yelpService.processResults(response, YelpService.DRINK)) {
+                    if (Business.getDrinkList().size() < 3) {
+                        getDataExpanded(location);
+                    } else {
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -114,6 +118,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                     }
+                } else {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.hide();
+                            Toast.makeText(MainActivity.this, "Oops, that address doesn't work!", Toast.LENGTH_LONG).show();
+                            locationLabel.setText("");
+                            locationLabel.setHint("Please try again!");
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void getDataExpanded (final String location) {
+        final YelpService yelpService = new YelpService(this);
+
+        yelpService.getYelpData(location, YelpService.DRINK, YelpService.EXPANDED_MODE, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (yelpService.processResults(response, YelpService.DRINK)) {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.hide();
+                            Intent intent = new Intent(MainActivity.this, ChooserActivity.class);
+                            Log.d(TAG, Business.getDrinkList().size()+" AMOUNT OF DRINK PLACES");
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                                startActivity(intent, options.toBundle());
+                            } else {
+                                startActivity(intent);
+                            }
+                        }
+                    });
                 } else {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -155,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (locationLabel.getText().length() == 0) {
             getDrinkForCurrentLocation();
         } else {
-            getDrinkPlaces(locationLabel.getText().toString(), YelpService.NORMAL_MODE);
+            getDrinkPlaces(locationLabel.getText().toString());
         }
     }
 
@@ -173,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 geolocationService.processResults(response);
                 mSharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 mFormattedAddress = mSharedPreferences.getString("location", null);
-                getDrinkPlaces(mFormattedAddress, YelpService.NORMAL_MODE);
+                getDrinkPlaces(mFormattedAddress);
             }
         });
     }

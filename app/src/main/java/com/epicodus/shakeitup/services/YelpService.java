@@ -118,8 +118,14 @@ public class YelpService {
                     } catch (JSONException jsone) {
                         jsone.printStackTrace();
                     }
+                    String imageUrl="";
                     String snippetText = businessJSON.getString("snippet_text");
-                    String imageUrl = businessJSON.getString("image_url");
+                    try {
+                        imageUrl = businessJSON.getString("image_url");
+                    } catch (JSONException jsone) {
+                        jsone.printStackTrace();
+                        imageUrl="https://images.unsplash.com/photo-1452415005154-c06158558480?ixlib=rb-0.3.5\\u0026q=80\\u0026fm=jpg\\u0026crop=entropy\\u0026w=200\\u0026fit=max\\u0026s=3805a9eb7264e9ef610f4200ddf0352d";
+                    }
                     JSONObject locationJSON = businessJSON.getJSONObject("location");
                     JSONArray addressArray = locationJSON.getJSONArray("display_address");
                     String address = "";

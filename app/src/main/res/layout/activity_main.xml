@@ -23,8 +23,7 @@
         android:id="@+id/backgroundImageView2"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background" />
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         app:layout_widthPercent="80%"
