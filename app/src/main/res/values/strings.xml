@@ -29,4 +29,6 @@
     <string name="cutoff_name">%s…</string>
     <string name="progress_txt">Hold on...</string>
 
+    <string name="search_button_input">Shake up your night!</string>
+    <string name="search_button_blank">Shake it near you!</string>
 </resources>
